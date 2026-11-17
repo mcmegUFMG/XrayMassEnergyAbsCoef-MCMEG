@@ -1,0 +1,337 @@
+/* ==========================================================================
+   MCMEG - UFMG | X-Ray Mass Energy-Absorption Coefficients Database
+   Custom Scientific UI Stylesheet (Light & Dark Mode Support)
+   ========================================================================== */
+
+:root {
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-header: #0b132b;
+  --bg-header-accent: #1c2541;
+  --gold-mcmeg: #eab308;
+  --gold-mcmeg-soft: rgba(234, 179, 8, 0.14);
+  --red-ufmg: #c8102e;
+  --blue-primary: #1d4ed8;
+  --blue-soft: #eff6ff;
+  --teal-tissue: #0d9488;
+  --teal-soft: #f0fdfa;
+  --border-subtle: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+}
+
+html.dark {
+  --bg-page: #090d16;
+  --bg-card: #111827;
+  --border-subtle: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  color-scheme: dark;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.font-mono-sci {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Header with subtle Monte Carlo grid background */
+.mcmeg-header {
+  background: radial-gradient(circle at 18% 20%, #1e293b 0%, #0b1120 65%, #070b14 100%);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid rgba(234, 179, 8, 0.35);
+}
+
+.mcmeg-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(234, 179, 8, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(234, 179, 8, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+/* Material list cards */
+.material-item {
+  transition: all 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #e2e8f0;
+}
+
+html.dark .material-item {
+  border-color: #1e293b;
+  background-color: #0f172a;
+}
+
+.material-item:hover {
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+html.dark .material-item:hover {
+  border-color: #475569;
+  background-color: #1e293b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.material-item.active-elemental {
+  border-color: #d97706;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+}
+
+html.dark .material-item.active-elemental {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(180, 83, 9, 0.26) 100%);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25);
+}
+
+.material-item.active-tissue {
+  border-color: #0284c7;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+}
+
+html.dark .material-item.active-tissue {
+  border-color: #38bdf8;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.18) 0%, rgba(3, 105, 161, 0.26) 100%);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+/* Periodic Table Grid (Compact 18-column view) */
+.periodic-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.pt-cell {
+  aspect-ratio: 1 / 1.08;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  user-select: none;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.pt-cell-inactive {
+  background-color: #f1f5f9;
+  color: #cbd5e1;
+  border: 1px solid #e2e8f0;
+}
+
+html.dark .pt-cell-inactive {
+  background-color: #0f172a;
+  color: #334155;
+  border: 1px solid #1e293b;
+}
+
+.pt-cell-mcmeg-upcoming {
+  background-color: #ffffff;
+  color: #334155;
+  border: 1.5px solid #cbd5e1;
+  cursor: pointer;
+}
+
+html.dark .pt-cell-mcmeg-upcoming {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  border: 1.5px solid #475569;
+}
+
+.pt-cell-mcmeg-upcoming:hover {
+  border-color: #f59e0b;
+  background-color: #fffbeb;
+  transform: scale(1.08);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .pt-cell-mcmeg-upcoming:hover {
+  border-color: #fbbf24;
+  background-color: #334155;
+}
+
+.pt-cell-mcmeg-available {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #78350f;
+  border: 2px solid #d97706;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);
+}
+
+html.dark .pt-cell-mcmeg-available {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #090d16;
+  border: 2px solid #fde68a;
+}
+
+.pt-cell-mcmeg-available:hover {
+  transform: scale(1.1);
+  z-index: 15;
+}
+
+.pt-cell-selected {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 1px;
+  z-index: 20;
+}
+
+html.dark .pt-cell-selected {
+  outline: 3px solid #38bdf8;
+}
+
+/* Data table scroll & absorption edge highlights */
+.data-table-wrapper {
+  max-height: 490px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f8fafc;
+}
+
+html.dark .data-table-wrapper {
+  scrollbar-color: #334155 #0f172a;
+}
+
+.data-table-wrapper::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.data-table-wrapper::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+html.dark .data-table-wrapper::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+.data-table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+}
+
+html.dark .data-table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #334155;
+}
+
+.edge-row {
+  background-color: #fffbeb !important;
+  border-left: 3px solid #f59e0b;
+}
+
+html.dark .edge-row {
+  background-color: rgba(245, 158, 11, 0.14) !important;
+  border-left: 3px solid #fbbf24;
+}
+
+.edge-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 7px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 4px;
+  background-color: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+}
+
+html.dark .edge-badge {
+  background-color: rgba(245, 158, 11, 0.22);
+  color: #fde68a;
+  border-color: rgba(251, 191, 36, 0.5);
+}
+
+/* Custom ASCII box */
+.ascii-pre {
+  max-height: 490px;
+  overflow: auto;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  border: 1px solid #1e293b;
+}
+
+/* Global Dark Mode surface overrides for clean transition */
+html.dark .bg-white {
+  background-color: #111827 !important;
+}
+
+html.dark .bg-slate-50 {
+  background-color: #0f172a !important;
+}
+
+html.dark .bg-slate-100 {
+  background-color: #1e293b !important;
+}
+
+html.dark .border-slate-200,
+html.dark .border-slate-200\/80,
+html.dark .border-slate-200\/90,
+html.dark .border-slate-300 {
+  border-color: #1e293b !important;
+}
+
+html.dark .border-slate-100 {
+  border-color: #1e293b !important;
+}
+
+html.dark .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-800 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #64748b !important;
+}
+
+html.dark tr.hover\:bg-slate-50:hover {
+  background-color: #1e293b !important;
+}
+
+html.dark #compare-mode-subbar {
+  background-color: rgba(14, 165, 233, 0.1) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+
+html.dark #compare-mode-subbar .bg-white {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+html.dark #compare-ratio-summary {
+  color: #e2e8f0 !important;
+}
