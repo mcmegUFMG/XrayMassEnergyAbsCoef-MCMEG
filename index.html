@@ -32,14 +32,24 @@
        ==================================================================== -->
   <header class="mcmeg-header text-white">
     <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-10">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-5">
 
-        <!-- Left: MCMEG Logo + Title -->
-        <div class="flex items-center gap-4 sm:gap-5">
-          <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="shrink-0 bg-slate-900/80 p-2 rounded-xl border border-amber-500/30 hover:border-amber-400 transition shadow-lg" title="MCMEG Official Website">
-            <img src="assets/logos/logo-mcmeg.png" alt="MCMEG Logo" class="h-16 sm:h-20 w-auto object-contain" />
+        <!-- Mobile Only: MCMEG Logo + UFMG Logo side by side & centered -->
+        <div class="flex lg:hidden items-center justify-center gap-6">
+          <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="shrink-0 opacity-95 hover:opacity-100 transition" title="MCMEG Official Website">
+            <img src="assets/logos/logo-mcmeg.png" alt="MCMEG Logo" class="h-16 sm:h-18 w-auto object-contain" />
           </a>
-          <div>
+          <a href="https://ufmg.br" target="_blank" rel="noopener noreferrer" class="shrink-0 opacity-95 hover:opacity-100 transition" title="Universidade Federal de Minas Gerais">
+            <img src="assets/logos/ufmg-logo.png" alt="UFMG Logo" class="h-11 sm:h-13 w-auto object-contain" />
+          </a>
+        </div>
+
+        <!-- Left (Desktop) / Centered Text (Mobile): MCMEG Logo (Desktop) + Title -->
+        <div class="flex flex-col lg:flex-row items-center gap-4 sm:gap-5 text-center lg:text-left">
+          <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="hidden lg:block shrink-0 opacity-95 hover:opacity-100 transition" title="MCMEG Official Website">
+            <img src="assets/logos/logo-mcmeg.png" alt="MCMEG Logo" class="h-20 w-auto object-contain" />
+          </a>
+          <div class="flex flex-col items-center lg:items-start">
             <div class="mb-1">
               <span class="text-xs font-mono-sci font-bold uppercase tracking-wider text-amber-400">
                 MCMEG Reference Database
@@ -54,8 +64,8 @@
           </div>
         </div>
 
-        <!-- Right: Theme Toggle + UFMG Logo -->
-        <div class="flex items-center justify-between lg:justify-end gap-4 border-t border-slate-800/80 lg:border-t-0 pt-3 lg:pt-0">
+        <!-- Right: Theme Toggle (Centered on Mobile) + UFMG Logo (Desktop) -->
+        <div class="flex items-center justify-center lg:justify-end gap-4 pt-1 lg:pt-0">
           <button
             type="button"
             id="btn-theme-toggle"
@@ -65,30 +75,51 @@
             <span id="theme-toggle-icon" class="text-sm">🌙</span>
             <span id="theme-toggle-label">Dark Mode</span>
           </button>
-          <a href="https://ufmg.br" target="_blank" rel="noopener noreferrer" class="shrink-0 opacity-95 hover:opacity-100 transition" title="Universidade Federal de Minas Gerais">
-            <img src="assets/logos/ufmg-logo.png" alt="UFMG Logo" class="h-12 sm:h-14 w-auto object-contain" />
+          <a href="https://ufmg.br" target="_blank" rel="noopener noreferrer" class="hidden lg:block shrink-0 opacity-95 hover:opacity-100 transition" title="Universidade Federal de Minas Gerais">
+            <img src="assets/logos/ufmg-logo.png" alt="UFMG Logo" class="h-14 w-auto object-contain" />
           </a>
         </div>
       </div>
 
       <!-- Navigation Bar -->
-      <div class="mt-5 pt-4 border-t border-slate-800/90 flex flex-wrap items-center justify-between gap-3">
-        <nav class="flex flex-wrap items-center gap-2" aria-label="Main Navigation">
-          <button type="button" id="nav-tab-explorer" class="px-4 py-2 rounded-lg text-sm font-semibold transition bg-amber-500 text-slate-950 shadow-sm">
+      <div class="mt-4 pt-4 border-t border-slate-800/90 flex flex-col lg:flex-row items-center justify-between gap-3">
+        <!-- Mobile Compact Collapsible Menu Toggle (< sm) -->
+        <div class="w-full sm:hidden flex flex-col items-center">
+          <button
+            type="button"
+            id="btn-mobile-nav-toggle"
+            aria-expanded="false"
+            class="w-full max-w-xs px-4 py-2.5 bg-amber-500 text-slate-950 font-semibold text-xs flex items-center justify-between gap-2 shadow-sm"
+          >
+            <span class="flex items-center gap-2 truncate">
+              <span>☰</span>
+              <span id="mobile-nav-current-label" class="truncate">📈 Interactive Explorer (Log-Log)</span>
+            </span>
+            <span id="mobile-nav-chevron" class="text-xs font-mono-sci">▼</span>
+          </button>
+        </div>
+
+        <!-- Navigation Tabs (Collapsible centered list on mobile, horizontal bar on sm+) -->
+        <nav
+          id="main-nav-menu"
+          class="hidden sm:flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-2 w-full sm:w-auto max-w-xs sm:max-w-none bg-slate-900/95 sm:bg-transparent p-2 sm:p-0 border border-slate-700 sm:border-0"
+          aria-label="Main Navigation"
+        >
+          <button type="button" id="nav-tab-explorer" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-semibold transition bg-amber-500 text-slate-950 shadow-sm">
             📈 Interactive Explorer (Log-Log)
           </button>
-          <button type="button" id="nav-tab-catalog" class="px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+          <button type="button" id="nav-tab-catalog" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
             📋 Material Constants (Tables 1 &amp; 2)
           </button>
-          <button type="button" id="nav-tab-comparison" class="px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+          <button type="button" id="nav-tab-comparison" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
             📑 Reference Comparison
           </button>
-          <button type="button" id="nav-tab-methodology" class="px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+          <button type="button" id="nav-tab-methodology" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
             📖 About, Methodology &amp; Citation
           </button>
         </nav>
 
-        <div class="flex items-center gap-3 text-xs text-slate-400">
+        <div class="flex items-center justify-center gap-3 text-xs text-slate-400 text-center">
           <a href="https://www.nist.gov/pml/x-ray-mass-attenuation-coefficients" target="_blank" rel="noopener noreferrer" class="hover:text-amber-300 transition underline">
             NIST SRD 126 (1 keV – 20 MeV) ↗
           </a>
@@ -497,16 +528,244 @@
     </section>
 
     <!-- ==================================================================
-         TAB 3: REFERENCE COMPARISON
+         TAB 3: REFERENCE COMPARISON (1 keV SIMULATED vs NIST-XCOM)
          ================================================================== -->
-    <section id="section-comparison" class="hidden">
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
-        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
-          Comparison with NIST/XCOM at 1 keV
-        </h2>
-        <p class="text-sm sm:text-base text-slate-600 mt-2">
-          This comparison will be added soon.
-        </p>
+    <section id="section-comparison" class="hidden space-y-8">
+      <!-- Table: Elemental Media at 1 keV -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <div class="mb-4">
+          <span class="text-xs font-mono-sci font-bold uppercase tracking-wider text-amber-700">
+            Reference Comparison · Elemental Media (1 keV)
+          </span>
+          <p class="text-sm text-slate-600 mt-1">
+            Comparison of simulated mass energy-absorption coefficients with NIST-XCOM reference values for selected materials at a photon energy of 1 keV.
+          </p>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead class="bg-slate-100 border-b border-slate-200 text-xs text-slate-700 font-semibold">
+              <tr>
+                <th class="py-3 px-4 uppercase">Materials</th>
+                <th class="py-3 px-4 text-center">
+                  <div class="uppercase">Simulated</div>
+                  <div class="font-mono-sci text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
+                </th>
+                <th class="py-3 px-4 text-center">
+                  <div class="uppercase">NIST-XCOM<sup>a,b</sup></div>
+                  <div class="font-mono-sci text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
+                </th>
+                <th class="py-3 px-4 text-center uppercase">RD (%)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 font-mono-sci text-xs sm:text-sm">
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Iron</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">9052</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Cobalt</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">9750</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Nickel</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">9797</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Copper</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">10490</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Zinc</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">1548</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Palladium</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">6529</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Silver</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">7029</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Gadolinium</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">2281</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Hafnium</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3324</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Tantalum</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3498</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Tungsten</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3671</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Platinum</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">4421</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Gold</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">4639</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Bismuth</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">5427</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Table: Tissues & Compounds at 1 keV -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <div class="mb-4">
+          <span class="text-xs font-mono-sci font-bold uppercase tracking-wider text-sky-700">
+            Reference Comparison · Tissues &amp; Compounds (1 keV)
+          </span>
+          <p class="text-sm text-slate-600 mt-1">
+            Comparison of simulated mass energy-absorption coefficients with NIST-XCOM reference values for water and selected biological tissues at a photon energy of 1 keV.
+          </p>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead class="bg-slate-100 border-b border-slate-200 text-xs text-slate-700 font-semibold">
+              <tr>
+                <th class="py-3 px-4 uppercase">Materials</th>
+                <th class="py-3 px-4 text-center">
+                  <div class="uppercase">Simulated</div>
+                  <div class="font-mono-sci text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
+                </th>
+                <th class="py-3 px-4 text-center">
+                  <div class="uppercase">NIST-XCOM<sup>a,b</sup></div>
+                  <div class="font-mono-sci text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
+                </th>
+                <th class="py-3 px-4 text-center uppercase">RD (%)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 font-mono-sci text-xs sm:text-sm">
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Water</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">4065.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Adipose Tissue</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">2623.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Blood, Whole</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3795.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Bone, Cortical</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3772.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Brain, Grey/White Matter</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3686.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Breast Tissue</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3255.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Eye Lens</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3588.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Lung Tissue</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3791.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Muscle, Skeletal</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3709.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Ovary</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3823.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Testis</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3812.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Soft Tissue (Four Comp.)</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2.5 px-4 text-center text-slate-800">3818.0</td>
+                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- References for NIST-XCOM (a, b) -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <h3 class="text-xs font-mono-sci font-bold uppercase tracking-wider text-slate-700 mb-3">
+          References
+        </h3>
+        <div class="space-y-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+          <p>
+            <sup>a</sup> <strong>Hubbell, J.H., Seltzer, S.M., 2004a.</strong> Tables of x-ray mass attenuation coefficients and mass energy-absorption coefficients. URL: <a href="http://physics.nist.gov/xaamdi" target="_blank" rel="noopener noreferrer" class="text-sky-700 dark:text-sky-400 underline hover:text-amber-600">http://physics.nist.gov/xaamdi</a>. version 1.4, National Institute of Standards and Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.
+          </p>
+          <p>
+            <sup>b</sup> <strong>Hubbell, J.H., Seltzer, S.M., 2004b.</strong> X-Ray Mass Attenuation Coefficients. Technical Report NISTIR 5632. National Institute of Standards and Technology, Gaithersburg, MD. doi:<a href="https://doi.org/10.18434/T4D01F" target="_blank" rel="noopener noreferrer" class="text-sky-700 dark:text-sky-400 underline hover:text-amber-600">10.18434/T4D01F</a>.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -592,8 +851,8 @@
        FOOTER
        ==================================================================== -->
   <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-12">
-    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-      <div class="flex items-center gap-3">
+    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-center sm:text-left">
+      <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
         <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="hover:opacity-90 transition" title="MCMEG Official Website">
           <img src="assets/logos/logo-mcmeg.png" alt="MCMEG" class="h-8 w-auto object-contain" />
         </a>
@@ -601,7 +860,7 @@
           <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="text-slate-200 font-bold hover:text-amber-400 transition">MCMEG — Monte Carlo Modeling Expert Group</a> · Universidade Federal de Minas Gerais (UFMG)
         </span>
       </div>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center justify-center gap-4">
         <span>Website Developed by <strong class="text-slate-200">Lucas F. Araújo</strong></span>
       </div>
     </div>

@@ -321,7 +321,8 @@ html.dark .bg-slate-100 {
 html.dark .border-slate-200,
 html.dark .border-slate-200\/80,
 html.dark .border-slate-200\/90,
-html.dark .border-slate-300 {
+html.dark .border-slate-300,
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
   border-color: #1e293b !important;
 }
 

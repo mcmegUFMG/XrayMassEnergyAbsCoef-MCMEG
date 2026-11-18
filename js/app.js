@@ -1474,17 +1474,39 @@
       methodology: document.getElementById("nav-tab-methodology")
     };
 
+    const navLabels = {
+      explorer: "📈 Interactive Explorer (Log-Log)",
+      catalog: "📋 Material Constants (Tables 1 & 2)",
+      comparison: "📑 Reference Comparison",
+      methodology: "📖 About, Methodology & Citation"
+    };
+
     Object.keys(sections).forEach((key) => {
       if (key === tabName) {
         sections[key].classList.remove("hidden");
         navBtns[key].className =
-          "px-4 py-2 rounded-lg text-sm font-semibold transition bg-amber-500 text-slate-950 shadow-sm";
+          "w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-semibold transition bg-amber-500 text-slate-950 shadow-sm";
       } else {
         sections[key].classList.add("hidden");
         navBtns[key].className =
-          "px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70";
+          "w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70";
       }
     });
+
+    const mobileLabel = document.getElementById("mobile-nav-current-label");
+    if (mobileLabel && navLabels[tabName]) {
+      mobileLabel.textContent = navLabels[tabName];
+    }
+
+    const navMenu = document.getElementById("main-nav-menu");
+    const mobileChevron = document.getElementById("mobile-nav-chevron");
+    const mobileToggleBtn = document.getElementById("btn-mobile-nav-toggle");
+    if (navMenu && !navMenu.classList.contains("hidden")) {
+      navMenu.classList.add("hidden");
+      navMenu.classList.remove("flex");
+      if (mobileChevron) mobileChevron.textContent = "▼";
+      if (mobileToggleBtn) mobileToggleBtn.setAttribute("aria-expanded", "false");
+    }
 
     if (tabName === "explorer" && state.selectedId) {
       renderLogLogChart();
@@ -1611,6 +1633,26 @@
         applyTheme();
         if (state.selectedId) {
           renderLogLogChart();
+        }
+      });
+    }
+
+    const btnMobileNavToggle = document.getElementById("btn-mobile-nav-toggle");
+    const mainNavMenu = document.getElementById("main-nav-menu");
+    const mobileNavChevron = document.getElementById("mobile-nav-chevron");
+    if (btnMobileNavToggle && mainNavMenu) {
+      btnMobileNavToggle.addEventListener("click", () => {
+        const isHidden = mainNavMenu.classList.contains("hidden");
+        if (isHidden) {
+          mainNavMenu.classList.remove("hidden");
+          mainNavMenu.classList.add("flex");
+          if (mobileNavChevron) mobileNavChevron.textContent = "▲";
+          btnMobileNavToggle.setAttribute("aria-expanded", "true");
+        } else {
+          mainNavMenu.classList.add("hidden");
+          mainNavMenu.classList.remove("flex");
+          if (mobileNavChevron) mobileNavChevron.textContent = "▼";
+          btnMobileNavToggle.setAttribute("aria-expanded", "false");
         }
       });
     }
