@@ -851,17 +851,32 @@
        FOOTER
        ==================================================================== -->
   <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-12">
-    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-center sm:text-left">
-      <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
+    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-xs text-center md:text-left">
+      <!-- Left: MCMEG + UFMG -->
+      <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2.5 sm:gap-3">
         <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="hover:opacity-90 transition" title="MCMEG Official Website">
-          <img src="assets/logos/logo-mcmeg.png" alt="MCMEG" class="h-8 w-auto object-contain" />
+          <img src="assets/logos/logo-mcmeg.png" alt="MCMEG" class="h-9 w-auto object-contain" />
         </a>
         <span>
-          <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="text-slate-200 font-bold hover:text-amber-400 transition">MCMEG — Monte Carlo Modeling Expert Group</a> · Universidade Federal de Minas Gerais (UFMG)
+          <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="text-slate-200 font-bold hover:text-amber-400 transition">MCMEG — Monte Carlo Modeling Expert Group</a> · UFMG
         </span>
       </div>
-      <div class="flex items-center justify-center gap-4">
+
+      <!-- Center: Website Developed by Lucas F. Araújo -->
+      <div class="flex items-center justify-center">
         <span>Website Developed by <strong class="text-slate-200">Lucas F. Araújo</strong></span>
+      </div>
+
+      <!-- Right: Flag Counter (3 columns, max 6 flags = 2x3) -->
+      <div class="flex items-center justify-center md:justify-end">
+        <a href="https://info.flagcounter.com/wYb0" target="_blank" rel="noopener noreferrer" title="Visitor Flag Counter">
+          <img
+            src="https://s05.flagcounter.com/count2/wYb0/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_6/viewers_0/labels_0/pageviews_0/flags_0/percent_0/"
+            alt="Visitor Statistics"
+            border="0"
+            class="max-h-20 w-auto object-contain"
+          />
+        </a>
       </div>
     </div>
   </footer>
