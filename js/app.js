@@ -20,9 +20,11 @@
     category: "elemental",        // 'elemental' | 'tissues'
     selectorView: "list",         // 'list' | 'periodic' (for elemental media)
     selectedId: "Au",             // Currently active material ID ('Au' or 'water' or upcoming)
-    compareMode: false,           // Compare Gold (Au) vs Water
+    compareMode: false,           // Compare active material with another material
+    compareCategory: "tissues",   // 'elemental' | 'tissues' (category for second material in comparison)
+    compareTargetId: "water",     // Target material ID for comparison ('water', 'Au', etc.)
     comparePlotType: "overlay",   // 'overlay' (both curves) | 'ratio' ((μ_en/ρ)_A / (μ_en/ρ)_B)
-    invertRatio: false,           // false: Au / Water, true: Water / Au
+    invertRatio: false,           // false: MatA / MatB, true: MatB / MatA
     energyUnit: "keV",            // 'eV' | 'keV' | 'MeV'
     logScaleX: true,              // Log X axis (default true)
     logScaleY: true,              // Log Y axis (default true)
@@ -70,6 +72,43 @@
       DB.elementalMedia.find((m) => m.id === id) ||
       DB.tissuesAndCompounds.find((m) => m.id === id)
     );
+  }
+
+  // Helper: Get primary active material with loaded data
+  function getPrimaryActiveMaterial() {
+    const currentMat = getMaterialById(state.selectedId);
+    if (currentMat && currentMat.data && currentMat.data.length > 0) {
+      return currentMat;
+    }
+    return state.category === "elemental"
+      ? getMaterialById("Au")
+      : getMaterialById("water");
+  }
+
+  // Helper: Get comparison target material (Material B) with loaded data
+  function getCompareTargetMaterial() {
+    const targetMat = getMaterialById(state.compareTargetId);
+    if (targetMat && targetMat.data && targetMat.data.length > 0) {
+      return targetMat;
+    }
+    const list =
+      state.compareCategory === "elemental"
+        ? DB.elementalMedia
+        : DB.tissuesAndCompounds;
+    const avail = list.find((m) => m.status === "available" || (m.data && m.data.length > 0));
+    return avail || getMaterialById("water") || getMaterialById("Au");
+  }
+
+  function getShortMatLabel(mat) {
+    if (!mat) return "";
+    return mat.symbol || mat.shortName || mat.name;
+  }
+
+  function getFullMatLabel(mat) {
+    if (!mat) return "";
+    return mat.category === "elemental"
+      ? `${mat.name} (Z = ${mat.z})`
+      : mat.name;
   }
 
   // Helper: Format number in scientific notation like NIST (e.g. 4.639E+03)
@@ -124,26 +163,26 @@
     return null;
   }
 
-  // Compute comparison dataset (Gold vs Water) across Gold's full energy grid
+  // Compute comparison dataset (Primary Material A vs Target Material B) across Material A's energy grid
   function buildComparisonDataset() {
-    const goldMat = getMaterialById("Au");
-    const waterMat = getMaterialById("water");
-    if (!goldMat || !waterMat) return [];
+    const matA = getPrimaryActiveMaterial();
+    const matB = getCompareTargetMaterial();
+    if (!matA || !matB || !matA.data || !matB.data) return [];
 
-    return goldMat.data.map((row) => {
+    return matA.data.map((row) => {
       const eMeV = row.energy_MeV;
-      const muenAu = row.muen_rho;
-      const muenWater = interpolateMuenAtEnergy(waterMat.data, eMeV);
+      const muenA = row.muen_rho;
+      const muenB = interpolateMuenAtEnergy(matB.data, eMeV);
       const ratio =
-        muenWater && muenAu
+        muenB && muenA
           ? state.invertRatio
-            ? muenWater / muenAu
-            : muenAu / muenWater
+            ? muenB / muenA
+            : muenA / muenB
           : null;
       return {
         energy_MeV: eMeV,
-        muen_Au: muenAu,
-        muen_Water: muenWater,
+        muen_A: muenA,
+        muen_B: muenB,
         ratio: ratio
       };
     });
@@ -435,8 +474,10 @@
             </span>
           </div>
         </div>
-        <div class="periodic-grid">
-          ${cellsHtml}
+        <div class="periodic-scroll-wrap">
+          <div class="periodic-grid">
+            ${cellsHtml}
+          </div>
         </div>
         <p class="text-[11px] text-slate-500 mt-2">
           *Note: <strong>Gd (Z=64)</strong> is placed in the Lanthanide slot (row 6, col 3) for compact visualization. Click any highlighted element to inspect.
@@ -459,6 +500,19 @@
     if (mat) {
       await tryLoadCsvForMaterial(mat);
     }
+
+    // Keep default comparison target distinct when switching primary material
+    const primaryMat = getPrimaryActiveMaterial();
+    if (primaryMat && state.compareTargetId === primaryMat.id) {
+      if (primaryMat.category === "elemental") {
+        state.compareCategory = "tissues";
+        state.compareTargetId = "water";
+      } else {
+        state.compareCategory = "elemental";
+        state.compareTargetId = "Au";
+      }
+    }
+
     renderMaterialSelector();
     renderMaterialHeaderAndDetails();
     renderCompareSubbar();
@@ -470,6 +524,10 @@
   // Update Compare Sub-Toolbar UI
   function renderCompareSubbar() {
     const subbar = document.getElementById("compare-mode-subbar");
+    const btnCatElem = document.getElementById("btn-compare-cat-elemental");
+    const btnCatTiss = document.getElementById("btn-compare-cat-tissues");
+    const selectMatEl = document.getElementById("select-compare-material");
+    const pairBadgeEl = document.getElementById("compare-pair-badge");
     const btnOverlay = document.getElementById("btn-compare-overlay");
     const btnRatio = document.getElementById("btn-compare-ratio");
     const btnSwap = document.getElementById("btn-swap-ratio");
@@ -484,9 +542,65 @@
 
     subbar.classList.remove("hidden");
 
-    const numLabel = state.invertRatio ? "Water" : "Au";
-    const denLabel = state.invertRatio ? "Au" : "Water";
+    // Step 1: Style category buttons
+    if (btnCatElem && btnCatTiss) {
+      if (state.compareCategory === "elemental") {
+        btnCatElem.className =
+          "px-2.5 py-1 text-xs font-semibold bg-amber-500 text-slate-950 transition shadow-sm";
+        btnCatTiss.className =
+          "px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100 transition";
+      } else {
+        btnCatTiss.className =
+          "px-2.5 py-1 text-xs font-semibold bg-sky-600 text-white transition shadow-sm";
+        btnCatElem.className =
+          "px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100 transition";
+      }
+    }
 
+    // Step 2: Populate material dropdown for the chosen category
+    const catList =
+      state.compareCategory === "elemental"
+        ? DB.elementalMedia
+        : DB.tissuesAndCompounds;
+
+    // Ensure compareTargetId belongs to current compareCategory and is available
+    const inCat = catList.find((m) => m.id === state.compareTargetId && (m.status === "available" || (m.data && m.data.length > 0)));
+    if (!inCat) {
+      const firstAvail = catList.find((m) => m.status === "available" || (m.data && m.data.length > 0));
+      if (firstAvail) {
+        state.compareTargetId = firstAvail.id;
+      }
+    }
+
+    if (selectMatEl) {
+      selectMatEl.innerHTML = catList
+        .map((m) => {
+          const isAvail = m.status === "available" || (m.data && m.data.length > 0);
+          const isSelected = m.id === state.compareTargetId;
+          const label =
+            state.compareCategory === "elemental"
+              ? `Z=${m.z} · ${m.name} (${m.symbol})${isAvail ? "" : " (Soon)"}`
+              : `${m.shortName || m.name}${isAvail ? "" : " (Soon)"}`;
+          return `<option value="${m.id}" ${isSelected ? "selected" : ""} ${
+            isAvail ? "" : "disabled"
+          }>${label}</option>`;
+        })
+        .join("");
+    }
+
+    const matA = getPrimaryActiveMaterial();
+    const matB = getCompareTargetMaterial();
+    const shortA = getShortMatLabel(matA);
+    const shortB = getShortMatLabel(matB);
+
+    if (pairBadgeEl) {
+      pairBadgeEl.innerHTML = `Active Pair: <strong class="text-amber-700 dark:text-amber-400">${getFullMatLabel(matA)}</strong> vs. <strong class="text-sky-700 dark:text-sky-300">${getFullMatLabel(matB)}</strong>`;
+    }
+
+    const numLabel = state.invertRatio ? shortB : shortA;
+    const denLabel = state.invertRatio ? shortA : shortB;
+
+    btnOverlay.innerHTML = `📈 Overlay Curves (${shortA} &amp; ${shortB})`;
     btnRatio.innerHTML = `➗ Ratio Curve: (μ<sub>en</sub>/ρ)<sub>${numLabel}</sub> / (μ<sub>en</sub>/ρ)<sub>${denLabel}</sub>`;
 
     if (state.comparePlotType === "overlay") {
@@ -534,7 +648,8 @@
 
     if (mat.category === "elemental") {
       titleEl.innerHTML = `Z = ${mat.z}. <span class="ml-1">${mat.name} (${mat.symbol})</span>`;
-      subtitleEl.textContent = mat.description;
+      subtitleEl.textContent = "";
+      subtitleEl.classList.add("hidden");
       badgesEl.innerHTML = `
         <span class="px-2.5 py-1 rounded-md text-xs font-mono-sci font-semibold bg-amber-100 text-amber-900 border border-amber-300">
           Elemental Media (100 wt%)
@@ -557,7 +672,8 @@
       `;
     } else {
       titleEl.innerHTML = `${mat.name}`;
-      subtitleEl.textContent = `${mat.description} Elemental composition by weight: ${mat.composition}`;
+      subtitleEl.textContent = `Elemental composition by weight: ${mat.composition}`;
+      subtitleEl.classList.remove("hidden");
       badgesEl.innerHTML = `
         <span class="px-2.5 py-1 rounded-md text-xs font-mono-sci font-semibold bg-sky-100 text-sky-900 border border-sky-300">
           Tissues & Compounds
@@ -666,17 +782,22 @@
     let plotTitle = "";
     let yAxisTitle = "";
 
+    const matA = getPrimaryActiveMaterial();
+    const matB = getCompareTargetMaterial();
+    const shortA = getShortMatLabel(matA);
+    const shortB = getShortMatLabel(matB);
+
     if (state.compareMode && state.comparePlotType === "ratio") {
-      // RATIO PLOT: (μ_en/ρ)_Au / (μ_en/ρ)_Water (or inverted)
+      // RATIO PLOT: (μ_en/ρ)_A / (μ_en/ρ)_B (or inverted)
       const compRows = buildComparisonDataset().filter((r) => r.ratio !== null);
       const xVals = compRows.map((r) => r.energy_MeV * factor);
       const yRatio = compRows.map((r) => r.ratio);
 
-      const numName = state.invertRatio ? "Water" : "Gold (Au)";
-      const denName = state.invertRatio ? "Gold (Au)" : "Water";
-      const ratioSymbol = state.invertRatio
-        ? "(μ<sub>en</sub>/ρ)<sub>Water</sub> / (μ<sub>en</sub>/ρ)<sub>Au</sub>"
-        : "(μ<sub>en</sub>/ρ)<sub>Au</sub> / (μ<sub>en</sub>/ρ)<sub>Water</sub>";
+      const numName = state.invertRatio ? getFullMatLabel(matB) : getFullMatLabel(matA);
+      const denName = state.invertRatio ? getFullMatLabel(matA) : getFullMatLabel(matB);
+      const numShort = state.invertRatio ? shortB : shortA;
+      const denShort = state.invertRatio ? shortA : shortB;
+      const ratioSymbol = `(μ<sub>en</sub>/ρ)<sub>${numShort}</sub> / (μ<sub>en</sub>/ρ)<sub>${denShort}</sub>`;
 
       const ratioColor = isDark ? "#34d399" : "#059669";
 
@@ -695,7 +816,7 @@
           dash: "solid"
         },
         hovertemplate:
-          `<b>Ratio: ${numName} / ${denName}</b><br>` +
+          `<b>Ratio: ${numShort} / ${denShort}</b><br>` +
           `Energy: %{x:.4g} ${unitLabel}<br>` +
           `<b>Ratio</b>: %{y:.4f}×<extra></extra>`
       });
@@ -719,16 +840,14 @@
       }
 
       plotTitle = `Ratio of Mass Energy-Absorption Coefficients: ${numName} / ${denName}`;
-      yAxisTitle = `Ratio ${ratioSymbol} (${state.logScaleY ? "Log Scale" : "Linear Scale"})`;
+      yAxisTitle = `Ratio ${ratioSymbol}`;
     } else if (state.compareMode && state.comparePlotType === "overlay") {
-      // OVERLAY PLOT: Gold (Au) vs Water
-      const goldMat = getMaterialById("Au");
-      const waterMat = getMaterialById("water");
-      addMuenTrace(goldMat, isDark ? "#fbbf24" : "#d97706");
-      addMuenTrace(waterMat, isDark ? "#38bdf8" : "#0284c7");
+      // OVERLAY PLOT: Primary Material A vs Target Material B
+      addMuenTrace(matA, isDark ? "#fbbf24" : "#d97706");
+      addMuenTrace(matB, isDark ? "#38bdf8" : "#0284c7");
 
-      plotTitle = "Comparison: Gold (Z = 79) vs. Water, Liquid (H₂O)";
-      yAxisTitle = `μ<sub>en</sub>/ρ, cm²/g (${state.logScaleY ? "Log Scale" : "Linear Scale"})`;
+      plotTitle = `Comparison: ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`;
+      yAxisTitle = `μ<sub>en</sub>/ρ, cm²/g`;
     } else {
       // SINGLE MATERIAL PLOT
       const isElem = primaryMat.category === "elemental";
@@ -745,7 +864,7 @@
         primaryMat.category === "elemental"
           ? `Z = ${primaryMat.z}. ${primaryMat.name.toUpperCase()} (${primaryMat.symbol})`
           : `${primaryMat.name.toUpperCase()}`;
-      yAxisTitle = `μ<sub>en</sub>/ρ, cm²/g (${state.logScaleY ? "Log Scale" : "Linear Scale"})`;
+      yAxisTitle = `μ<sub>en</sub>/ρ, cm²/g`;
     }
 
     // Highlight Interpolated Point if user calculated one
@@ -793,7 +912,7 @@
         y: 0.94,
         xref: "x",
         yref: "paper",
-        text: "<b>MCMEG Low-Energy Region</b><br>(50 eV – 1000 eV)",
+        text: "<b>50–1000 eV Calculated Window</b>",
         showarrow: false,
         font: { size: 11, color: isDark ? "#fef08a" : "#854d0e" },
         bgcolor: isDark ? "rgba(30, 41, 59, 0.92)" : "rgba(254, 249, 195, 0.92)",
@@ -802,39 +921,56 @@
       });
     }
 
+    const isMobile = window.innerWidth < 640;
+
     const layout = {
       title: {
         text: plotTitle,
         font: {
           family: "JetBrains Mono, monospace",
-          size: 15,
+          size: isMobile ? 12 : 15,
           color: isDark ? "#f8fafc" : "#0f172a"
         },
         x: 0.5,
-        xanchor: "center"
+        xanchor: "center",
+        y: 0.96,
+        yanchor: "top"
       },
       paper_bgcolor: isDark ? "#111827" : "#ffffff",
       plot_bgcolor: isDark ? "#0b1120" : "#ffffff",
       font: {
         color: isDark ? "#cbd5e1" : "#1e293b"
       },
-      margin: { l: 78, r: 30, t: 56, b: 68 },
+      margin: isMobile
+        ? { l: 58, r: 16, t: 84, b: 58 }
+        : { l: 78, r: 30, t: 82, b: 68 },
       xaxis: {
         title: {
-          text: `Photon Energy, ${unitLabel} (${state.logScaleX ? "Log Scale" : "Linear Scale"})`,
-          font: { family: "Inter, sans-serif", size: 13, color: isDark ? "#e2e8f0" : "#1e293b" }
+          text: `Photon Energy, ${unitLabel}`,
+          standoff: 14,
+          font: {
+            family: "Inter, sans-serif",
+            size: isMobile ? 11.5 : 13,
+            color: isDark ? "#e2e8f0" : "#1e293b"
+          }
         },
         type: state.logScaleX ? "log" : "linear",
+        dtick: state.logScaleX ? 1 : undefined,
         exponentformat: "power",
         showgrid: true,
         gridcolor: isDark ? "#1e293b" : "#e2e8f0",
         minor: {
+          dtick: state.logScaleX ? "D1" : undefined,
           showgrid: true,
+          ticks: "inside",
+          ticklen: 3,
+          tickcolor: isDark ? "#475569" : "#94a3b8",
           gridcolor: isDark ? "#131c2e" : "#f1f5f9"
         },
         zeroline: false,
         mirror: true,
         ticks: "inside",
+        ticklen: 6,
         tickcolor: isDark ? "#64748b" : "#334155",
         linecolor: isDark ? "#475569" : "#334155",
         linewidth: 1.5
@@ -842,19 +978,30 @@
       yaxis: {
         title: {
           text: yAxisTitle,
-          font: { family: "Inter, sans-serif", size: 13, color: isDark ? "#e2e8f0" : "#1e293b" }
+          standoff: 14,
+          font: {
+            family: "Inter, sans-serif",
+            size: isMobile ? 11.5 : 13,
+            color: isDark ? "#e2e8f0" : "#1e293b"
+          }
         },
         type: state.logScaleY ? "log" : "linear",
+        dtick: state.logScaleY ? 1 : undefined,
         exponentformat: "power",
         showgrid: true,
         gridcolor: isDark ? "#1e293b" : "#e2e8f0",
         minor: {
+          dtick: state.logScaleY ? "D1" : undefined,
           showgrid: true,
+          ticks: "inside",
+          ticklen: 3,
+          tickcolor: isDark ? "#475569" : "#94a3b8",
           gridcolor: isDark ? "#131c2e" : "#f1f5f9"
         },
         zeroline: false,
         mirror: true,
         ticks: "inside",
+        ticklen: 6,
         tickcolor: isDark ? "#64748b" : "#334155",
         linecolor: isDark ? "#475569" : "#334155",
         linewidth: 1.5
@@ -862,11 +1009,11 @@
       legend: {
         orientation: "h",
         yanchor: "bottom",
-        y: 1.01,
-        xanchor: "right",
-        x: 1,
-        bgcolor: isDark ? "rgba(17, 24, 39, 0.85)" : "rgba(255,255,255,0.85)",
-        font: { size: 11.5, color: isDark ? "#e2e8f0" : "#1e293b" }
+        y: 1.02,
+        xanchor: "center",
+        x: 0.5,
+        bgcolor: "rgba(0,0,0,0)",
+        font: { size: isMobile ? 10.5 : 12, color: isDark ? "#e2e8f0" : "#1e293b" }
       },
       shapes: shapes,
       annotations: annotations,
@@ -910,12 +1057,16 @@
     const filterStr = state.tableEnergyFilter.trim().toLowerCase();
 
     if (state.compareMode) {
+      const matA = getPrimaryActiveMaterial();
+      const matB = getCompareTargetMaterial();
+      const shortA = getShortMatLabel(matA);
+      const shortB = getShortMatLabel(matB);
       const ratioHeaderLabel = state.invertRatio
-        ? "Ratio (Water / Au)"
-        : "Ratio (Au / Water)";
+        ? `Ratio (${shortB} / ${shortA})`
+        : `Ratio (${shortA} / ${shortB})`;
 
       if (tableTitle) {
-        tableTitle.textContent = `Comparison: Gold (Z = 79) vs. Water (H₂O)`;
+        tableTitle.textContent = `Comparison: ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`;
       }
 
       if (theadRow) {
@@ -924,10 +1075,10 @@
             Energy <span class="font-mono-sci text-slate-500">(${unit})</span>
           </th>
           <th class="py-2.5 px-4 text-right">
-            μ<sub>en</sub>/ρ [Au] <span class="font-mono-sci text-slate-500">(cm²/g)</span>
+            μ<sub>en</sub>/ρ [${shortA}] <span class="font-mono-sci text-slate-500">(cm²/g)</span>
           </th>
           <th class="py-2.5 px-4 text-right">
-            μ<sub>en</sub>/ρ [Water] <span class="font-mono-sci text-slate-500">(cm²/g)</span>
+            μ<sub>en</sub>/ρ [${shortB}] <span class="font-mono-sci text-slate-500">(cm²/g)</span>
           </th>
           <th class="py-2.5 px-4 text-right text-amber-700">
             ${ratioHeaderLabel}
@@ -952,8 +1103,8 @@
         tbody.innerHTML = compRows
           .map((row) => {
             const eDisplay = formatEnergy(row.energy_MeV, state.energyUnit);
-            const auDisplay = formatSci(row.muen_Au, 3);
-            const waterDisplay = formatSci(row.muen_Water, 3);
+            const aDisplay = formatSci(row.muen_A, 3);
+            const bDisplay = formatSci(row.muen_B, 3);
             const ratioDisplay = row.ratio !== null ? row.ratio.toFixed(4) : "—";
             return `
               <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
@@ -961,10 +1112,10 @@
                   ${eDisplay}
                 </td>
                 <td class="py-2 px-4 text-right font-mono-sci text-xs text-slate-700">
-                  ${auDisplay}
+                  ${aDisplay}
                 </td>
                 <td class="py-2 px-4 text-right font-mono-sci text-xs text-slate-700">
-                  ${waterDisplay}
+                  ${bDisplay}
                 </td>
                 <td class="py-2 px-4 text-right font-mono-sci text-xs font-bold text-emerald-700">
                   ${ratioDisplay}
@@ -1044,22 +1195,26 @@
   // Generate NIST-style ASCII table text (Energy & μ_en/ρ, or Comparison/Ratio)
   function generateAsciiTable(mat, unit) {
     if (state.compareMode) {
-      const ratioLabel = state.invertRatio ? "Water/Au" : "Au/Water";
+      const matA = getPrimaryActiveMaterial();
+      const matB = getCompareTargetMaterial();
+      const shortA = getShortMatLabel(matA);
+      const shortB = getShortMatLabel(matB);
+      const ratioLabel = state.invertRatio ? `${shortB}/${shortA}` : `${shortA}/${shortB}`;
       const lines = [
         `# ========================================================================`,
         `# MCMEG - UFMG | X-Ray Mass Energy-Absorption Coefficients Database`,
-        `# Comparison : Gold (Z = 79) vs. Water, Liquid (H2O)`,
+        `# Comparison : ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`,
         `# ========================================================================`,
-        `#        Energy      mu_en/rho [Au]   mu_en/rho [Water]   Ratio (${ratioLabel})`,
+        `#        Energy      mu_en/rho [${shortA}]   mu_en/rho [${shortB}]   Ratio (${ratioLabel})`,
         `#         (${unit.padEnd(3, " ")})            (cm^2/g)            (cm^2/g)         (dimensionless)`,
         `# ------------------------------------------------------------------------`
       ];
       buildComparisonDataset().forEach((row) => {
         const eCol = formatSci(row.energy_MeV * UNIT_FACTORS[unit], 5).padStart(13, " ");
-        const auCol = formatSci(row.muen_Au, 3).padStart(18, " ");
-        const wCol = formatSci(row.muen_Water, 3).padStart(19, " ");
+        const aCol = formatSci(row.muen_A, 3).padStart(18, " ");
+        const bCol = formatSci(row.muen_B, 3).padStart(19, " ");
         const rCol = (row.ratio !== null ? row.ratio.toFixed(4) : "—").padStart(18, " ");
-        lines.push(`  ${eCol} ${auCol} ${wCol} ${rCol}`);
+        lines.push(`  ${eCol} ${aCol} ${bCol} ${rCol}`);
       });
       return lines.join("\n");
     }
@@ -1127,17 +1282,19 @@
     }
 
     if (state.compareMode) {
-      const goldMat = getMaterialById("Au");
-      const waterMat = getMaterialById("water");
-      const muenAu = interpolateMuenAtEnergy(goldMat.data, targetMeV);
-      const muenWater = interpolateMuenAtEnergy(waterMat.data, targetMeV);
-      const ratioVal = state.invertRatio ? muenWater / muenAu : muenAu / muenWater;
-      const ratioTitle = state.invertRatio ? "Water / Au" : "Au / Water";
+      const matA = getPrimaryActiveMaterial();
+      const matB = getCompareTargetMaterial();
+      const shortA = getShortMatLabel(matA);
+      const shortB = getShortMatLabel(matB);
+      const muenA = interpolateMuenAtEnergy(matA.data, targetMeV);
+      const muenB = interpolateMuenAtEnergy(matB.data, targetMeV);
+      const ratioVal = state.invertRatio ? muenB / muenA : muenA / muenB;
+      const ratioTitle = state.invertRatio ? `${shortB} / ${shortA}` : `${shortA} / ${shortB}`;
 
       state.interpolatedPoint = {
         energy_MeV: targetMeV,
-        yVal: state.comparePlotType === "ratio" ? ratioVal : muenAu,
-        label: state.comparePlotType === "ratio" ? `Ratio (${ratioTitle})` : "Gold (Au)"
+        yVal: state.comparePlotType === "ratio" ? ratioVal : muenA,
+        label: state.comparePlotType === "ratio" ? `Ratio (${ratioTitle})` : getFullMatLabel(matA)
       };
 
       resultEl.innerHTML = `
@@ -1146,8 +1303,8 @@
             <span class="text-slate-400">E =</span> <strong>${rawVal} ${state.energyUnit}</strong>
           </div>
           <div class="flex flex-wrap items-center gap-4">
-            <span><span class="text-slate-400">μ<sub>en</sub>/ρ [Au] =</span> <strong class="text-amber-400">${formatSci(muenAu, 4)}</strong> cm²/g</span>
-            <span><span class="text-slate-400">μ<sub>en</sub>/ρ [Water] =</span> <strong class="text-sky-300">${formatSci(muenWater, 4)}</strong> cm²/g</span>
+            <span><span class="text-slate-400">μ<sub>en</sub>/ρ [${shortA}] =</span> <strong class="text-amber-400">${formatSci(muenA, 4)}</strong> cm²/g</span>
+            <span><span class="text-slate-400">μ<sub>en</sub>/ρ [${shortB}] =</span> <strong class="text-sky-300">${formatSci(muenB, 4)}</strong> cm²/g</span>
             <span><span class="text-slate-400">Ratio (${ratioTitle}) =</span> <strong class="text-emerald-400 text-sm">${ratioVal.toFixed(4)}×</strong></span>
           </div>
         </div>
@@ -1275,17 +1432,19 @@
     });
   }
 
-  // Switch top-level navigation tabs ('explorer', 'catalog', 'methodology')
+  // Switch top-level navigation tabs ('explorer', 'catalog', 'comparison', 'methodology')
   function switchMainTab(tabName) {
     state.mainTab = tabName;
     const sections = {
       explorer: document.getElementById("section-explorer"),
       catalog: document.getElementById("section-catalog"),
+      comparison: document.getElementById("section-comparison"),
       methodology: document.getElementById("section-methodology")
     };
     const navBtns = {
       explorer: document.getElementById("nav-tab-explorer"),
       catalog: document.getElementById("nav-tab-catalog"),
+      comparison: document.getElementById("nav-tab-comparison"),
       methodology: document.getElementById("nav-tab-methodology")
     };
 
@@ -1344,20 +1503,24 @@
         let filename = "";
 
         if (state.compareMode) {
-          const ratioColName = state.invertRatio ? "ratio_Water_Au" : "ratio_Au_Water";
+          const matA = getPrimaryActiveMaterial();
+          const matB = getCompareTargetMaterial();
+          const shortA = getShortMatLabel(matA);
+          const shortB = getShortMatLabel(matB);
+          const ratioColName = state.invertRatio ? `ratio_${shortB}_${shortA}` : `ratio_${shortA}_${shortB}`;
           rows = [
-            `energy_${state.energyUnit},muen_rho_Au_cm2_g,muen_rho_Water_cm2_g,${ratioColName}`,
+            `energy_${state.energyUnit},muen_rho_${shortA}_cm2_g,muen_rho_${shortB}_cm2_g,${ratioColName}`,
             ...buildComparisonDataset().map(
               (r) =>
                 `${formatSci(r.energy_MeV * factor, 5)},${formatSci(
-                  r.muen_Au,
+                  r.muen_A,
                   3
-                )},${formatSci(r.muen_Water, 3)},${
+                )},${formatSci(r.muen_B, 3)},${
                   r.ratio !== null ? r.ratio.toFixed(5) : ""
                 }`
             )
           ];
-          filename = `MCMEG_Compare_Au_Water_${state.energyUnit}.csv`;
+          filename = `MCMEG_Compare_${matA.id}_${matB.id}_${state.energyUnit}.csv`;
         } else {
           rows = [
             `energy_${state.energyUnit},muen_rho_cm2_g`,
@@ -1431,6 +1594,9 @@
       .getElementById("nav-tab-catalog")
       .addEventListener("click", () => switchMainTab("catalog"));
     document
+      .getElementById("nav-tab-comparison")
+      .addEventListener("click", () => switchMainTab("comparison"));
+    document
       .getElementById("nav-tab-methodology")
       .addEventListener("click", () => switchMainTab("methodology"));
 
@@ -1484,7 +1650,7 @@
       });
     });
 
-    // Compare Gold vs Water checkbox & sub-toolbar buttons
+    // Compare with another material checkbox, category buttons, material select & sub-toolbar buttons
     const chkCompare = document.getElementById("chk-compare-mode");
     chkCompare.addEventListener("change", (e) => {
       state.compareMode = e.target.checked;
@@ -1494,6 +1660,56 @@
       renderLogLogChart();
       renderDataTable();
     });
+
+    const btnCompCatElem = document.getElementById("btn-compare-cat-elemental");
+    const btnCompCatTiss = document.getElementById("btn-compare-cat-tissues");
+    const selectCompMat = document.getElementById("select-compare-material");
+
+    if (btnCompCatElem) {
+      btnCompCatElem.addEventListener("click", () => {
+        state.compareCategory = "elemental";
+        const avail = DB.elementalMedia.find(
+          (m) => m.status === "available" || (m.data && m.data.length > 0)
+        );
+        if (avail) state.compareTargetId = avail.id;
+        state.interpolatedPoint = null;
+        clearInterpolationResult();
+        renderCompareSubbar();
+        renderLogLogChart();
+        renderDataTable();
+      });
+    }
+
+    if (btnCompCatTiss) {
+      btnCompCatTiss.addEventListener("click", () => {
+        state.compareCategory = "tissues";
+        const avail = DB.tissuesAndCompounds.find(
+          (m) => m.status === "available" || (m.data && m.data.length > 0)
+        );
+        if (avail) state.compareTargetId = avail.id;
+        state.interpolatedPoint = null;
+        clearInterpolationResult();
+        renderCompareSubbar();
+        renderLogLogChart();
+        renderDataTable();
+      });
+    }
+
+    if (selectCompMat) {
+      selectCompMat.addEventListener("change", async (e) => {
+        const targetId = e.target.value;
+        const targetMat = getMaterialById(targetId);
+        if (targetMat) {
+          await tryLoadCsvForMaterial(targetMat);
+        }
+        state.compareTargetId = targetId;
+        state.interpolatedPoint = null;
+        clearInterpolationResult();
+        renderCompareSubbar();
+        renderLogLogChart();
+        renderDataTable();
+      });
+    }
 
     document.getElementById("btn-compare-overlay").addEventListener("click", () => {
       state.comparePlotType = "overlay";
@@ -1566,6 +1782,16 @@
     setupExportButtons();
     renderCatalogTables();
     selectMaterial("Au");
+
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (state.mainTab === "explorer") {
+          renderLogLogChart();
+        }
+      }, 150);
+    });
   }
 
   document.addEventListener("DOMContentLoaded", init);

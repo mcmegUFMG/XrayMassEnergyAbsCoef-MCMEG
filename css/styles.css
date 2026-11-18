@@ -110,16 +110,47 @@ html.dark .material-item.active-tissue {
   box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
 }
 
-/* Periodic Table Grid (Compact 18-column view) */
+/* Periodic Table Grid (Compact 18-column view, full-fit on desktop, touch scroll on small mobile) */
+.periodic-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 3px;
+}
+
 .periodic-grid {
   display: grid;
   grid-template-columns: repeat(18, minmax(0, 1fr));
-  gap: 4px;
+  gap: 3px;
+  min-width: 440px;
+}
+
+@media (min-width: 1024px) {
+  .periodic-scroll-wrap {
+    overflow-x: visible;
+  }
+  .periodic-grid {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 1023px) {
+  #material-list-container {
+    max-height: 250px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .data-table-wrapper {
+    max-height: 380px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .pt-cell {
   aspect-ratio: 1 / 1.08;
-  border-radius: 6px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -330,8 +361,28 @@ html.dark #compare-mode-subbar {
 html.dark #compare-mode-subbar .bg-white {
   background-color: #0f172a !important;
   border-color: #334155 !important;
+  color: #f8fafc !important;
 }
 
 html.dark #compare-ratio-summary {
   color: #e2e8f0 !important;
+}
+
+/* Enforce crisp rectangular boxes (sharp 90-degree corners) across the interface */
+*,
+*::before,
+*::after,
+.rounded,
+.rounded-sm,
+.rounded-md,
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl,
+.rounded-full,
+.material-item,
+.pt-cell,
+.edge-badge,
+.ascii-pre {
+  border-radius: 0 !important;
 }

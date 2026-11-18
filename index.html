@@ -31,7 +31,7 @@
        INSTITUTIONAL HEADER (MCMEG + UFMG Logos on Dark Scientific Banner)
        ==================================================================== -->
   <header class="mcmeg-header text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-10">
+    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-10">
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
 
         <!-- Left: MCMEG Logo + Title -->
@@ -40,8 +40,8 @@
             <img src="assets/logos/logo-mcmeg.png" alt="MCMEG Logo" class="h-16 sm:h-20 w-auto object-contain" />
           </a>
           <div>
-            <div class="flex flex-wrap items-center gap-2 mb-1">
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono-sci font-semibold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-400/30">
+            <div class="mb-1">
+              <span class="text-xs font-mono-sci font-bold uppercase tracking-wider text-amber-400">
                 MCMEG Reference Database
               </span>
             </div>
@@ -80,6 +80,9 @@
           <button type="button" id="nav-tab-catalog" class="px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
             📋 Material Constants (Tables 1 &amp; 2)
           </button>
+          <button type="button" id="nav-tab-comparison" class="px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+            📑 Reference Comparison
+          </button>
           <button type="button" id="nav-tab-methodology" class="px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
             📖 About, Methodology &amp; Citation
           </button>
@@ -97,23 +100,23 @@
   <!-- ====================================================================
        MAIN CONTENT AREA
        ==================================================================== -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="flex-1 max-w-[1540px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
     <!-- ==================================================================
          TAB 1: INTERACTIVE EXPLORER (SIDEBAR + LOG-LOG PLOT + DATA TABLE)
          ================================================================== -->
     <section id="section-explorer" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-      <!-- LEFT SIDEBAR: Category & Material Selector (4 cols on lg) -->
-      <aside class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 lg:sticky lg:top-4">
+      <!-- LEFT SIDEBAR: Category & Material Selector (5 cols on lg) -->
+      <aside class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 lg:sticky lg:top-4">
         <!-- Category Switcher: Elemental Media vs Tissues & Compounds -->
         <div class="bg-slate-100 p-1 rounded-xl flex items-center gap-1 mb-3">
           <button type="button" id="cat-btn-elemental" class="flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-amber-500 text-slate-950 shadow-sm">
-            <span>⚛️ Elemental Media</span>
+            <span>Elemental Media</span>
             <span class="text-xs px-1.5 py-0.2 rounded-full bg-slate-950/15 font-mono-sci">15</span>
           </button>
           <button type="button" id="cat-btn-tissues" class="flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900">
-            <span>🧬 Tissues &amp; Compounds</span>
+            <span>Tissues &amp; Compounds</span>
             <span class="text-xs px-1.5 py-0.2 rounded-full bg-slate-200 font-mono-sci">12</span>
           </button>
         </div>
@@ -156,8 +159,8 @@
         <div id="periodic-table-container" class="hidden"></div>
       </aside>
 
-      <!-- RIGHT WORKSPACE: Active Material Info, Log-Log Plot, Interpolation & Table (8 cols on lg) -->
-      <div class="lg:col-span-8 space-y-5">
+      <!-- RIGHT WORKSPACE: Active Material Info, Log-Log Plot, Interpolation & Table (7 cols on lg) -->
+      <div class="lg:col-span-7 space-y-5">
 
         <!-- Active Material Header Card -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
@@ -166,9 +169,7 @@
               <h2 id="active-material-title" class="text-xl sm:text-2xl font-bold text-slate-900 font-mono-sci">
                 Z = 79. Gold (Au)
               </h2>
-              <p id="active-material-subtitle" class="text-xs sm:text-sm text-slate-600 mt-1">
-                Reference high-Z nanoparticle radiosensitizer.
-              </p>
+              <p id="active-material-subtitle" class="hidden text-xs sm:text-sm text-slate-600 mt-1"></p>
             </div>
           </div>
 
@@ -208,49 +209,94 @@
 
               <label class="inline-flex items-center gap-1.5 cursor-pointer text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
                 <input type="checkbox" id="chk-show-mcmeg-region" class="rounded text-amber-600 focus:ring-amber-500" />
-                <span>50–1000 eV MCMEG Window</span>
+                <span>50–1000 eV Calculated Window</span>
               </label>
 
               <label class="inline-flex items-center gap-1.5 cursor-pointer text-sky-900 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-200 font-semibold">
                 <input type="checkbox" id="chk-compare-mode" class="rounded text-sky-600 focus:ring-sky-500" />
-                <span>Compare Gold (Au) vs. Water</span>
+                <span>Compare with another material</span>
               </label>
             </div>
           </div>
 
-          <!-- Comparison Mode Sub-Toolbar (Overlay Curves vs Ratio Curve) -->
-          <div id="compare-mode-subbar" class="hidden mb-3 p-3 rounded-xl bg-sky-50/70 border border-sky-200 flex flex-wrap items-center justify-between gap-3">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-sky-900">
-                Comparison View:
-              </span>
-              <div class="inline-flex items-center bg-white p-0.5 rounded-lg border border-sky-200 shadow-sm">
-                <button
-                  type="button"
-                  id="btn-compare-overlay"
-                  class="px-3 py-1.5 rounded-md text-xs font-semibold bg-sky-600 text-white transition"
-                >
-                  📈 Overlay Curves (Au &amp; Water)
-                </button>
-                <button
-                  type="button"
-                  id="btn-compare-ratio"
-                  class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
-                >
-                  ➗ Ratio Curve: (μ<sub>en</sub>/ρ)<sub>Au</sub> / (μ<sub>en</sub>/ρ)<sub>Water</sub>
-                </button>
+          <!-- Comparison Mode Sub-Toolbar (Target Material Selector + Overlay Curves vs Ratio Curve) -->
+          <div id="compare-mode-subbar" class="hidden mb-3 p-3.5 bg-sky-50/70 border border-sky-200 space-y-3">
+            <!-- Row 1: Choose Comparison Category & Target Material -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-2.5 border-b border-sky-200/70 dark:border-slate-700/80">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-900 dark:text-sky-300">
+                  Compare With:
+                </span>
+                <!-- Step 1: Category Switcher (Elemental Media vs Tissues & Compounds) -->
+                <div class="inline-flex items-center bg-white p-0.5 border border-sky-200 shadow-sm">
+                  <button
+                    type="button"
+                    id="btn-compare-cat-elemental"
+                    class="px-2.5 py-1 text-xs font-semibold transition"
+                  >
+                    Elemental Media
+                  </button>
+                  <button
+                    type="button"
+                    id="btn-compare-cat-tissues"
+                    class="px-2.5 py-1 text-xs font-semibold transition"
+                  >
+                    Tissues &amp; Compounds
+                  </button>
+                </div>
+
+                <!-- Step 2: Material Selector Dropdown -->
+                <select
+                  id="select-compare-material"
+                  class="px-3 py-1.5 text-xs font-mono-sci font-semibold bg-white border border-sky-300 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
+                  aria-label="Select comparison material"
+                ></select>
               </div>
-              <button
-                type="button"
-                id="btn-swap-ratio"
-                class="hidden px-2.5 py-1.5 rounded-lg border border-sky-300 bg-white hover:bg-sky-100 text-xs font-mono-sci font-semibold text-sky-900 transition"
-                title="Invert numerator and denominator"
-              >
-                ⇄ Invert Ratio
-              </button>
+
+              <div id="compare-pair-badge" class="text-xs font-mono-sci font-semibold text-sky-900 dark:text-sky-300"></div>
             </div>
 
-            <div id="compare-ratio-summary" class="text-xs font-mono-sci text-sky-900"></div>
+            <!-- Row 2: Comparison View (Overlay vs Ratio) -->
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-900 dark:text-sky-300">
+                  Comparison View:
+                </span>
+                <div class="inline-flex items-center bg-white p-0.5 border border-sky-200 shadow-sm">
+                  <button
+                    type="button"
+                    id="btn-compare-overlay"
+                    class="px-3 py-1.5 text-xs font-semibold bg-sky-600 text-white transition"
+                  >
+                    📈 Overlay Curves
+                  </button>
+                  <button
+                    type="button"
+                    id="btn-compare-ratio"
+                    class="px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
+                  >
+                    ➗ Ratio Curve
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  id="btn-swap-ratio"
+                  class="hidden px-2.5 py-1.5 border border-sky-300 bg-white hover:bg-sky-100 text-xs font-mono-sci font-semibold text-sky-900 dark:text-sky-300 transition"
+                  title="Invert numerator and denominator"
+                >
+                  ⇄ Invert Ratio
+                </button>
+              </div>
+
+              <div id="compare-ratio-summary" class="text-xs font-mono-sci text-sky-900"></div>
+            </div>
+
+            <div class="pt-2 border-t border-sky-200/70 dark:border-slate-700/80 text-[11px] text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+              <span class="text-amber-600 dark:text-amber-400 font-bold">⚠️ Note:</span>
+              <span>
+                This ratio and comparison account exclusively for the mass energy-absorption coefficient (<strong>μ<sub>en</sub>/ρ</strong>), and do not consider the total mass attenuation coefficient (μ/ρ).
+              </span>
+            </div>
           </div>
 
           <!-- Plotly Log-Log Graph Container -->
@@ -379,9 +425,6 @@
           <span class="text-xs font-mono-sci font-bold uppercase tracking-wider text-amber-700">
             Table 1 · Elemental Media
           </span>
-          <h2 class="text-xl font-bold text-slate-900 mt-0.5">
-            Nanoparticle Materials Used in the MCMEG Simulations
-          </h2>
           <p class="text-sm text-slate-600 mt-1">
             Each material is modeled as a pure chemical element with a mass fraction of 100 wt%. Bulk densities ρ are taken from standard reference data (Berger et al., 2005 / NIST).
           </p>
@@ -410,9 +453,6 @@
           <span class="text-xs font-mono-sci font-bold uppercase tracking-wider text-sky-700">
             Table 2 · Tissues &amp; Compounds
           </span>
-          <h2 class="text-xl font-bold text-slate-900 mt-0.5">
-            Water and ICRU Report 44 Human Tissues
-          </h2>
           <p class="text-sm text-slate-600 mt-1">
             Material constants and elemental compositions (percentage by mass) for liquid water and 11 human body tissues from ICRU Report 44 (1989).
           </p>
@@ -436,7 +476,21 @@
     </section>
 
     <!-- ==================================================================
-         TAB 3: METHODOLOGY, OVERVIEW & CITATION
+         TAB 3: REFERENCE COMPARISON
+         ================================================================== -->
+    <section id="section-comparison" class="hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
+          Comparison with NIST/XCOM at 1 keV
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600 mt-2">
+          This comparison will be added soon.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 4: METHODOLOGY, OVERVIEW & CITATION
          ================================================================== -->
     <section id="section-methodology" class="hidden space-y-6">
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
@@ -448,11 +502,17 @@
             <h2 class="text-2xl font-bold text-slate-900 mt-2">
               Extending Mass Energy-Absorption Coefficients Down to 50 eV
             </h2>
-            <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-2">
+
+            <!-- Under Development Notice Box (Light Red) -->
+            <div class="mt-3.5 p-4 bg-red-50/80 border border-red-200 text-red-900 dark:bg-red-950/30 dark:border-red-900/60 dark:text-red-200 text-xs sm:text-sm leading-relaxed">
+              <strong class="font-semibold">Notice:</strong> This database is currently under development. Experimental and simulated mass attenuation coefficient data for selected materials in the sub-keV energy range will be made available following publication of the associated scientific research.
+            </div>
+
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-4">
               Standard reference tabulations such as the <strong>NIST X-Ray Mass Attenuation Coefficients Database (SRD 126)</strong> provide values of the mass attenuation coefficient (<span class="font-mono-sci">μ/ρ</span>) and the mass energy-absorption coefficient (<span class="font-mono-sci">μ<sub>en</sub>/ρ</span>) for photon energies from <strong>1 keV to 20 MeV</strong>.
             </p>
             <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-3">
-              However, in microdosimetry, low-energy X-ray brachytherapy, synchrotron radiation therapy, and <strong>nanoparticle-enhanced radiotherapy</strong>, a substantial fraction of energy deposition arises from ultrasoft photons and fluorescence cascades in the sub-kiloelectronvolt regime (<strong>50 eV to 1000 eV</strong>, or <strong>0.05 keV to 1.0 keV</strong>). This database, developed by the <strong>Monte Carlo Modeling Expert Group (MCMEG) at UFMG</strong>, provides dedicated <span class="font-mono-sci">μ<sub>en</sub>/ρ</span> evaluations across the <strong>50 eV – 1000 eV</strong> energy range for:
+              However, in microdosimetry, low-energy X-ray brachytherapy, synchrotron radiation therapy, and <strong>nanoparticle-enhanced radiotherapy</strong>, a substantial fraction of energy deposition arises from ultrasoft photons and fluorescence cascades in the sub-kiloelectronvolt regime (<strong>50 eV to 1000 eV</strong>, or <strong>0.05 keV to 1.0 keV</strong>). This database, developed by <strong>Lucas F. Araújo</strong>, <strong>Celso G. Paulo</strong>, and <strong>Telma C. F. Fonseca</strong> — members of the <strong>Monte Carlo Modeling Expert Group (MCMEG) at UFMG</strong> — provides dedicated <span class="font-mono-sci">μ<sub>en</sub>/ρ</span> evaluations obtained through Monte Carlo code simulations across the <strong>50 eV – 1000 eV</strong> energy range for:
             </p>
             <ul class="list-disc list-inside text-sm sm:text-base text-slate-700 mt-3 space-y-1.5">
               <li>
@@ -489,13 +549,14 @@
               </button>
             </div>
             <p class="text-xs text-slate-300 mb-3 leading-relaxed">
-              <strong>Authors:</strong> Lucas Fabrício de Araújo<sup>1</sup>, Celso Gonçalves de Paulo<sup>1</sup>, Telma Cristina Ferreira Fonseca<sup>1</sup><br />
-              <span class="text-slate-400"><sup>1</sup>Departamento de Engenharia Nuclear – Universidade Federal de Minas Gerais, UFMG, Avenida Presidente Antônio Carlos, 6627 – Pampulha Belo Horizonte – MG, 31270-901, Brasil</span>
+              <strong>Authors:</strong> Lucas Fabrício de Araújo<sup>1</sup>, Celso Gonçalves de Paulo<sup>1</sup>, Telma Cristina Ferreira Fonseca<sup>1,2</sup><br />
+              <span class="text-slate-400"><sup>1</sup>Departamento de Engenharia Nuclear – Universidade Federal de Minas Gerais, UFMG, Avenida Presidente Antônio Carlos, 6627 – Pampulha Belo Horizonte – MG, 31270-901, Brasil</span><br />
+              <span class="text-slate-400"><sup>2</sup>Centro de Desenvolvimento da Tecnologia Nuclear, CDTN, Av. Antônio Carlos, 6627, Campus UFMG – Pampulha, 31270-901, Belo Horizonte, Minas Gerais, Brasil</span>
             </p>
             <pre id="bibtex-code" class="text-xs font-mono-sci text-slate-300 overflow-x-auto leading-relaxed">@article{Araujo_MCMEG_XrayMassEnergyAbsCoef_2026,
   author  = {Lucas Fabrício de Araújo and Celso Gonçalves de Paulo and Telma Cristina Ferreira Fonseca},
   title   = {Monte Carlo Evaluation of Low-Energy Mass Energy-Absorption Coefficients in Biological Tissues and Metallic Nanoparticle Materials},
-  journal = {Radiation Physics and Chemistry},
+  journal = {To be submitted},
   year    = {2026},
   url     = {https://github.com/mcmegUFMG/XrayMassEnergyAbsCoef-MCMEG}
 }</pre>
@@ -510,7 +571,7 @@
        FOOTER
        ==================================================================== -->
   <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
       <div class="flex items-center gap-3">
         <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="hover:opacity-90 transition" title="MCMEG Official Website">
           <img src="assets/logos/logo-mcmeg.png" alt="MCMEG" class="h-8 w-auto object-contain" />
@@ -520,7 +581,7 @@
         </span>
       </div>
       <div class="flex items-center gap-4">
-        <span>Developed by <strong class="text-slate-200">Lucas F. Araújo</strong></span>
+        <span>Website Developed by <strong class="text-slate-200">Lucas F. Araújo</strong></span>
       </div>
     </div>
   </footer>
