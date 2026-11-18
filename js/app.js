@@ -19,7 +19,7 @@
     mainTab: "explorer",          // 'explorer' | 'catalog' | 'methodology'
     category: "elemental",        // 'elemental' | 'tissues'
     selectorView: "list",         // 'list' | 'periodic' (for elemental media)
-    selectedId: "Au",             // Currently active material ID ('Au' or 'water' or upcoming)
+    selectedId: null,             // No material selected initially until user clicks one
     compareMode: false,           // Compare active material with another material
     compareCategory: "tissues",   // 'elemental' | 'tissues' (category for second material in comparison)
     compareTargetId: "water",     // Target material ID for comparison ('water', 'Au', etc.)
@@ -496,9 +496,33 @@
   async function selectMaterial(id) {
     state.selectedId = id;
     state.interpolatedPoint = null;
+
+    const emptyPlaceholder = document.getElementById("empty-selection-placeholder");
+    const activeContent = document.getElementById("active-material-content");
+    const dataCards = document.getElementById("active-material-data-cards");
+
+    if (!id) {
+      if (emptyPlaceholder) emptyPlaceholder.classList.remove("hidden");
+      if (activeContent) activeContent.classList.add("hidden");
+      renderMaterialSelector();
+      return;
+    }
+
+    if (emptyPlaceholder) emptyPlaceholder.classList.add("hidden");
+    if (activeContent) activeContent.classList.remove("hidden");
+
     const mat = getMaterialById(id);
     if (mat) {
       await tryLoadCsvForMaterial(mat);
+    }
+
+    const hasData = mat && mat.status === "available" && mat.data && mat.data.length > 0;
+    if (dataCards) {
+      if (hasData) {
+        dataCards.classList.remove("hidden");
+      } else {
+        dataCards.classList.add("hidden");
+      }
     }
 
     // Keep default comparison target distinct when switching primary material
@@ -515,9 +539,11 @@
 
     renderMaterialSelector();
     renderMaterialHeaderAndDetails();
-    renderCompareSubbar();
-    renderLogLogChart();
-    renderDataTable();
+    if (hasData) {
+      renderCompareSubbar();
+      renderLogLogChart();
+      renderDataTable();
+    }
     clearInterpolationResult();
   }
 
@@ -1460,7 +1486,7 @@
       }
     });
 
-    if (tabName === "explorer") {
+    if (tabName === "explorer" && state.selectedId) {
       renderLogLogChart();
     }
   }
@@ -1583,7 +1609,9 @@
       btnTheme.addEventListener("click", () => {
         state.darkMode = !state.darkMode;
         applyTheme();
-        renderLogLogChart();
+        if (state.selectedId) {
+          renderLogLogChart();
+        }
       });
     }
 
@@ -1602,12 +1630,12 @@
 
     document.getElementById("cat-btn-elemental").addEventListener("click", () => {
       state.category = "elemental";
-      selectMaterial("Au");
+      renderMaterialSelector();
     });
 
     document.getElementById("cat-btn-tissues").addEventListener("click", () => {
       state.category = "tissues";
-      selectMaterial("water");
+      renderMaterialSelector();
     });
 
     const btnViewList = document.getElementById("view-btn-list");
@@ -1781,13 +1809,13 @@
 
     setupExportButtons();
     renderCatalogTables();
-    selectMaterial("Au");
+    renderMaterialSelector();
 
     let resizeTimer;
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
-        if (state.mainTab === "explorer") {
+        if (state.mainTab === "explorer" && state.selectedId) {
           renderLogLogChart();
         }
       }, 150);
