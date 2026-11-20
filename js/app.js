@@ -325,7 +325,7 @@
                          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
                        </span>`
                     : `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-500">
-                         50–1000 eV Soon
+                         0.05–1 keV Soon
                        </span>`
                 }
               </div>
@@ -353,7 +353,7 @@
                          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
                        </span>`
                     : `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-500">
-                         50–1000 eV Soon
+                         0.05–1 keV Soon
                        </span>`
                 }
               </div>
@@ -692,7 +692,7 @@
                  Source: ${mat.dataSourceLabel}
                </span>`
             : `<span class="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">
-                 MCMEG 50–1000 eV Dataset in Preparation
+                 MCMEG 0.05–1 keV Dataset in Preparation
                </span>`
         }
       `;
@@ -716,7 +716,7 @@
                  Source: ${mat.dataSourceLabel}
                </span>`
             : `<span class="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">
-                 MCMEG 50–1000 eV Dataset in Preparation
+                 MCMEG 0.05–1 keV Dataset in Preparation
                </span>`
         }
       `;
@@ -730,7 +730,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <p class="font-semibold text-amber-900 text-sm">
-              ⏳ Tabular Data in Preparation for ${mat.name} (50 eV – 1000 eV)
+              ⏳ Tabular Data in Preparation for ${mat.name} (0.05 – 1.0 keV)
             </p>
             <p class="text-xs text-amber-800 mt-0.5">
               The MCMEG low-energy tables are currently being finalized for publication. Once ready, drop <code class="font-mono-sci bg-amber-100 px-1 py-0.5 rounded">${mat.csvPath}</code> into the repository folder. For now, you can inspect the active reference example: <strong>${fallbackRef}</strong>.
@@ -938,7 +938,7 @@
         y: 0.94,
         xref: "x",
         yref: "paper",
-        text: "<b>50–1000 eV Calculated Window</b>",
+        text: "<b>0.05–1 keV Calculated Window</b>",
         showarrow: false,
         font: { size: 11, color: isDark ? "#fef08a" : "#854d0e" },
         bgcolor: isDark ? "rgba(30, 41, 59, 0.92)" : "rgba(254, 249, 195, 0.92)",
@@ -1396,7 +1396,7 @@
                 ${
                   isAvail
                     ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Active (NIST Example)</span>`
-                    : `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">50–1000 eV Soon</span>`
+                    : `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">0.05–1 keV Soon</span>`
                 }
               </td>
               <td class="py-2.5 px-4 text-right">
@@ -1428,7 +1428,7 @@
                 ${
                   isAvail
                     ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Active (NIST Example)</span>`
-                    : `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">50–1000 eV Soon</span>`
+                    : `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">0.05–1 keV Soon</span>`
                 }
               </td>
               <td class="py-2.5 px-4 text-right">
