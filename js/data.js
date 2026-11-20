@@ -11,7 +11,7 @@
 window.MCMEG_DATABASE = {
   metadata: {
     title: "X-Ray Mass Energy-Absorption Coefficients Database",
-    group: "MCMEG — Monte Carlo Modeling Expert Group",
+    group: "MCMEG — Monte Carlo Modelling Expert Group",
     institution: "Universidade Federal de Minas Gerais (UFMG)",
     repository: "https://github.com/mcmegUFMG/XrayMassEnergyAbsCoef-MCMEG",
     targetRange: "50 eV – 1000 eV (0.05 keV – 1.0 keV)",

@@ -799,19 +799,16 @@
               Scientific Overview
             </span>
             <h2 class="text-2xl font-bold text-slate-900 mt-2">
-              Extending Mass Energy-Absorption Coefficients Down to 50 eV
+              Extending Mass Energy-Absorption Coefficients Down to 0.05 keV
             </h2>
 
             <!-- Under Development Notice Box (Light Red) -->
             <div class="mt-3.5 p-4 bg-red-50/80 border border-red-200 text-red-900 dark:bg-red-950/30 dark:border-red-900/60 dark:text-red-200 text-xs sm:text-sm leading-relaxed">
-              <strong class="font-semibold">Notice:</strong> This database is currently under development. Experimental and simulated mass attenuation coefficient data for selected materials in the sub-keV energy range will be made available following publication of the associated scientific research.
+              <strong class="font-semibold">Notice:</strong> This database is currently under development. Simulated mass attenuation coefficient data for selected materials in the sub-keV energy range will be made available following publication of the associated scientific research.
             </div>
 
             <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-4">
-              Standard reference tabulations such as the <strong>NIST X-Ray Mass Attenuation Coefficients Database (SRD 126)</strong> provide values of the mass attenuation coefficient (<span class="font-mono-sci">μ/ρ</span>) and the mass energy-absorption coefficient (<span class="font-mono-sci">μ<sub>en</sub>/ρ</span>) for photon energies from <strong>1 keV to 20 MeV</strong>.
-            </p>
-            <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-3">
-              However, in microdosimetry, low-energy X-ray brachytherapy, synchrotron radiation therapy, and <strong>nanoparticle-enhanced radiotherapy</strong>, a substantial fraction of energy deposition arises from ultrasoft photons and fluorescence cascades in the sub-kiloelectronvolt regime (<strong>50 eV to 1000 eV</strong>, or <strong>0.05 keV to 1.0 keV</strong>). This database, developed by <a href="https://linktr.ee/lucasfaraujo" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Lucas F. Araújo Profile">Lucas F. Araújo<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a>, <a href="http://lattes.cnpq.br/1950162259191311" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Celso G. Paulo Lattes CV">Celso G. Paulo<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a>, and <a href="https://tcff01.github.io/telmafonseca.github.io/v1_dimension/index.html" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Telma C. F. Fonseca Website">Telma C. F. Fonseca<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a> — members of the <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="MCMEG Official Website">Monte Carlo Modeling Expert Group (MCMEG)<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a> <strong>at UFMG</strong> — provides dedicated <span class="font-mono-sci">μ<sub>en</sub>/ρ</span> evaluations obtained through Monte Carlo code simulations across the <strong>50 eV – 1000 eV</strong> energy range for:
+              In microdosimetry, low-energy X-ray brachytherapy, radiation therapy, and <strong>nanoparticle-enhanced radiotherapy</strong>, a substantial fraction of energy deposition arises from ultrasoft photons and fluorescence cascades in the sub-kiloelectronvolt regime (<strong>0.05 keV to 1.0 keV</strong>), below the 1 keV lower limit of standard reference tabulations. This database, developed by <a href="https://linktr.ee/lucasfaraujo" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Lucas F. Araújo Profile">Lucas F. Araújo<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a>, <a href="http://lattes.cnpq.br/1950162259191311" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Celso G. Paulo Lattes CV">Celso G. Paulo<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a>, and <a href="https://tcff01.github.io/telmafonseca.github.io/v1_dimension/index.html" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Telma C. F. Fonseca Website">Telma C. F. Fonseca<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a> — members of the <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="MCMEG Official Website">Monte Carlo Modelling Expert Group (MCMEG)<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a> <strong>at UFMG</strong> — provides dedicated <span class="font-mono-sci">μ<sub>en</sub>/ρ</span> evaluations obtained through Monte Carlo code simulations across the <strong>0.05 keV to 1.0 keV</strong> energy range for:
             </p>
             <ul class="list-disc list-inside text-sm sm:text-base text-slate-700 mt-3 space-y-1.5">
               <li>
@@ -823,14 +820,22 @@
             </ul>
           </div>
 
-          <!-- How to Add New CSV Tables Box -->
-          <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-800">
-              📂 Repository Data Structure (Easy Maintenance)
-            </h3>
-            <p class="text-xs sm:text-sm text-slate-600 mt-1">
-              All tabular files are stored in human-readable <code class="font-mono-sci bg-white px-1.5 py-0.5 rounded border">data/elemental/*.csv</code> and <code class="font-mono-sci bg-white px-1.5 py-0.5 rounded border">data/tissues/*.csv</code> formats. Currently, <strong>Gold (Au, Z=79)</strong> and <strong>Water, Liquid (H₂O)</strong> are populated with NIST SRD 126 reference data as live interactive examples while the 50–1000 eV tables are finalized for publication.
+          <!-- Dataset Sources Box (Low-Energy MCMEG & High-Energy NIST SRD 126) -->
+          <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 space-y-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <p>
+              <strong class="text-slate-900">Low-Energy Dataset (0.05 keV to 1.0 keV):</strong> Values in the 0.05 keV to 1.0 keV energy range were generated and compiled by the <strong>Monte Carlo Modelling Expert Group (MCMEG)</strong> to provide extended low-energy mass energy-absorption coefficient (<span class="font-mono-sci">μ<sub>en</sub>/ρ</span>) data for research and educational applications.
             </p>
+            <p>
+              <strong class="text-slate-900">High-Energy Reference Dataset (≥ 1 keV):</strong> Reference values for energies at and above 1 keV are reproduced for comparison and continuity purposes from the <strong>National Institute of Standards and Technology (NIST) Standard Reference Database 126</strong>:
+            </p>
+            <div class="pl-3.5 border-l-2 border-amber-500/70 text-xs sm:text-sm text-slate-600">
+              Hubbell, J.H. and Seltzer, S.M. (2004), <em>Tables of X-Ray Mass Attenuation Coefficients and Mass Energy-Absorption Coefficients</em> (version 1.4). [Online] Available: <a href="https://physics.nist.gov/xaamdi" target="_blank" rel="noopener noreferrer" class="text-sky-700 dark:text-sky-400 underline hover:text-amber-600">https://physics.nist.gov/xaamdi</a> [Accessed: November 2026]. National Institute of Standards and Technology, Gaithersburg, MD.
+            </div>
+          </div>
+
+          <!-- Disclaimer Box (Dark Yellow / Amber Style matching Notice) -->
+          <div class="p-4 bg-amber-50/90 border border-amber-300 text-amber-950 dark:bg-amber-950/35 dark:border-amber-700/60 dark:text-amber-200 text-xs sm:text-sm leading-relaxed">
+            <strong class="font-semibold">Disclaimer:</strong> While every effort has been made to ensure the accuracy and consistency of the compiled datasets, this tool is provided strictly for academic, scientific, and educational use. Users are advised to verify critical dosimetric parameters against primary standard references before applying them to clinical or regulatory protocols. Copyright for the NIST Standard Reference Data remains with the U.S. Department of Commerce.
           </div>
 
           <!-- Citation Box -->
@@ -877,7 +882,7 @@
           <img src="assets/logos/logo-mcmeg.png" alt="MCMEG" class="h-9 w-auto object-contain" />
         </a>
         <span>
-          <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="text-slate-200 font-bold hover:text-amber-400 transition">MCMEG — Monte Carlo Modeling Expert Group</a> · UFMG
+          <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="text-slate-200 font-bold hover:text-amber-400 transition">MCMEG — Monte Carlo Modelling Expert Group</a> · UFMG
         </span>
       </div>
 
