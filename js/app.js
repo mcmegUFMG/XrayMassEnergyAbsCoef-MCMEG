@@ -1230,6 +1230,12 @@
         `# ========================================================================`,
         `# MCMEG - UFMG | X-Ray Mass Energy-Absorption Coefficients Database`,
         `# Comparison : ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`,
+        `# Source     : NIST Reference (1 keV – 20 MeV)`,
+        `#              Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass`,
+        `#              attenuation coefficients and mass energy-absorption`,
+        `#              coefficients. URL: http://physics.nist.gov/xaamdi`,
+        `#              (version 1.4), National Institute of Standards and`,
+        `#              Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.`,
         `# ========================================================================`,
         `#        Energy      mu_en/rho [${shortA}]   mu_en/rho [${shortB}]   Ratio (${ratioLabel})`,
         `#         (${unit.padEnd(3, " ")})            (cm^2/g)            (cm^2/g)         (dimensionless)`,
@@ -1254,7 +1260,12 @@
       `# ========================================================================`,
       `# MCMEG - UFMG | X-Ray Mass Energy-Absorption Coefficients Database`,
       `# Material : ${headerTitle}`,
-      `# Source   : ${mat.dataSourceLabel || "MCMEG Database"}`,
+      `# Source   : ${mat.dataSourceLabel || "NIST Reference (1 keV – 20 MeV)"}`,
+      `#            Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass`,
+      `#            attenuation coefficients and mass energy-absorption`,
+      `#            coefficients. URL: http://physics.nist.gov/xaamdi`,
+      `#            (version 1.4), National Institute of Standards and`,
+      `#            Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.`,
       `# ========================================================================`,
       `#        Energy       mu_en/rho`,
       `#         (${unit.padEnd(3, " ")})        (cm^2/g)`,
@@ -1395,7 +1406,7 @@
               <td class="py-2.5 px-4 text-center">
                 ${
                   isAvail
-                    ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Active (NIST Example)</span>`
+                    ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Active (NIST Reference)</span>`
                     : `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">0.05–1 keV Soon</span>`
                 }
               </td>
@@ -1427,7 +1438,7 @@
               <td class="py-2.5 px-4 text-center">
                 ${
                   isAvail
-                    ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Active (NIST Example)</span>`
+                    ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Active (NIST Reference)</span>`
                     : `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">0.05–1 keV Soon</span>`
                 }
               </td>
