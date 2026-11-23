@@ -239,7 +239,7 @@
 
     if (state.category === "elemental") {
       btnElem.className =
-        "flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-amber-500 text-slate-950 shadow-sm";
+        "flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-rose-700 text-white shadow-sm";
       btnTiss.className =
         "flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100";
       viewToggleWrap.classList.remove("hidden");
@@ -303,7 +303,7 @@
               <div class="flex items-center gap-3 min-w-0">
                 <div class="w-10 h-10 rounded-lg flex flex-col items-center justify-center shrink-0 font-mono-sci ${
                   isAvailable
-                    ? "bg-amber-500 text-slate-950 font-bold shadow-sm"
+                    ? "bg-rose-700 text-white font-bold shadow-sm"
                     : "bg-slate-100 text-slate-600 font-semibold"
                 }">
                   <span class="text-[10px] leading-none opacity-80">Z=${item.z}</span>
@@ -464,13 +464,13 @@
     container.innerHTML = `
       <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5 text-xs">
-          <span class="font-semibold text-slate-700">15 Nanoparticle Elements (Table 3)</span>
+          <span class="font-semibold text-slate-700">Elemental Media</span>
           <div class="flex items-center gap-3">
-            <span class="inline-flex items-center gap-1 text-[11px] text-amber-900 font-medium">
-              <span class="w-2.5 h-2.5 rounded-sm bg-amber-300 border border-amber-600 inline-block"></span> Active (Au)
+            <span class="inline-flex items-center gap-1 text-[11px] text-rose-900 dark:text-rose-300 font-medium">
+              <span class="w-2.5 h-2.5 rounded-sm bg-rose-200 border border-rose-600 inline-block"></span> Active (Current Study)
             </span>
             <span class="inline-flex items-center gap-1 text-[11px] text-slate-600">
-              <span class="w-2.5 h-2.5 rounded-sm bg-white border border-slate-400 inline-block"></span> MCMEG (Soon)
+              <span class="w-2.5 h-2.5 rounded-sm bg-white border border-slate-400 inline-block"></span> Unavailable (Soon)
             </span>
           </div>
         </div>
@@ -620,7 +620,7 @@
     const shortB = getShortMatLabel(matB);
 
     if (pairBadgeEl) {
-      pairBadgeEl.innerHTML = `Active Pair: <strong class="text-amber-700 dark:text-amber-400">${getFullMatLabel(matA)}</strong> vs. <strong class="text-sky-700 dark:text-sky-300">${getFullMatLabel(matB)}</strong>`;
+      pairBadgeEl.innerHTML = `Active Pair: <strong class="text-rose-700 dark:text-rose-400">${getFullMatLabel(matA)}</strong> vs. <strong class="text-sky-700 dark:text-sky-300">${getFullMatLabel(matB)}</strong>`;
     }
 
     const numLabel = state.invertRatio ? shortB : shortA;
@@ -677,7 +677,7 @@
       subtitleEl.textContent = "";
       subtitleEl.classList.add("hidden");
       badgesEl.innerHTML = `
-        <span class="px-2.5 py-1 rounded-md text-xs font-mono-sci font-semibold bg-amber-100 text-amber-900 border border-amber-300">
+        <span class="px-2.5 py-1 rounded-md text-xs font-mono-sci font-semibold bg-rose-100 text-rose-900 border border-rose-300 dark:bg-rose-950/50 dark:text-rose-200 dark:border-rose-700/50">
           Elemental Media (100 wt%)
         </span>
         <span class="px-2.5 py-1 rounded-md text-xs font-mono-sci bg-slate-100 text-slate-700 border border-slate-200">
@@ -869,7 +869,7 @@
       yAxisTitle = `Ratio ${ratioSymbol}`;
     } else if (state.compareMode && state.comparePlotType === "overlay") {
       // OVERLAY PLOT: Primary Material A vs Target Material B
-      addMuenTrace(matA, isDark ? "#fbbf24" : "#d97706");
+      addMuenTrace(matA, isDark ? "#fb7185" : "#e11d48");
       addMuenTrace(matB, isDark ? "#38bdf8" : "#0284c7");
 
       plotTitle = `Comparison: ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`;
@@ -879,8 +879,8 @@
       const isElem = primaryMat.category === "elemental";
       const mainColor = isElem
         ? isDark
-          ? "#fbbf24"
-          : "#d97706"
+          ? "#fb7185"
+          : "#e11d48"
         : isDark
         ? "#38bdf8"
         : "#0284c7";
@@ -904,7 +904,7 @@
         marker: {
           size: 12,
           symbol: "star",
-          color: "#ef4444",
+          color: isDark ? "#a78bfa" : "#7c3aed",
           line: { color: isDark ? "#0f172a" : "#ffffff", width: 1.5 }
         },
         hovertemplate:
@@ -1092,6 +1092,7 @@
         : `Ratio (${shortA} / ${shortB})`;
 
       if (tableTitle) {
+        tableTitle.className = "text-emerald-700 dark:text-emerald-400 font-mono-sci";
         tableTitle.textContent = `Comparison: ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`;
       }
 
@@ -1161,6 +1162,10 @@
 
     // Standard Single-Material Table (Energy & μ_en/ρ only)
     if (tableTitle) {
+      tableTitle.className =
+        activeMat.category === "elemental"
+          ? "text-rose-700 dark:text-rose-400 font-mono-sci"
+          : "text-sky-700 dark:text-sky-300 font-mono-sci";
       tableTitle.textContent =
         activeMat.category === "elemental"
           ? `${activeMat.name} (Z = ${activeMat.z})`
@@ -1344,7 +1349,7 @@
             <span class="text-slate-400">E =</span> <strong>${rawVal} ${state.energyUnit}</strong>
           </div>
           <div class="flex flex-wrap items-center gap-4">
-            <span><span class="text-slate-400">μ<sub>en</sub>/ρ [${shortA}] =</span> <strong class="text-amber-400">${formatSci(muenA, 4)}</strong> cm²/g</span>
+            <span><span class="text-slate-400">μ<sub>en</sub>/ρ [${shortA}] =</span> <strong class="text-rose-400">${formatSci(muenA, 4)}</strong> cm²/g</span>
             <span><span class="text-slate-400">μ<sub>en</sub>/ρ [${shortB}] =</span> <strong class="text-sky-300">${formatSci(muenB, 4)}</strong> cm²/g</span>
             <span><span class="text-slate-400">Ratio (${ratioTitle}) =</span> <strong class="text-emerald-400 text-sm">${ratioVal.toFixed(4)}×</strong></span>
           </div>
@@ -1368,10 +1373,11 @@
       label: activeMat.name
     };
 
+    const interpMatColor = activeMat.category === "elemental" ? "text-rose-400" : "text-sky-300";
     resultEl.innerHTML = `
       <div class="bg-slate-900 text-white rounded-lg p-3 text-xs font-mono-sci flex flex-wrap items-center justify-between gap-2">
         <div>
-          <span class="text-slate-400">Material:</span> <strong class="text-amber-400">${activeMat.symbol || activeMat.shortName || activeMat.name}</strong>
+          <span class="text-slate-400">Material:</span> <strong class="${interpMatColor}">${activeMat.symbol || activeMat.shortName || activeMat.name}</strong>
           <span class="mx-1.5 text-slate-600">|</span>
           <span class="text-slate-400">E =</span> <strong>${rawVal} ${state.energyUnit}</strong>
         </div>
@@ -1419,7 +1425,7 @@
                   type="button"
                   data-jump-material="${m.id}"
                   data-jump-cat="elemental"
-                  class="text-xs font-semibold text-amber-700 hover:text-amber-900 underline"
+                  class="text-xs font-semibold text-rose-700 hover:text-rose-900 dark:text-rose-400 dark:hover:text-rose-300 underline"
                 >
                   Open in Explorer →
                 </button>
