@@ -1228,7 +1228,9 @@
       const ratioLabel = state.invertRatio ? `${shortB}/${shortA}` : `${shortA}/${shortB}`;
       const lines = [
         `# ========================================================================`,
-        `# MCMEG - UFMG | X-Ray Mass Energy-Absorption Coefficients Database`,
+        `# Monte Carlo Modelling Expert Group (MCMEG)`,
+        `# Universidade Federal de Minas Gerais (UFMG)`,
+        `# X-Ray Mass Energy-Absorption Coefficients Database`,
         `# Comparison : ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`,
         `# Source     : NIST Reference (1 keV – 20 MeV)`,
         `#              Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass`,
@@ -1258,7 +1260,9 @@
 
     const lines = [
       `# ========================================================================`,
-      `# MCMEG - UFMG | X-Ray Mass Energy-Absorption Coefficients Database`,
+      `# Monte Carlo Modelling Expert Group (MCMEG)`,
+      `# Universidade Federal de Minas Gerais (UFMG)`,
+      `# X-Ray Mass Energy-Absorption Coefficients Database`,
       `# Material : ${headerTitle}`,
       `# Source   : ${mat.dataSourceLabel || "NIST Reference (1 keV – 20 MeV)"}`,
       `#            Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass`,
