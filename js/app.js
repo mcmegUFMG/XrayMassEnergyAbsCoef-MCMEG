@@ -1490,8 +1490,8 @@
     };
 
     const navLabels = {
-      explorer: "📈 Interactive Explorer (Log-Log)",
-      catalog: "📋 Material Constants (Tables 1 & 2)",
+      explorer: "📈 Data & Plot Explorer",
+      catalog: "📋 Material Constants",
       comparison: "📑 Reference Comparison",
       methodology: "📖 About, Methodology & Citation"
     };
@@ -1684,6 +1684,23 @@
     document
       .getElementById("nav-tab-methodology")
       .addEventListener("click", () => switchMainTab("methodology"));
+
+    // Collapsible table bars (Material Constants, etc.)
+    document.querySelectorAll("[data-accordion-target]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-accordion-target");
+        const targetEl = document.getElementById(targetId);
+        const chevron = btn.querySelector("[data-accordion-chevron]");
+        if (!targetEl) return;
+
+        const isHidden = targetEl.classList.contains("hidden");
+        targetEl.classList.toggle("hidden", !isHidden);
+        btn.setAttribute("aria-expanded", String(isHidden));
+        if (chevron) {
+          chevron.textContent = isHidden ? "▲" : "▼";
+        }
+      });
+    });
 
     document.getElementById("cat-btn-elemental").addEventListener("click", () => {
       state.category = "elemental";
