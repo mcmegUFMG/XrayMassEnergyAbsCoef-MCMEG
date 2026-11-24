@@ -111,6 +111,132 @@
       : mat.name;
   }
 
+  // Compute dataset provenance & version lines dynamically from energy range and per-material metadata
+  function getDatasetProvenance(mat) {
+    const meta = DB.metadata || {};
+    const dbVer = meta.version || "1.0";
+    const dbDate = meta.releaseDate || "Nov 2026";
+    const dsVer = (mat && mat.datasetVersion) || dbVer;
+    const rows = (mat && mat.data) || [];
+    const hasSubKeV = rows.some((r) => r.energy_MeV < 0.000999);
+    const hasHighKeV = rows.some((r) => r.energy_MeV > 0.00105);
+
+    let regime = "nist_only";
+    if (hasSubKeV && hasHighKeV) {
+      regime = "combined";
+    } else if (hasSubKeV && !hasHighKeV) {
+      regime = "mcmeg_only";
+    }
+
+    const articleFull = (mat && mat.articleRef) || meta.mcmegArticleRef || "";
+    const articleShort = (mat && mat.articleShortRef) || meta.mcmegShortRef || "Araújo et al., 2026";
+    const doi = (mat && mat.doi) || meta.mcmegDoi || "";
+
+    let sourceLabel = (mat && mat.dataSourceLabel) || "NIST Reference (1 keV – 20 MeV)";
+    let versionPillText = `Dataset v${dsVer} · NIST SRD 126 v1.4`;
+    if (regime === "mcmeg_only") {
+      sourceLabel = "MCMEG (0.05 – 1.0 keV)";
+      versionPillText = `Dataset v${dsVer} · ${articleShort}${doi ? ` · DOI: ${doi}` : ""}`;
+    } else if (regime === "combined") {
+      sourceLabel = "MCMEG (0.05–1 keV) + NIST Reference (1 keV–20 MeV)";
+      versionPillText = `Dataset v${dsVer} · ${articleShort}${doi ? ` · DOI: ${doi}` : ""}`;
+    }
+
+    const nistLines = [
+      `# ${regime === "combined" ? "NIST Reference   " : "Reference        "}: Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass`,
+      `#                    attenuation coefficients and mass energy-absorption`,
+      `#                    coefficients. URL: http://physics.nist.gov/xaamdi`,
+      `#                    (version 1.4), National Institute of Standards and`,
+      `#                    Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.`
+    ];
+
+    const headerLines = [
+      `# Database Version : v${dbVer} (${dbDate})`
+    ];
+
+    if (regime === "nist_only") {
+      headerLines.push(`# Dataset Version  : v${dsVer}`);
+      headerLines.push(`# Source           : ${sourceLabel}`);
+      headerLines.push(...nistLines);
+    } else if (regime === "mcmeg_only") {
+      headerLines.push(
+        `# Dataset Version  : v${dsVer} (${articleShort}${doi ? ` / DOI: ${doi}` : ""})`
+      );
+      headerLines.push(`# Source           : MCMEG Low-Energy Simulation (0.05 keV – 1.0 keV)`);
+      if (articleFull) headerLines.push(`# Reference Article: ${articleFull}`);
+      if (doi) headerLines.push(`# Article DOI      : ${doi}`);
+    } else {
+      headerLines.push(
+        `# Dataset Version  : v${dsVer} (${articleShort}${doi ? ` / DOI: ${doi}` : ""})`
+      );
+      headerLines.push(`# Sources          : MCMEG (0.05–1.0 keV) + NIST Reference (1 keV–20 MeV)`);
+      if (articleFull) headerLines.push(`# Reference Article: ${articleFull}`);
+      if (doi) headerLines.push(`# Article DOI      : ${doi}`);
+      headerLines.push(...nistLines);
+    }
+
+    return {
+      dbVer,
+      dbDate,
+      dsVer,
+      regime,
+      hasSubKeV,
+      hasHighKeV,
+      sourceLabel,
+      versionPillText,
+      articleFull,
+      articleShort,
+      doi,
+      headerLines
+    };
+  }
+
+  function buildCompareProvenanceLines(matA, matB) {
+    const provA = getDatasetProvenance(matA);
+    const provB = getDatasetProvenance(matB);
+    const shortA = getShortMatLabel(matA);
+    const shortB = getShortMatLabel(matB);
+    const anySubKeV = provA.hasSubKeV || provB.hasSubKeV;
+    const anyHighKeV = provA.hasHighKeV || provB.hasHighKeV || !anySubKeV;
+
+    const lines = [
+      `# Database Version : v${provA.dbVer} (${provA.dbDate})`,
+      `# Dataset Versions : ${shortA} (v${provA.dsVer}) vs. ${shortB} (v${provB.dsVer})`
+    ];
+
+    if (anySubKeV && anyHighKeV) {
+      lines.push(`# Sources          : MCMEG (0.05–1.0 keV) + NIST Reference (1 keV–20 MeV)`);
+    } else if (anySubKeV) {
+      lines.push(`# Source           : MCMEG Low-Energy Simulation (0.05 keV – 1.0 keV)`);
+    } else {
+      lines.push(`# Source           : NIST Reference (1 keV – 20 MeV)`);
+    }
+
+    if (anySubKeV) {
+      const mcmegProvs = [provA, provB].filter((p) => p.hasSubKeV);
+      const seenArticles = new Set();
+      mcmegProvs.forEach((p) => {
+        const key = `${p.articleFull}|${p.doi}`;
+        if (!seenArticles.has(key) && p.articleFull) {
+          seenArticles.add(key);
+          lines.push(`# Reference Article: ${p.articleFull}${p.doi ? ` (DOI: ${p.doi})` : ""}`);
+        }
+      });
+    }
+
+    if (anyHighKeV) {
+      lines.push(
+        `# ${anySubKeV ? "NIST Reference   " : "Reference        "}: Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass`,
+        `#                    attenuation coefficients and mass energy-absorption`,
+        `#                    coefficients. URL: http://physics.nist.gov/xaamdi`,
+        `#                    (version 1.4), National Institute of Standards and`,
+        `#                    Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.`
+      );
+    }
+
+    return lines;
+  }
+
   // Helper: Format number in scientific notation like NIST (e.g. 4.639E+03)
   function formatSci(val, digits = 3) {
     if (val === null || val === undefined || isNaN(val)) return "—";
@@ -200,7 +326,11 @@
       const response = await fetch(material.csvPath);
       if (!response.ok) return;
       const text = await response.text();
-      const lines = text.trim().split(/\r?\n/);
+      const lines = text
+        .trim()
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter((l) => l.length > 0 && !l.startsWith("#"));
       if (lines.length < 2) return;
       const parsed = [];
       for (let i = 1; i < lines.length; i++) {
@@ -672,6 +802,8 @@
     const badgesEl = document.getElementById("active-material-badges");
     const noticeEl = document.getElementById("upcoming-dataset-notice");
 
+    const prov = getDatasetProvenance(mat);
+
     if (mat.category === "elemental") {
       titleEl.innerHTML = `Z = ${mat.z}. <span class="ml-1">${mat.name} (${mat.symbol})</span>`;
       subtitleEl.textContent = "";
@@ -689,7 +821,10 @@
         ${
           mat.status === "available"
             ? `<span class="px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
-                 Source: ${mat.dataSourceLabel}
+                 Source: ${prov.sourceLabel}
+               </span>
+               <span class="px-2.5 py-1 rounded-md text-xs font-mono-sci font-medium bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+                 ${prov.versionPillText}
                </span>`
             : `<span class="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">
                  MCMEG 0.05–1 keV Dataset in Preparation
@@ -713,7 +848,10 @@
         ${
           mat.status === "available"
             ? `<span class="px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
-                 Source: ${mat.dataSourceLabel}
+                 Source: ${prov.sourceLabel}
+               </span>
+               <span class="px-2.5 py-1 rounded-md text-xs font-mono-sci font-medium bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+                 ${prov.versionPillText}
                </span>`
             : `<span class="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">
                  MCMEG 0.05–1 keV Dataset in Preparation
@@ -1236,13 +1374,8 @@
         `# Monte Carlo Modelling Expert Group (MCMEG)`,
         `# Universidade Federal de Minas Gerais (UFMG)`,
         `# X-Ray Mass Energy-Absorption Coefficients Database`,
-        `# Comparison : ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`,
-        `# Source     : NIST Reference (1 keV – 20 MeV)`,
-        `#              Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass`,
-        `#              attenuation coefficients and mass energy-absorption`,
-        `#              coefficients. URL: http://physics.nist.gov/xaamdi`,
-        `#              (version 1.4), National Institute of Standards and`,
-        `#              Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.`,
+        `# Comparison       : ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`,
+        ...buildCompareProvenanceLines(matA, matB),
         `# ========================================================================`,
         `#        Energy      mu_en/rho [${shortA}]   mu_en/rho [${shortB}]   Ratio (${ratioLabel})`,
         `#         (${unit.padEnd(3, " ")})            (cm^2/g)            (cm^2/g)         (dimensionless)`,
@@ -1263,18 +1396,14 @@
         ? `${mat.name} (Z = ${mat.z}) — Density = ${mat.density} g/cm^3`
         : `${mat.name} — Density = ${mat.density} g/cm^3`;
 
+    const prov = getDatasetProvenance(mat);
     const lines = [
       `# ========================================================================`,
       `# Monte Carlo Modelling Expert Group (MCMEG)`,
       `# Universidade Federal de Minas Gerais (UFMG)`,
       `# X-Ray Mass Energy-Absorption Coefficients Database`,
-      `# Material : ${headerTitle}`,
-      `# Source   : ${mat.dataSourceLabel || "NIST Reference (1 keV – 20 MeV)"}`,
-      `#            Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass`,
-      `#            attenuation coefficients and mass energy-absorption`,
-      `#            coefficients. URL: http://physics.nist.gov/xaamdi`,
-      `#            (version 1.4), National Institute of Standards and`,
-      `#            Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.`,
+      `# Material         : ${headerTitle}`,
+      ...prov.headerLines,
       `# ========================================================================`,
       `#        Energy       mu_en/rho`,
       `#         (${unit.padEnd(3, " ")})        (cm^2/g)`,
@@ -1407,6 +1536,13 @@
       elemTbody.innerHTML = DB.elementalMedia
         .map((m) => {
           const isAvail = m.status === "available";
+          const prov = getDatasetProvenance(m);
+          const statusShort =
+            prov.regime === "mcmeg_only"
+              ? `Active (MCMEG · ${prov.dsVer})`
+              : prov.regime === "combined"
+              ? `Active (MCMEG + NIST v1.4 · ${prov.dsVer})`
+              : `Active (NIST v1.4 · ${prov.dsVer})`;
           return `
             <tr class="border-b border-slate-200 hover:bg-slate-50 transition">
               <td class="py-2.5 px-4 font-semibold text-slate-900">${m.name}</td>
@@ -1416,7 +1552,7 @@
               <td class="py-2.5 px-4 text-center">
                 ${
                   isAvail
-                    ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Active (NIST Reference)</span>`
+                    ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">${statusShort}</span>`
                     : `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">0.05–1 keV Soon</span>`
                 }
               </td>
@@ -1440,6 +1576,13 @@
       tissTbody.innerHTML = DB.tissuesAndCompounds
         .map((m) => {
           const isAvail = m.status === "available";
+          const prov = getDatasetProvenance(m);
+          const statusShort =
+            prov.regime === "mcmeg_only"
+              ? `Active (MCMEG · ${prov.dsVer})`
+              : prov.regime === "combined"
+              ? `Active (MCMEG + NIST v1.4 · ${prov.dsVer})`
+              : `Active (NIST v1.4 · ${prov.dsVer})`;
           return `
             <tr class="border-b border-slate-200 hover:bg-slate-50 transition">
               <td class="py-2.5 px-4 font-semibold text-slate-900">${m.name}</td>
@@ -1448,7 +1591,7 @@
               <td class="py-2.5 px-4 text-center">
                 ${
                   isAvail
-                    ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Active (NIST Reference)</span>`
+                    ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">${statusShort}</span>`
                     : `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">0.05–1 keV Soon</span>`
                 }
               </td>
@@ -1568,6 +1711,7 @@
       btnCsv.addEventListener("click", () => {
         const mat = getActiveMat();
         const factor = UNIT_FACTORS[state.energyUnit];
+        const dbVer = (DB.metadata && DB.metadata.version) || "1.0";
         let rows = [];
         let filename = "";
 
@@ -1577,7 +1721,13 @@
           const shortA = getShortMatLabel(matA);
           const shortB = getShortMatLabel(matB);
           const ratioColName = state.invertRatio ? `ratio_${shortB}_${shortA}` : `ratio_${shortA}_${shortB}`;
+          const metaLines = [
+            `# MCMEG - UFMG | X-Ray Mass Energy-Absorption Coefficients Database`,
+            `# Comparison       : ${getFullMatLabel(matA)} vs. ${getFullMatLabel(matB)}`,
+            ...buildCompareProvenanceLines(matA, matB)
+          ];
           rows = [
+            ...metaLines,
             `energy_${state.energyUnit},muen_rho_${shortA}_cm2_g,muen_rho_${shortB}_cm2_g,${ratioColName}`,
             ...buildComparisonDataset().map(
               (r) =>
@@ -1589,16 +1739,23 @@
                 }`
             )
           ];
-          filename = `MCMEG_Compare_${matA.id}_${matB.id}_${state.energyUnit}.csv`;
+          filename = `MCMEG_Compare_${matA.id}_${matB.id}_${state.energyUnit}_v${dbVer}.csv`;
         } else {
+          const prov = getDatasetProvenance(mat);
+          const metaLines = [
+            `# MCMEG - UFMG | X-Ray Mass Energy-Absorption Coefficients Database`,
+            `# Material         : ${getFullMatLabel(mat)}`,
+            ...prov.headerLines
+          ];
           rows = [
+            ...metaLines,
             `energy_${state.energyUnit},muen_rho_cm2_g`,
             ...mat.data.map(
               (r) =>
                 `${formatSci(r.energy_MeV * factor, 5)},${formatSci(r.muen_rho, 3)}`
             )
           ];
-          filename = `MCMEG_${mat.id}_${state.energyUnit}.csv`;
+          filename = `MCMEG_${mat.id}_${state.energyUnit}_v${prov.dsVer}.csv`;
         }
 
         const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
@@ -1619,9 +1776,15 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = state.compareMode
-          ? `MCMEG_Compare_Au_Water_ASCII.txt`
-          : `MCMEG_${mat.id}_ASCII.txt`;
+        const dbVer = (DB.metadata && DB.metadata.version) || "1.0";
+        if (state.compareMode) {
+          const matA = getPrimaryActiveMaterial();
+          const matB = getCompareTargetMaterial();
+          a.download = `MCMEG_Compare_${matA.id}_${matB.id}_v${dbVer}_ASCII.txt`;
+        } else {
+          const prov = getDatasetProvenance(mat);
+          a.download = `MCMEG_${mat.id}_v${prov.dsVer}_ASCII.txt`;
+        }
         a.click();
         URL.revokeObjectURL(url);
       });
@@ -1890,6 +2053,15 @@
     setupExportButtons();
     renderCatalogTables();
     renderMaterialSelector();
+
+    const footerVerEl = document.getElementById("footer-db-version");
+    const footerDateEl = document.getElementById("footer-db-updated");
+    if (footerVerEl && DB.metadata && DB.metadata.version) {
+      footerVerEl.textContent = `MCMEG Database v${DB.metadata.version}`;
+    }
+    if (footerDateEl && DB.metadata && DB.metadata.releaseDate) {
+      footerDateEl.textContent = `Updated ${DB.metadata.releaseDate}`;
+    }
 
     let resizeTimer;
     window.addEventListener("resize", () => {

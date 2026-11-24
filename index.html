@@ -915,8 +915,43 @@
   title   = {Monte Carlo Evaluation of Low-Energy Mass Energy-Absorption Coefficients in Biological Tissues and Metallic Nanoparticle Materials},
   journal = {To be submitted},
   year    = {2026},
+  note    = {Database version 1.0},
   url     = {https://mcmegufmg.github.io/XrayMassEnergyAbsCoef-MCMEG/}
 }</pre>
+          </div>
+
+          <!-- Version History Collapsible Box -->
+          <div class="bg-slate-50 border border-slate-200">
+            <button
+              type="button"
+              data-accordion-target="methodology-version-history-body"
+              aria-expanded="false"
+              class="w-full px-5 py-3.5 flex items-center justify-between gap-4 text-left hover:bg-slate-100/70 dark:hover:bg-slate-800/70 transition"
+            >
+              <div class="flex flex-wrap items-center gap-2.5">
+                <span class="text-xs sm:text-sm font-mono-sci font-bold uppercase tracking-wider text-slate-800">
+                  Version History
+                </span>
+                <span class="px-2 py-0.5 text-[11px] font-mono-sci bg-amber-100 text-amber-900 border border-amber-200 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-700/50">
+                  v1.0
+                </span>
+              </div>
+              <span data-accordion-chevron class="text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
+            </button>
+            <div id="methodology-version-history-body" class="hidden px-5 pb-4 pt-3 border-t border-slate-200 space-y-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+                <span class="font-mono-sci font-bold text-slate-900 shrink-0">v1.0 (Nov 2026)</span>
+                <span>
+                  Initial database platform release featuring interactive log-log exploration, comparison/ratio analysis, 15 Elemental Media and 12 ICRU-44 Tissues &amp; Compounds (currently populated with NIST SRD 126 v1.4 baseline data, 1 keV – 20 MeV), and versioned ASCII/CSV provenance exports.
+                </span>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+                <span class="font-mono-sci font-semibold text-amber-700 dark:text-amber-400 shrink-0">Planned Release</span>
+                <span>
+                  Integration of MCMEG Monte Carlo sub-keV datasets (0.05 keV – 1.0 keV) linked individually to the published article version and DOI.
+                </span>
+              </div>
+            </div>
           </div>
 
           <!-- Contact & Issue Reporting Box -->
@@ -944,9 +979,9 @@
        FOOTER
        ==================================================================== -->
   <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-12">
-    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-xs text-center md:text-left">
-      <!-- Left: MCMEG + UFMG -->
-      <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2.5 sm:gap-3">
+    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-center lg:text-left">
+      <!-- 1. MCMEG + UFMG -->
+      <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3">
         <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="hover:opacity-90 transition" title="MCMEG Official Website">
           <img src="assets/logos/logo-mcmeg.png" alt="MCMEG" class="h-9 w-auto object-contain" />
         </a>
@@ -955,13 +990,19 @@
         </span>
       </div>
 
-      <!-- Center: Website Developed by Lucas F. Araújo -->
+      <!-- 2. Website Developed by Lucas F. Araújo -->
       <div class="flex items-center justify-center">
         <span>Website Developed by <a href="https://linktr.ee/lucasfaraujo" target="_blank" rel="noopener noreferrer" class="text-slate-200 font-bold hover:text-amber-400 transition">Lucas F. Araújo</a></span>
       </div>
 
-      <!-- Right: Flag Counter (3 columns, max 6 flags = 2x3) -->
-      <div class="flex items-center justify-center md:justify-end">
+      <!-- 3. Database Version & Update Date -->
+      <div class="flex flex-col items-center justify-center leading-snug">
+        <span id="footer-db-version" class="text-slate-200 font-bold font-mono-sci">MCMEG Database v1.0</span>
+        <span id="footer-db-updated" class="text-slate-400 mt-0.5">Updated Nov 2026</span>
+      </div>
+
+      <!-- 4. Flag Counter (3 columns, max 6 flags = 2x3) -->
+      <div class="flex items-center justify-center lg:justify-end">
         <a href="https://info.flagcounter.com/wYb0" target="_blank" rel="noopener noreferrer" title="Visitor Flag Counter">
           <img
             src="https://s05.flagcounter.com/count2/wYb0/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_6/viewers_0/labels_0/pageviews_0/flags_0/percent_0/"
