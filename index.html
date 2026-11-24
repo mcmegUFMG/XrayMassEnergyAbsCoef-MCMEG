@@ -51,40 +51,33 @@
        ==================================================================== -->
   <header class="mcmeg-header text-white">
     <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-10">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-5">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4 lg:gap-5">
 
-        <!-- Mobile Only: MCMEG Logo + UFMG Logo side by side & centered -->
-        <div class="flex lg:hidden items-center justify-center gap-6">
+        <!-- MCMEG Logo (Left) + Title (Center on Mobile / Left on Desktop) + UFMG Logo (Right on Mobile) -->
+        <div class="flex flex-row items-center justify-between lg:justify-start gap-2.5 sm:gap-4 lg:gap-5 w-full lg:w-auto">
           <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="shrink-0 opacity-95 hover:opacity-100 transition" title="MCMEG Official Website">
-            <img src="assets/logos/logo-mcmeg.png" alt="MCMEG Logo" class="h-16 sm:h-18 w-auto object-contain" />
+            <img src="assets/logos/logo-mcmeg.png" alt="MCMEG Logo" class="h-11 sm:h-16 lg:h-20 w-auto object-contain" />
           </a>
-          <a href="https://ufmg.br" target="_blank" rel="noopener noreferrer" class="shrink-0 opacity-95 hover:opacity-100 transition" title="Universidade Federal de Minas Gerais">
-            <img src="assets/logos/ufmg-logo.png" alt="UFMG Logo" class="h-11 sm:h-13 w-auto object-contain" />
-          </a>
-        </div>
-
-        <!-- Left (Desktop) / Centered Text (Mobile): MCMEG Logo (Desktop) + Title -->
-        <div class="flex flex-col lg:flex-row items-center gap-4 sm:gap-5 text-center lg:text-left">
-          <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="hidden lg:block shrink-0 opacity-95 hover:opacity-100 transition" title="MCMEG Official Website">
-            <img src="assets/logos/logo-mcmeg.png" alt="MCMEG Logo" class="h-20 w-auto object-contain" />
-          </a>
-          <div class="flex flex-col items-center lg:items-start">
-            <div class="mb-1">
-              <span class="text-xs font-mono-sci font-bold uppercase tracking-wider text-amber-400">
+          <div class="flex flex-col items-center lg:items-start text-center lg:text-left min-w-0 flex-1 lg:flex-initial">
+            <div class="mb-0.5 sm:mb-1">
+              <span class="text-[10px] sm:text-xs font-mono-sci font-bold uppercase tracking-wider text-amber-400">
                 MCMEG Reference Database
               </span>
             </div>
-            <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white">
+            <h1 class="text-sm sm:text-xl lg:text-3xl font-bold tracking-tight text-white leading-snug">
               X-Ray Mass Energy-Absorption Coefficients <span class="text-amber-400 font-mono-sci">(μ<sub>en</sub>/ρ)</span>
             </h1>
-            <p class="text-xs sm:text-sm text-slate-300 font-mono-sci mt-1 max-w-2xl">
+            <p class="text-[11px] sm:text-sm text-slate-300 font-mono-sci mt-0.5 sm:mt-1 max-w-2xl">
               Photon Energy Range: 0.05 keV – 1.0 keV
             </p>
           </div>
+          <a href="https://ufmg.br" target="_blank" rel="noopener noreferrer" class="lg:hidden shrink-0 opacity-95 hover:opacity-100 transition" title="Universidade Federal de Minas Gerais">
+            <img src="assets/logos/ufmg-logo.png" alt="UFMG Logo" class="h-7 sm:h-10 w-auto object-contain" />
+          </a>
         </div>
 
         <!-- Right: Theme Toggle (Centered on Mobile) + UFMG Logo (Desktop) -->
-        <div class="flex items-center justify-center lg:justify-end gap-4 pt-1 lg:pt-0">
+        <div class="flex items-center justify-center lg:justify-end gap-4 pt-0.5 lg:pt-0 shrink-0">
           <button
             type="button"
             id="btn-theme-toggle"
@@ -981,11 +974,11 @@
   <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-12">
     <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-center lg:text-left">
       <!-- 1. MCMEG + UFMG -->
-      <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3">
-        <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="hover:opacity-90 transition" title="MCMEG Official Website">
-          <img src="assets/logos/logo-mcmeg.png" alt="MCMEG" class="h-9 w-auto object-contain" />
+      <div class="flex flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3">
+        <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="shrink-0 hover:opacity-90 transition" title="MCMEG Official Website">
+          <img src="assets/logos/logo-mcmeg.png" alt="MCMEG" class="h-8 sm:h-9 w-auto object-contain" />
         </a>
-        <div class="flex flex-col items-center lg:items-start leading-snug">
+        <div class="flex flex-col items-start text-left leading-snug text-[11px] sm:text-xs">
           <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="text-slate-200 font-bold hover:text-amber-400 transition">MCMEG — Monte Carlo Modelling Expert Group</a>
           <a href="https://ufmg.br" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-amber-400 transition mt-0.5">Universidade Federal de Minas Gerais (UFMG)</a>
         </div>
