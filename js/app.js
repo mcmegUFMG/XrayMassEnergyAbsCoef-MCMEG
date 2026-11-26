@@ -167,20 +167,24 @@
     const mode = modeOverride || getEffectiveDatasetSource(mat);
     const rows = [];
     if (mode === "mcmeg" && hasSubKeVData(mat)) {
-      mat.subKeVData.forEach((r) => {
-        rows.push({ energy_MeV: r.energy_MeV, muen_rho: r.muen_rho, source: "MCMEG" });
-      });
+      mat.subKeVData
+        .filter((r) => r.energy_MeV <= 0.001000001)
+        .forEach((r) => {
+          rows.push({ energy_MeV: r.energy_MeV, muen_rho: r.muen_rho, source: "MCMEG" });
+        });
       return rows;
     }
-    if (mode === "combined" && hasSubKeVData(mat)) {
+    const skipNist1keV = mode === "combined" && hasSubKeVData(mat);
+    if (skipNist1keV) {
       mat.subKeVData
-        .filter((r) => r.energy_MeV < 0.000999999)
+        .filter((r) => r.energy_MeV <= 0.001000001)
         .forEach((r) => {
           rows.push({ energy_MeV: r.energy_MeV, muen_rho: r.muen_rho, source: "MCMEG" });
         });
     }
     if (Array.isArray(mat.data)) {
       mat.data.forEach((r) => {
+        if (skipNist1keV && r.energy_MeV <= 0.001000001) return;
         rows.push({
           energy_MeV: r.energy_MeV,
           muen_rho: r.muen_rho,
@@ -587,7 +591,7 @@
       sourceLabel = "MCMEG (0.05 – 1.0 keV)";
       versionPillText = `Dataset v${dsVer} · ${articleShort}${doi ? ` · DOI: ${doi}` : ""}`;
     } else if (regime === "combined") {
-      sourceLabel = "MCMEG (<1 keV) + NIST Reference (1 keV–20 MeV)";
+      sourceLabel = "MCMEG (0.05–1 keV) + NIST Reference (>1 keV–20 MeV)";
       versionPillText = `Dataset v${dsVer} · ${articleShort}${doi ? ` · DOI: ${doi}` : ""}`;
     }
 
@@ -619,7 +623,7 @@
       headerLines.push(
         `# Dataset Version  : v${dsVer} (${articleShort}${doi ? ` / DOI: ${doi}` : ""})`
       );
-      headerLines.push(`# Sources          : MCMEG (0.05–1.0 keV) + NIST Reference (1 keV–20 MeV)`);
+      headerLines.push(`# Sources          : MCMEG (0.05–1.0 keV) + NIST Reference (>1 keV–20 MeV)`);
       if (mcCode) headerLines.push(`# Monte Carlo Code : ${mcCode}`);
       if (articleFull) headerLines.push(...wrapHeaderField("# Reference Article: ", articleFull));
       if (doi) headerLines.push(`# Article DOI      : ${doi}`);
@@ -657,7 +661,7 @@
     ];
 
     if (anySubKeV && anyHighKeV) {
-      lines.push(`# Sources          : MCMEG (0.05–1.0 keV) + NIST Reference (1 keV–20 MeV)`);
+      lines.push(`# Sources          : MCMEG (0.05–1.0 keV) + NIST Reference (>1 keV–20 MeV)`);
     } else if (anySubKeV) {
       lines.push(`# Source           : MCMEG Low-Energy Simulation (0.05 keV – 1.0 keV)`);
     } else {
@@ -892,7 +896,7 @@
     const renderMaterialStatusBadge = (item) => {
       if (hasSubKeVData(item)) {
         return `<span class="hidden xl:inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9.5px] font-semibold bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/60 dark:text-amber-200 dark:border-amber-700/60">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span> MCMEG (0.05–1 keV) + NIST (≥1 keV)
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span> MCMEG (0.05–1 keV) + NIST (>1 keV)
                 </span>
                 <span class="xl:hidden inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8.5px] leading-tight font-semibold bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/60 dark:text-amber-200 dark:border-amber-700/60">
                   <span class="flex flex-col items-center">
@@ -902,7 +906,7 @@
                   <span>+</span>
                   <span class="flex flex-col items-center">
                     <span>NIST</span>
-                    <span class="font-mono-sci font-normal text-[7.5px] opacity-90">(≥1 keV)</span>
+                    <span class="font-mono-sci font-normal text-[7.5px] opacity-90">(>1 keV)</span>
                   </span>
                 </span>`;
       }
@@ -1216,7 +1220,7 @@
       } else if (state.datasetSource === "nist") {
         hint.textContent = "Showing NIST SRD 126 reference data only (1 keV – 20 MeV).";
       } else {
-        hint.textContent = "Combined view uses MCMEG (< 1 keV) + NIST (≥ 1 keV) without duplicate 1 keV points.";
+        hint.textContent = "Combined view uses MCMEG (0.05–1 keV) + NIST (> 1 keV) without duplicate 1 keV points.";
       }
     }
   }
@@ -1474,7 +1478,8 @@
         color,
         sourceTag,
         dashStyle = "solid",
-        markerSymbol = "circle"
+        markerSymbol = "circle",
+        legendGroup = undefined
       ) => {
         if (!rows || rows.length === 0) return;
         traces.push({
@@ -1487,6 +1492,7 @@
             symbol: markerSymbol
           },
           name: traceName,
+          ...(legendGroup ? { legendgroup: legendGroup } : {}),
           line: {
             color: color,
             width: 2.6,
@@ -1506,22 +1512,53 @@
         const mcLabel = mat.monteCarloCode
           ? `MCMEG 0.05–1 keV (${mat.monteCarloCode})`
           : "MCMEG 0.05–1 keV";
-        pushSegment(mat.subKeVData, `${shortName} — ${mcLabel}`, mcColor, mcLabel, "solid", "circle");
+        pushSegment(
+          mat.subKeVData.filter((r) => r.energy_MeV <= 0.001000001),
+          `${shortName} — ${mcLabel}`,
+          mcColor,
+          mcLabel,
+          "solid",
+          "circle"
+        );
       } else if (mode === "combined" && hasSubKeVData(mat)) {
         const mcColor =
           mcmegColorOverride || (isCb ? (isDark ? "#fbbf24" : "#e69f00") : isDark ? "#fbbf24" : "#d97706");
         const mcLabel = mat.monteCarloCode
-          ? `MCMEG <1 keV (${mat.monteCarloCode})`
-          : "MCMEG <1 keV";
-        const subOnlyRows = mat.subKeVData.filter((r) => r.energy_MeV < 0.000999999);
-        pushSegment(subOnlyRows, `${shortName} — ${mcLabel}`, mcColor, mcLabel, "solid", "circle");
+          ? `MCMEG 0.05–1 keV (${mat.monteCarloCode})`
+          : "MCMEG 0.05–1 keV";
+        const subRows = mat.subKeVData.filter((r) => r.energy_MeV <= 0.001000001);
+        const nistRows = (mat.data || []).filter((r) => r.energy_MeV > 0.001000001);
+        const nistDashStyle = isCb ? (nistDash === "solid" ? "dash" : nistDash) : nistDash;
+        const nistLegendGroup = `${mat.id || shortName}-nist`;
+
+        // Bridge the 1 keV MCMEG endpoint to the first >1 keV NIST point without duplicating markers/hover
+        if (subRows.length > 0 && nistRows.length > 0) {
+          const anchorPt = subRows[subRows.length - 1];
+          const firstNistPt = nistRows[0];
+          traces.push({
+            x: [anchorPt.energy_MeV * factor, firstNistPt.energy_MeV * factor],
+            y: [anchorPt.muen_rho, firstNistPt.muen_rho],
+            mode: "lines",
+            showlegend: false,
+            legendgroup: nistLegendGroup,
+            hoverinfo: "skip",
+            line: {
+              color: lineColor,
+              width: 2.6,
+              dash: nistDashStyle
+            }
+          });
+        }
+
+        pushSegment(subRows, `${shortName} — ${mcLabel}`, mcColor, mcLabel, "solid", "circle");
         pushSegment(
-          mat.data,
-          `${shortName} — NIST (1 keV–20 MeV)`,
+          nistRows,
+          `${shortName} — NIST (>1 keV–20 MeV)`,
           lineColor,
-          "NIST Reference",
-          isCb ? (nistDash === "solid" ? "dash" : nistDash) : nistDash,
-          isCb ? "diamond" : "circle"
+          "NIST Reference (>1 keV)",
+          nistDashStyle,
+          isCb ? "diamond" : "circle",
+          nistLegendGroup
         );
       } else if (mat.data && mat.data.length > 0) {
         pushSegment(
