@@ -4,7 +4,7 @@
    ========================================================================== */
 
 :root {
-  --bg-page: #f8fafc;
+  --bg-page: #eaeff5;
   --bg-card: #ffffff;
   --bg-header: #0b132b;
   --bg-header-accent: #1c2541;
@@ -48,7 +48,8 @@ body {
 .mcmeg-header {
   background: radial-gradient(circle at 18% 20%, #1e293b 0%, #0b1120 65%, #070b14 100%);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 30;
   border-bottom: 2px solid rgba(234, 179, 8, 0.35);
 }
 
@@ -212,6 +213,26 @@ html.dark .pt-cell-mcmeg-available {
   background: linear-gradient(135deg, #be123c 0%, #9f1239 100%);
   color: #fff1f2;
   border: 2px solid #fda4af;
+}
+
+.pt-cell-mcmeg-subkev {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #78350f;
+  border: 2px solid #d97706;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);
+}
+
+html.dark .pt-cell-mcmeg-subkev {
+  background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+  color: #fef3c7;
+  border: 2px solid #fbbf24;
+}
+
+.pt-cell-mcmeg-subkev:hover {
+  transform: scale(1.1);
+  z-index: 15;
 }
 
 .pt-cell-mcmeg-available:hover {
@@ -386,4 +407,83 @@ html.dark #compare-ratio-summary {
 .edge-badge,
 .ascii-pre {
   border-radius: 0 !important;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: Colorblind-Safe Palette (Okabe-Ito) & High Contrast Modes
+   ========================================================================== */
+
+/* Colorblind-Safe Periodic Table Cells (Orange for MCMEG Sub-keV, Blue for NIST) */
+html.a11y-colorblind .pt-cell-mcmeg-subkev {
+  background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+  color: #7c2d12;
+  border: 2px solid #e69f00;
+}
+
+html.a11y-colorblind.dark .pt-cell-mcmeg-subkev {
+  background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%);
+  color: #fff7ed;
+  border: 2px solid #f59e0b;
+}
+
+html.a11y-colorblind .pt-cell-mcmeg-available {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e3a8a;
+  border: 2px solid #0072b2;
+  box-shadow: 0 2px 8px rgba(0, 114, 178, 0.2);
+}
+
+html.a11y-colorblind.dark .pt-cell-mcmeg-available {
+  background: linear-gradient(135deg, #075985 0%, #0c4a6e 100%);
+  color: #e0f2fe;
+  border: 2px solid #56b4e9;
+}
+
+/* High Contrast Mode (Light) */
+html.a11y-contrast:not(.dark) {
+  --bg-page: #ffffff;
+  --text-main: #000000;
+  --text-muted: #1e293b;
+}
+
+html.a11y-contrast:not(.dark) .border-slate-200,
+html.a11y-contrast:not(.dark) .border-slate-300,
+html.a11y-contrast:not(.dark) .border-slate-100,
+html.a11y-contrast:not(.dark) .material-item {
+  border-color: #334155 !important;
+}
+
+html.a11y-contrast:not(.dark) .text-slate-400,
+html.a11y-contrast:not(.dark) .text-slate-500,
+html.a11y-contrast:not(.dark) .text-slate-600 {
+  color: #1e293b !important;
+}
+
+/* High Contrast Mode (Dark) */
+html.a11y-contrast.dark {
+  --bg-page: #000000;
+  --bg-card: #090d16;
+  --text-main: #ffffff;
+  --text-muted: #e2e8f0;
+}
+
+html.a11y-contrast.dark .bg-white {
+  background-color: #090d16 !important;
+}
+
+html.a11y-contrast.dark .bg-slate-50 {
+  background-color: #020617 !important;
+}
+
+html.a11y-contrast.dark .border-slate-200,
+html.a11y-contrast.dark .border-slate-300,
+html.a11y-contrast.dark .border-slate-100,
+html.a11y-contrast.dark .material-item {
+  border-color: #64748b !important;
+}
+
+html.a11y-contrast.dark .text-slate-400,
+html.a11y-contrast.dark .text-slate-500,
+html.a11y-contrast.dark .text-slate-600 {
+  color: #e2e8f0 !important;
 }

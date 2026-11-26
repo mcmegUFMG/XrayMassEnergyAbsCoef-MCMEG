@@ -50,8 +50,8 @@
        INSTITUTIONAL HEADER (MCMEG + UFMG Logos on Dark Scientific Banner)
        ==================================================================== -->
   <header class="mcmeg-header text-white">
-    <div class="max-w-[1540px] mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-10">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4 lg:gap-5">
+    <div class="max-w-[1540px] mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 relative z-10">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-1.5 sm:gap-4 lg:gap-5">
 
         <!-- MCMEG Logo (Left) + Title (Center on Mobile / Left on Desktop) + UFMG Logo (Right on Mobile) -->
         <div class="flex flex-row items-center justify-between lg:justify-start gap-2.5 sm:gap-4 lg:gap-5 w-full lg:w-auto">
@@ -76,58 +76,170 @@
           </a>
         </div>
 
-        <!-- Right: Theme Toggle (Centered on Mobile) + UFMG Logo (Desktop) -->
-        <div class="flex items-center justify-center lg:justify-end gap-4 pt-0.5 lg:pt-0 shrink-0">
-          <button
-            type="button"
-            id="btn-theme-toggle"
-            class="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 text-slate-100 border border-slate-700 hover:border-amber-400/60 text-xs font-semibold flex items-center gap-2 transition shadow-sm"
-            title="Switch between Light and Dark mode"
-          >
-            <span id="theme-toggle-icon" class="text-sm">🌙</span>
-            <span id="theme-toggle-label">Dark Mode</span>
-          </button>
-          <a href="https://ufmg.br" target="_blank" rel="noopener noreferrer" class="hidden lg:block shrink-0 opacity-95 hover:opacity-100 transition" title="Universidade Federal de Minas Gerais">
+        <!-- Right: UFMG Logo (Desktop) -->
+        <div class="hidden lg:flex items-center justify-end shrink-0">
+          <a href="https://ufmg.br" target="_blank" rel="noopener noreferrer" class="shrink-0 opacity-95 hover:opacity-100 transition" title="Universidade Federal de Minas Gerais">
             <img src="assets/logos/ufmg-logo.png" alt="UFMG Logo" class="h-14 w-auto object-contain" />
           </a>
         </div>
       </div>
 
       <!-- Navigation Bar -->
-      <div class="mt-4 pt-4 border-t border-slate-800/90 flex flex-col lg:flex-row items-center justify-between gap-3">
+      <div class="mt-1.5 pt-1.5 sm:mt-2.5 sm:pt-2.5 border-t border-slate-800/90 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
         <!-- Mobile Compact Collapsible Menu Toggle (< sm) -->
-        <div class="w-full sm:hidden flex flex-col items-center">
+        <button
+          type="button"
+          id="btn-mobile-nav-toggle"
+          aria-expanded="false"
+          class="sm:hidden order-1 flex-1 min-w-0 px-3 py-1.5 bg-amber-500 text-slate-950 font-semibold text-[11px] flex items-center justify-between gap-2 shadow-sm"
+        >
+          <span class="flex items-center gap-1.5 min-w-0 truncate">
+            <span>☰</span>
+            <span id="mobile-nav-current-label" class="inline-flex items-center gap-1.5 truncate">
+              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 3v18h18" />
+                <path d="m19 9-5 5-4-4-3 3" />
+              </svg>
+              <span class="truncate">Data &amp; Plot Explorer</span>
+            </span>
+          </span>
+          <span id="mobile-nav-chevron" class="text-[10px] font-mono-sci">▼</span>
+        </button>
+
+        <!-- Right Controls: Reviewer Unlock + Theme Toggle + Accessibility (Mobile & Desktop) -->
+        <div class="order-2 sm:order-3 sm:ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
           <button
             type="button"
-            id="btn-mobile-nav-toggle"
-            aria-expanded="false"
-            class="w-full max-w-xs px-4 py-2.5 bg-amber-500 text-slate-950 font-semibold text-xs flex items-center justify-between gap-2 shadow-sm"
+            id="btn-subkev-access"
+            class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-400/50 hover:border-amber-300 flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold transition shadow-sm"
+            title="Unlock pre-publication MCMEG sub-keV (0.05 – 1.0 keV) datasets"
+            aria-label="Unlock pre-publication sub-keV datasets"
           >
-            <span class="flex items-center gap-2 truncate">
-              <span>☰</span>
-              <span id="mobile-nav-current-label" class="truncate">📈 Data &amp; Plot Explorer</span>
-            </span>
-            <span id="mobile-nav-chevron" class="text-xs font-mono-sci">▼</span>
+            <span id="subkev-access-icon" class="text-xs sm:text-sm leading-none">🔒</span>
+            <span id="subkev-access-label" class="hidden sm:inline">0.05–1 keV Access</span>
           </button>
+          <button
+            type="button"
+            id="btn-theme-toggle"
+            class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-slate-800/90 hover:bg-slate-700/90 text-slate-100 border border-slate-600 hover:border-amber-400/60 flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold transition shadow-sm"
+            title="Switch between Light and Dark mode"
+            aria-label="Switch between Light and Dark mode"
+          >
+            <span id="theme-toggle-icon" class="text-sm leading-none">🌙</span>
+            <span id="theme-toggle-label" class="hidden md:inline">Dark Mode</span>
+          </button>
+
+          <!-- Accessibility Control (White Icon + 3 Bars) -->
+          <div id="a11y-control-wrap" class="relative shrink-0">
+          <button
+            type="button"
+            id="btn-a11y-toggle"
+            aria-expanded="false"
+            aria-controls="a11y-popover"
+            title="Accessibility Options"
+            class="px-2.5 py-1.5 sm:px-3 sm:py-2 bg-slate-800/90 hover:bg-slate-700/90 text-white border border-slate-600 hover:border-white/75 flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold transition shadow-sm"
+          >
+            <svg class="w-4 h-4 sm:w-[18px] sm:h-[18px] text-white shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="12" cy="4.5" r="2" />
+              <path d="M19 8.5H5a1 1 0 0 0 0 2h4.2l.8 3.6-1.8 5.9a1 1 0 1 0 1.9.6l1.9-5.8 1.9 5.8a1 1 0 1 0 1.9-.6l-1.8-5.9.8-3.6H19a1 1 0 0 0 0-2Z" />
+            </svg>
+            <svg class="w-3.5 h-3.5 text-slate-200 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M3 5.5A.75.75 0 0 1 3.75 4.75h12.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.5Zm0 4.5a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 10Zm0 4.5a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 14.5Z" clip-rule="evenodd" />
+            </svg>
+            <span class="hidden md:inline">Accessibility</span>
+          </button>
+
+          <!-- Accessibility Dropdown Menu -->
+          <div
+            id="a11y-popover"
+            role="region"
+            aria-label="Accessibility Settings"
+            class="hidden absolute right-0 top-full mt-2 w-64 sm:w-72 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 shadow-xl p-3.5 z-50 space-y-3.5"
+          >
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-700">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100">
+                Accessibility
+              </span>
+              <button
+                type="button"
+                id="btn-a11y-reset"
+                class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 hover:underline"
+              >
+                Reset
+              </button>
+            </div>
+
+            <!-- 1. Font Size Adjustment -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">Text Size</span>
+                <span id="a11y-font-label" class="text-[11px] font-mono-sci text-slate-500 dark:text-slate-400">100%</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1 bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700">
+                <button type="button" data-a11y-font="90" class="py-1 text-[11px] font-mono-sci font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700">A-</button>
+                <button type="button" data-a11y-font="100" class="py-1 text-[11px] font-mono-sci font-bold bg-slate-900 text-amber-400">100%</button>
+                <button type="button" data-a11y-font="112" class="py-1 text-[11px] font-mono-sci font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700">A+</button>
+                <button type="button" data-a11y-font="125" class="py-1 text-[11px] font-mono-sci font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700">A++</button>
+              </div>
+            </div>
+
+            <!-- 2. Colorblind-Safe Palette -->
+            <label class="flex items-start justify-between gap-2.5 cursor-pointer pt-1 border-t border-slate-100 dark:border-slate-800">
+              <div>
+                <div class="text-xs font-semibold text-slate-800 dark:text-slate-100">Colorblind-Safe Palette</div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">Okabe-Ito colors &amp; distinct line styles.</div>
+              </div>
+              <input type="checkbox" id="chk-a11y-colorblind" class="mt-0.5 shrink-0 text-amber-600 focus:ring-amber-500" />
+            </label>
+
+            <!-- 3. High Contrast -->
+            <label class="flex items-start justify-between gap-2.5 cursor-pointer pt-2 border-t border-slate-100 dark:border-slate-800">
+              <div>
+                <div class="text-xs font-semibold text-slate-800 dark:text-slate-100">High Contrast</div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">Stronger borders and sharper text contrast.</div>
+              </div>
+              <input type="checkbox" id="chk-a11y-contrast" class="mt-0.5 shrink-0 text-amber-600 focus:ring-amber-500" />
+            </label>
+          </div>
+        </div>
         </div>
 
         <!-- Navigation Tabs (Collapsible centered list on mobile, horizontal bar on sm+) -->
         <nav
           id="main-nav-menu"
-          class="hidden sm:flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-2 w-full sm:w-auto max-w-xs sm:max-w-none bg-slate-900/95 sm:bg-transparent p-2 sm:p-0 border border-slate-700 sm:border-0"
+          class="hidden sm:flex order-3 sm:order-2 flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2 w-full sm:w-auto bg-slate-900/95 sm:bg-transparent p-1.5 sm:p-0 border border-slate-700 sm:border-0"
           aria-label="Main Navigation"
         >
-          <button type="button" id="nav-tab-explorer" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-semibold transition bg-amber-500 text-slate-950 shadow-sm">
-            📈 Data &amp; Plot Explorer
+          <button type="button" id="nav-tab-explorer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition bg-amber-500 text-slate-950 shadow-sm">
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 3v18h18" />
+              <path d="m19 9-5 5-4-4-3 3" />
+            </svg>
+            <span>Data &amp; Plot Explorer</span>
           </button>
-          <button type="button" id="nav-tab-catalog" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
-            📋 Material Constants
+          <button type="button" id="nav-tab-catalog" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="1" />
+              <path d="M3 9h18" />
+              <path d="M9 21V9" />
+            </svg>
+            <span>Material Constants</span>
           </button>
-          <button type="button" id="nav-tab-comparison" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
-            📑 Reference Comparison
+          <button type="button" id="nav-tab-comparison" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 3v18h18" />
+              <path d="M7 16v-4" />
+              <path d="M12 16V8" />
+              <path d="M17 16v-6" />
+            </svg>
+            <span>Reference Comparison</span>
           </button>
-          <button type="button" id="nav-tab-methodology" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
-            📖 About, Methodology &amp; Citation
+          <button type="button" id="nav-tab-methodology" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <span>About, Methodology &amp; Citation</span>
           </button>
         </nav>
       </div>
@@ -137,86 +249,99 @@
   <!-- ====================================================================
        MAIN CONTENT AREA
        ==================================================================== -->
-  <main class="flex-1 max-w-[1540px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="flex-1 max-w-[1540px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
 
     <!-- ==================================================================
          TAB 1: INTERACTIVE EXPLORER (SIDEBAR + LOG-LOG PLOT + DATA TABLE)
          ================================================================== -->
-    <section id="section-explorer" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <section id="section-explorer" class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 items-start">
 
-      <!-- LEFT SIDEBAR: Category & Material Selector (5 cols on lg) -->
-      <aside class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 lg:sticky lg:top-4">
+      <!-- LEFT SIDEBAR: Category & Material Selector (4 cols on lg) -->
+      <aside class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 sm:p-3.5 lg:sticky lg:top-4">
         <!-- Category Switcher: Elemental Media vs Tissues & Compounds -->
-        <div class="bg-slate-100 p-1 rounded-xl flex items-center gap-1 mb-3">
-          <button type="button" id="cat-btn-elemental" class="flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-rose-700 text-white shadow-sm">
+        <div class="bg-slate-100 p-1 rounded-xl flex items-center gap-1 mb-2.5">
+          <button type="button" id="cat-btn-elemental" class="flex-1 py-1.5 px-2 rounded-lg font-semibold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1.5 bg-rose-700 text-white shadow-sm">
             <span>Elemental Media</span>
-            <span class="text-xs px-1.5 py-0.2 rounded-full bg-slate-950/15 font-mono-sci">15</span>
+            <span id="cat-count-elemental" class="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-900/35 text-white font-mono-sci font-bold">15</span>
           </button>
-          <button type="button" id="cat-btn-tissues" class="flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900">
+          <button type="button" id="cat-btn-tissues" class="flex-1 py-1.5 px-2 rounded-lg font-semibold text-[11px] sm:text-xs transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900">
             <span>Tissues &amp; Compounds</span>
-            <span class="text-xs px-1.5 py-0.2 rounded-full bg-slate-200 font-mono-sci">12</span>
+            <span id="cat-count-tissues" class="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-200 text-slate-800 font-mono-sci font-semibold">12</span>
           </button>
         </div>
 
         <!-- Search & View Mode Bar -->
-        <div class="flex items-center gap-2 mb-3">
-          <div class="relative flex-1">
+        <div class="flex items-center gap-1.5 mb-2.5">
+          <div class="relative flex-1 min-w-0">
             <input
               type="text"
               id="material-search-input"
               placeholder="Search element, symbol, Z or tissue..."
-              class="w-full pl-3 pr-8 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition"
+              class="w-full pl-2.5 pr-3 py-1.5 text-[11px] sm:text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition"
             />
           </div>
           <!-- Toggle List vs Periodic Table (visible for Elemental Media) -->
           <div id="elemental-view-toggle" class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 shrink-0">
-            <button type="button" id="view-btn-list" class="px-2.5 py-1 rounded text-xs font-semibold bg-slate-900 text-white" title="List View">
+            <button type="button" id="view-btn-list" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-900 text-white" title="List View">
               List
             </button>
-            <button type="button" id="view-btn-periodic" class="px-2.5 py-1 rounded text-xs font-medium text-slate-600 hover:bg-slate-200" title="Periodic Table View">
+            <button type="button" id="view-btn-periodic" class="px-2 py-0.5 rounded text-[11px] font-medium text-slate-600 hover:bg-slate-200" title="Periodic Table View">
               Periodic
             </button>
           </div>
         </div>
 
         <!-- Material Cards List -->
-        <div id="material-list-container" class="space-y-2 max-h-[540px] overflow-y-auto pr-1"></div>
+        <div id="material-list-container" class="space-y-1.5 max-h-[480px] overflow-y-auto pr-1"></div>
 
         <!-- Interactive Mini Periodic Table (Hidden by default) -->
         <div id="periodic-table-container" class="hidden"></div>
       </aside>
 
-      <!-- RIGHT WORKSPACE: Active Material Info, Log-Log Plot, Interpolation & Table (7 cols on lg) -->
-      <div class="lg:col-span-7 space-y-5">
+      <!-- RIGHT WORKSPACE: Active Material Info, Log-Log Plot, Interpolation & Table (8 cols on lg) -->
+      <div class="lg:col-span-8">
 
         <!-- Empty Selection State (Shown initially until user selects a material) -->
-        <div id="empty-selection-placeholder" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-10 sm:p-14 text-center flex flex-col items-center justify-center min-h-[380px]">
-          <div class="w-12 h-12 bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl mb-4">
+        <div id="empty-selection-placeholder" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-14 text-center flex flex-col items-center justify-center min-h-[280px] sm:min-h-[380px]">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 border border-slate-200 flex items-center justify-center text-xl sm:text-2xl mb-3 sm:mb-4">
             📈
           </div>
-          <h2 class="text-lg sm:text-xl font-bold text-slate-800">
+          <h2 class="text-sm sm:text-xl font-bold text-slate-800">
             Please select an Elemental Media or Tissues &amp; Compounds material
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-2 max-w-md leading-relaxed">
+          <p class="text-[11px] sm:text-sm text-slate-500 mt-1.5 sm:mt-2 max-w-md leading-relaxed">
             Choose a material from the left panel to display its mass energy-absorption coefficient (<span class="font-mono-sci">μ<sub>en</sub>/ρ</span>) curve and tabular data.
           </p>
+          <div id="placeholder-subkev-callout" class="mt-5 pt-4 border-t border-slate-200 dark:border-slate-700/80 max-w-md w-full">
+            <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300 mb-2.5">
+              Reviewers &amp; collaborators: enter the access passkey to unlock pre-publication <span class="font-mono-sci font-semibold">0.05 – 1.0 keV</span> MCMEG datasets in this tab.
+            </p>
+            <button
+              type="button"
+              id="btn-placeholder-unlock"
+              class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-700 text-xs font-semibold transition shadow-sm"
+            >
+              <span>🔒</span>
+              <span>Enter Reviewer Passkey</span>
+            </button>
+          </div>
         </div>
 
         <!-- Active Material Content Wrapper (Hidden until a material is selected) -->
         <div id="active-material-content" class="hidden space-y-5">
 
         <!-- Active Material Header Card -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3.5 sm:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-3">
             <div>
-              <h2 id="active-material-title" class="text-xl sm:text-2xl font-bold text-slate-900 font-mono-sci">
+              <h2 id="active-material-title" class="text-base sm:text-2xl font-bold text-slate-900 font-mono-sci">
                 Z = 79. Gold (Au)
               </h2>
-              <p id="active-material-subtitle" class="hidden text-xs sm:text-sm text-slate-600 mt-1"></p>
+              <p id="active-material-subtitle" class="hidden text-[11px] sm:text-sm text-slate-600 mt-1"></p>
             </div>
           </div>
 
-          <div id="active-material-badges" class="flex flex-wrap items-center gap-2 mt-3.5"></div>
+          <div id="active-material-badges" class="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-2.5 sm:mt-3.5"></div>
 
           <!-- Notice Banner when clicking one of the upcoming 50-1000 eV materials -->
           <div id="upcoming-dataset-notice" class="hidden mt-4 p-3.5 rounded-xl bg-amber-50/90 border border-amber-300"></div>
@@ -226,51 +351,72 @@
         <div id="active-material-data-cards" class="space-y-5">
 
         <!-- Interactive Log-Log Plot Card -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 sm:p-5">
           <!-- Plot Controls Bar -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-3 border-b border-slate-100">
+          <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3 pb-3 mb-2.5 sm:pb-4 sm:mb-3 border-b border-slate-100">
 
             <!-- Energy Unit Selector (eV / keV / MeV) -->
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-semibold text-slate-600">Energy Unit:</span>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <span class="text-[11px] sm:text-xs font-semibold text-slate-600">Energy Unit:</span>
               <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-                <button type="button" data-unit-btn="eV" class="px-2.5 py-1 rounded text-xs font-mono-sci font-medium text-slate-600 hover:bg-slate-200">
+                <button type="button" data-unit-btn="eV" class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[11px] sm:text-xs font-mono-sci font-medium text-slate-600 hover:bg-slate-200">
                   eV
                 </button>
-                <button type="button" data-unit-btn="keV" class="px-2.5 py-1 rounded text-xs font-mono-sci font-bold bg-slate-900 text-amber-400 shadow-sm">
+                <button type="button" data-unit-btn="keV" class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[11px] sm:text-xs font-mono-sci font-bold bg-slate-900 text-amber-400 shadow-sm">
                   keV
                 </button>
-                <button type="button" data-unit-btn="MeV" class="px-2.5 py-1 rounded text-xs font-mono-sci font-medium text-slate-600 hover:bg-slate-200">
+                <button type="button" data-unit-btn="MeV" class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[11px] sm:text-xs font-mono-sci font-medium text-slate-600 hover:bg-slate-200">
                   MeV
                 </button>
               </div>
             </div>
 
             <!-- Checkboxes for Log-Log Axes, MCMEG Window, and Comparison -->
-            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-700">
+            <div class="flex flex-wrap items-center gap-x-2.5 sm:gap-x-4 gap-y-1.5 text-[11px] sm:text-xs text-slate-700">
               <label class="inline-flex items-center gap-1.5 cursor-pointer font-semibold text-slate-900">
                 <input type="checkbox" id="chk-log-axes" checked class="rounded text-amber-600 focus:ring-amber-500" />
                 <span>Log vs. Log Axes</span>
               </label>
 
-              <label class="inline-flex items-center gap-1.5 cursor-pointer text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
+              <label class="inline-flex items-center gap-1.5 cursor-pointer text-amber-800 bg-amber-50 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border border-amber-200">
                 <input type="checkbox" id="chk-show-mcmeg-region" class="rounded text-amber-600 focus:ring-amber-500" />
-                <span>0.05–1 keV Calculated Window</span>
+                <span>0.05–1 keV MCMEG Window</span>
               </label>
 
-              <label class="inline-flex items-center gap-1.5 cursor-pointer text-sky-900 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-200 font-semibold">
+              <label class="inline-flex items-center gap-1.5 cursor-pointer text-sky-900 bg-sky-50 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border border-sky-200 font-semibold">
                 <input type="checkbox" id="chk-compare-mode" class="rounded text-sky-600 focus:ring-sky-500" />
                 <span>Compare with another material</span>
               </label>
             </div>
           </div>
 
+          <!-- Dataset Source Selector (Visible when active/compared material has sub-keV MCMEG data) -->
+          <div id="dataset-source-bar" class="hidden flex-wrap items-center justify-between gap-1.5 sm:gap-2 pb-2.5 mb-2.5 sm:pb-3 sm:mb-3 border-b border-slate-100">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
+              <span class="text-[11px] sm:text-xs font-semibold text-slate-600">Dataset View:</span>
+              <div class="flex sm:inline-flex w-full sm:w-auto items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                <button type="button" data-source-btn="combined" class="flex-1 sm:flex-initial text-center px-1.5 py-1 sm:px-2.5 sm:py-1 rounded text-[9.5px] sm:text-xs whitespace-nowrap font-mono-sci font-bold bg-slate-900 text-amber-400 shadow-sm">
+                  MCMEG + NIST
+                </button>
+                <button type="button" data-source-btn="mcmeg" class="flex-1 sm:flex-initial text-center px-1.5 py-1 sm:px-2.5 sm:py-1 rounded text-[9.5px] sm:text-xs whitespace-nowrap font-mono-sci font-medium text-slate-600 hover:bg-slate-200">
+                  MCMEG (0.05–1 keV)
+                </button>
+                <button type="button" data-source-btn="nist" class="flex-1 sm:flex-initial text-center px-1.5 py-1 sm:px-2.5 sm:py-1 rounded text-[9.5px] sm:text-xs whitespace-nowrap font-mono-sci font-medium text-slate-600 hover:bg-slate-200">
+                  NIST (1 keV–20 MeV)
+                </button>
+              </div>
+            </div>
+            <span id="dataset-source-hint" class="text-[10px] sm:text-[11px] text-slate-500">
+              Combined view uses MCMEG (&lt; 1 keV) + NIST (≥ 1 keV) without duplicate 1 keV points.
+            </span>
+          </div>
+
           <!-- Comparison Mode Sub-Toolbar (Target Material Selector + Overlay Curves vs Ratio Curve) -->
-          <div id="compare-mode-subbar" class="hidden mb-3 p-3.5 bg-sky-50/70 border border-sky-200 space-y-3">
+          <div id="compare-mode-subbar" class="hidden mb-3 p-2.5 sm:p-3.5 bg-sky-50/70 border border-sky-200 space-y-2 sm:space-y-3">
             <!-- Row 1: Choose Comparison Category & Target Material -->
-            <div class="flex flex-wrap items-center justify-between gap-3 pb-2.5 border-b border-sky-200/70 dark:border-slate-700/80">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="text-xs font-bold uppercase tracking-wider text-sky-900 dark:text-sky-300">
+            <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3 pb-2 sm:pb-2.5 border-b border-sky-200/70 dark:border-slate-700/80">
+              <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-sky-900 dark:text-sky-300">
                   Compare With:
                 </span>
                 <!-- Step 1: Category Switcher (Elemental Media vs Tissues & Compounds) -->
@@ -278,14 +424,14 @@
                   <button
                     type="button"
                     id="btn-compare-cat-elemental"
-                    class="px-2.5 py-1 text-xs font-semibold transition"
+                    class="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-xs font-semibold transition"
                   >
                     Elemental Media
                   </button>
                   <button
                     type="button"
                     id="btn-compare-cat-tissues"
-                    class="px-2.5 py-1 text-xs font-semibold transition"
+                    class="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-xs font-semibold transition"
                   >
                     Tissues &amp; Compounds
                   </button>
@@ -294,32 +440,32 @@
                 <!-- Step 2: Material Selector Dropdown -->
                 <select
                   id="select-compare-material"
-                  class="px-3 py-1.5 text-xs font-mono-sci font-semibold bg-white border border-sky-300 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
+                  class="px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-mono-sci font-semibold bg-white border border-sky-300 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer max-w-full"
                   aria-label="Select comparison material"
                 ></select>
               </div>
 
-              <div id="compare-pair-badge" class="text-xs font-mono-sci font-semibold text-sky-900 dark:text-sky-300"></div>
+              <div id="compare-pair-badge" class="text-[10px] sm:text-xs font-mono-sci font-semibold text-sky-900 dark:text-sky-300"></div>
             </div>
 
             <!-- Row 2: Comparison View (Overlay vs Ratio) -->
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="text-xs font-bold uppercase tracking-wider text-sky-900 dark:text-sky-300">
+            <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+              <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-sky-900 dark:text-sky-300">
                   Comparison View:
                 </span>
                 <div class="inline-flex items-center bg-white p-0.5 border border-sky-200 shadow-sm">
                   <button
                     type="button"
                     id="btn-compare-overlay"
-                    class="px-3 py-1.5 text-xs font-semibold bg-sky-600 text-white transition"
+                    class="px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-semibold bg-sky-600 text-white transition"
                   >
                     📈 Overlay Curves
                   </button>
                   <button
                     type="button"
                     id="btn-compare-ratio"
-                    class="px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
+                    class="px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
                   >
                     ➗ Ratio Curve
                   </button>
@@ -327,17 +473,17 @@
                 <button
                   type="button"
                   id="btn-swap-ratio"
-                  class="hidden px-2.5 py-1.5 border border-sky-300 bg-white hover:bg-sky-100 text-xs font-mono-sci font-semibold text-sky-900 dark:text-sky-300 transition"
+                  class="hidden px-2 py-1 sm:px-2.5 sm:py-1.5 border border-sky-300 bg-white hover:bg-sky-100 text-[10px] sm:text-xs font-mono-sci font-semibold text-sky-900 dark:text-sky-300 transition"
                   title="Invert numerator and denominator"
                 >
                   ⇄ Invert Ratio
                 </button>
               </div>
 
-              <div id="compare-ratio-summary" class="text-xs font-mono-sci text-sky-900"></div>
+              <div id="compare-ratio-summary" class="text-[10px] sm:text-xs font-mono-sci text-sky-900"></div>
             </div>
 
-            <div class="pt-2 border-t border-sky-200/70 dark:border-slate-700/80 text-[11px] text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+            <div class="pt-1.5 sm:pt-2 border-t border-sky-200/70 dark:border-slate-700/80 text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
               <span class="text-amber-600 dark:text-amber-400 font-bold">⚠️ Note:</span>
               <span>
                 This ratio and comparison account exclusively for the mass energy-absorption coefficient (<strong>μ<sub>en</sub>/ρ</strong>), and do not consider the total mass attenuation coefficient (μ/ρ).
@@ -346,16 +492,16 @@
           </div>
 
           <!-- Plotly Log-Log Graph Container -->
-          <div id="plotly-loglog-chart" class="w-full h-[430px] sm:h-[470px]"></div>
+          <div id="plotly-loglog-chart" class="w-full h-[450px] sm:h-[470px]"></div>
 
           <!-- Log-Log Interpolation Calculator Bar -->
-          <div class="mt-4 pt-4 border-t border-slate-100">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200/90">
+          <div class="mt-3 pt-3 sm:mt-4 sm:pt-4 border-t border-slate-100">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 bg-slate-50 p-2.5 sm:p-3.5 rounded-xl border border-slate-200/90">
               <div>
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <h3 class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                   <span>🧮 Log-Log Interpolation Calculator</span>
                 </h3>
-                <p class="text-[11px] text-slate-500 mt-0.5">
+                <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 leading-snug">
                   Compute exact log-log interpolated values of <strong>μ<sub>en</sub>/ρ</strong> at any intermediate photon energy and plot it on the graph.
                 </p>
               </div>
@@ -366,16 +512,16 @@
                     step="any"
                     id="interp-energy-input"
                     placeholder="e.g. 25.5"
-                    class="w-36 pl-3 pr-11 py-1.5 text-xs font-mono-sci bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    class="w-32 sm:w-36 pl-2.5 pr-10 sm:pl-3 sm:pr-11 py-1 sm:py-1.5 text-[11px] sm:text-xs font-mono-sci bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
-                  <span id="interp-unit-badge" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] font-mono-sci font-semibold text-slate-400">
+                  <span id="interp-unit-badge" class="absolute right-2 sm:right-2.5 top-1/2 -translate-y-1/2 text-[10px] sm:text-[11px] font-mono-sci font-semibold text-slate-400">
                     keV
                   </span>
                 </div>
                 <button
                   type="button"
                   id="btn-run-interp"
-                  class="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-400 font-semibold text-xs transition shadow-sm"
+                  class="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-400 font-semibold text-[11px] sm:text-xs transition shadow-sm"
                 >
                   Interpolate
                 </button>
@@ -386,64 +532,64 @@
         </div>
 
         <!-- Data Table Card (HTML Table format & NIST ASCII format) -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-3 border-b border-slate-100">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 sm:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 pb-3 mb-2.5 sm:pb-4 sm:mb-3 border-b border-slate-100">
             <div>
-              <div class="flex items-center gap-2">
-                <h3 class="text-base font-bold text-slate-900">
+              <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <h3 class="text-sm sm:text-base font-bold text-slate-900">
                   Tabular Data — <span id="table-material-label" class="text-rose-700 dark:text-rose-400 font-mono-sci">Gold (Z = 79)</span>
                 </h3>
-                <span id="table-row-count" class="px-2 py-0.5 rounded-full text-[11px] font-mono-sci bg-slate-100 text-slate-600">
+                <span id="table-row-count" class="px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono-sci bg-slate-100 text-slate-600">
                   58 points
                 </span>
               </div>
-              <p class="text-xs text-slate-500 mt-0.5">
+              <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">
                 Values of the mass energy-absorption coefficient (μ<sub>en</sub>/ρ) as a function of photon energy.
               </p>
             </div>
 
             <!-- Format Switcher & Export Buttons -->
-            <div class="flex flex-wrap items-center gap-2">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-                <button type="button" id="btn-table-html" class="px-3 py-1 rounded-md text-xs font-semibold bg-slate-900 text-white">
+                <button type="button" id="btn-table-html" class="px-2 py-1 sm:px-3 sm:py-1 rounded-md text-[10px] sm:text-xs font-semibold bg-slate-900 text-white">
                   HTML Table
                 </button>
-                <button type="button" id="btn-table-ascii" class="px-3 py-1 rounded-md text-xs font-medium text-slate-600 hover:bg-slate-200">
+                <button type="button" id="btn-table-ascii" class="px-2 py-1 sm:px-3 sm:py-1 rounded-md text-[10px] sm:text-xs font-medium text-slate-600 hover:bg-slate-200">
                   ASCII Format
                 </button>
               </div>
 
-              <button type="button" id="btn-copy-table" class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition">
+              <button type="button" id="btn-copy-table" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-[10px] sm:text-xs font-semibold text-slate-700 transition">
                 📋 Copy ASCII
               </button>
-              <button type="button" id="btn-download-csv" class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition">
+              <button type="button" id="btn-download-csv" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-[10px] sm:text-xs font-semibold text-slate-700 transition">
                 ⬇ CSV
               </button>
-              <button type="button" id="btn-download-ascii" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition">
+              <button type="button" id="btn-download-ascii" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-[10px] sm:text-xs font-semibold transition">
                 ⬇ ASCII (.txt)
               </button>
             </div>
           </div>
 
           <!-- Filter input for table -->
-          <div class="mb-3 flex items-center justify-between gap-2">
+          <div class="mb-2.5 sm:mb-3 flex items-center justify-between gap-2">
             <input
               type="text"
               id="table-filter-input"
               placeholder="Filter rows by energy (e.g. 1.5, 10, 100)..."
-              class="w-full sm:w-80 px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+              class="w-full sm:w-80 px-2.5 py-1 sm:px-3 sm:py-1.5 text-[11px] sm:text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
           </div>
 
           <!-- HTML Table View -->
           <div id="table-html-view" class="data-table-wrapper rounded-xl border border-slate-200">
             <table class="w-full text-left border-collapse">
-              <thead class="bg-slate-100 sticky top-0 z-10 border-b border-slate-200 text-xs font-semibold text-slate-700">
+              <thead class="bg-slate-100 sticky top-0 z-10 border-b border-slate-200 text-[10px] sm:text-xs font-semibold text-slate-700">
                 <tr id="data-table-thead-row">
-                  <th class="py-2.5 px-4 text-left">
+                  <th class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-left">
                     Energy <span id="table-energy-unit-label" class="font-mono-sci text-slate-500">(keV)</span>
                   </th>
-                  <th class="py-2.5 px-4 text-right">
+                  <th class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-right">
                     μ<sub>en</sub>/ρ <span class="font-mono-sci text-slate-500">(cm²/g)</span>
                   </th>
                 </tr>
@@ -454,7 +600,7 @@
 
           <!-- NIST ASCII Preformatted View -->
           <div id="table-ascii-view" class="hidden">
-            <pre id="ascii-output-box" class="ascii-pre font-mono-sci"></pre>
+            <pre id="ascii-output-box" class="ascii-pre font-mono-sci text-[10px] sm:text-[13px]"></pre>
           </div>
         </div>
 
@@ -466,41 +612,41 @@
     <!-- ==================================================================
          TAB 2: MATERIAL CONSTANTS (COLLAPSIBLE TABLES 1 & 2)
          ================================================================== -->
-    <section id="section-catalog" class="hidden space-y-4">
+    <section id="section-catalog" class="hidden space-y-3 sm:space-y-4">
       <!-- Table 1: Elemental Media (15 Nanoparticle Elements) -->
       <div class="bg-white border border-slate-200 shadow-sm">
         <button
           type="button"
           data-accordion-target="catalog-table1-body"
           aria-expanded="false"
-          class="w-full px-5 py-4 flex items-center justify-between gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition"
+          class="w-full px-3.5 py-3 sm:px-5 sm:py-4 flex items-center justify-between gap-3 sm:gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition"
         >
-          <div class="flex flex-wrap items-center gap-2.5">
-            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <span class="text-[11px] sm:text-sm font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
               Table 1 · Elemental Media
             </span>
-            <span class="px-2 py-0.5 text-[11px] font-mono-sci bg-amber-100 text-amber-900 border border-amber-200 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-700/50">
+            <span class="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-[11px] font-mono-sci bg-amber-100 text-amber-900 border border-amber-200 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-700/50">
               15 elements
             </span>
           </div>
-          <span data-accordion-chevron class="text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
+          <span data-accordion-chevron class="text-[10px] sm:text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
         </button>
 
-        <div id="catalog-table1-body" class="hidden px-6 pb-6 pt-4 border-t border-slate-200">
-          <p class="text-sm text-slate-600 mb-4">
+        <div id="catalog-table1-body" class="hidden px-3.5 pb-4 pt-3 sm:px-6 sm:pb-6 sm:pt-4 border-t border-slate-200">
+          <p class="text-[11px] sm:text-sm text-slate-600 mb-3 sm:mb-4">
             Each material is modeled as a pure chemical element with a mass fraction of 100 wt%. Bulk densities ρ are taken from standard reference data (Berger et al., 2005 / NIST).
           </p>
 
           <div class="overflow-x-auto border border-slate-200">
-            <table class="w-full text-left border-collapse text-sm">
-              <thead class="bg-slate-100 border-b border-slate-200 text-xs uppercase text-slate-600 font-semibold">
+            <table class="w-full text-left border-collapse text-[11px] sm:text-sm">
+              <thead class="bg-slate-100 border-b border-slate-200 text-[10px] sm:text-xs uppercase text-slate-600 font-semibold">
                 <tr>
-                  <th class="py-3 px-4">Element</th>
-                  <th class="py-3 px-4 text-center">Chemical Symbol</th>
-                  <th class="py-3 px-4 text-center">Atomic Number (Z)</th>
-                  <th class="py-3 px-4 text-right">Density ρ (g/cm³)<sup>a</sup></th>
-                  <th class="py-3 px-4 text-center">Dataset Status</th>
-                  <th class="py-3 px-4 text-right">Action</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4">Element</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4 text-center">Chemical Symbol</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4 text-center">Atomic Number (Z)</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4 text-right">Density ρ (g/cm³)<sup>a</sup></th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4 text-center">Dataset Status</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4 text-right">Action</th>
                 </tr>
               </thead>
               <tbody id="catalog-elemental-tbody"></tbody>
@@ -508,7 +654,7 @@
           </div>
 
           <!-- Reference a for Table 1 -->
-          <p class="mt-3 text-xs text-slate-600 leading-relaxed">
+          <p class="mt-2.5 sm:mt-3 text-[10px] sm:text-xs text-slate-600 leading-relaxed">
             <sup>a</sup> <strong>Berger, M.J., Coursey, J.S., Zucker, M.A., Chang, J., 2005.</strong> ESTAR, PSTAR, and ASTAR: Computer Programs for Calculating Stopping-Power and Range Tables for Electrons, Protons, and Helium Ions (Version 1.2.3). Technical Report. National Institute of Standards and Technology, Gaithersburg, MD. URL: <a href="http://physics.nist.gov/Star" target="_blank" rel="noopener noreferrer" class="text-sky-700 dark:text-sky-400 underline hover:text-amber-600">http://physics.nist.gov/Star</a>. accessed: 2026-10-20.
           </p>
         </div>
@@ -520,33 +666,33 @@
           type="button"
           data-accordion-target="catalog-table2-body"
           aria-expanded="false"
-          class="w-full px-5 py-4 flex items-center justify-between gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition"
+          class="w-full px-3.5 py-3 sm:px-5 sm:py-4 flex items-center justify-between gap-3 sm:gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition"
         >
-          <div class="flex flex-wrap items-center gap-2.5">
-            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">
+          <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <span class="text-[11px] sm:text-sm font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">
               Table 2 · Tissues &amp; Compounds
             </span>
-            <span class="px-2 py-0.5 text-[11px] font-mono-sci bg-sky-100 text-sky-900 border border-sky-200 dark:bg-sky-950/50 dark:text-sky-200 dark:border-sky-700/50">
+            <span class="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-[11px] font-mono-sci bg-sky-100 text-sky-900 border border-sky-200 dark:bg-sky-950/50 dark:text-sky-200 dark:border-sky-700/50">
               12 media
             </span>
           </div>
-          <span data-accordion-chevron class="text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
+          <span data-accordion-chevron class="text-[10px] sm:text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
         </button>
 
-        <div id="catalog-table2-body" class="hidden px-6 pb-6 pt-4 border-t border-slate-200">
-          <p class="text-sm text-slate-600 mb-4">
+        <div id="catalog-table2-body" class="hidden px-3.5 pb-4 pt-3 sm:px-6 sm:pb-6 sm:pt-4 border-t border-slate-200">
+          <p class="text-[11px] sm:text-sm text-slate-600 mb-3 sm:mb-4">
             Material constants and elemental compositions (percentage by mass) for liquid water and 11 human body tissues from ICRU Report 44<sup>a</sup>.
           </p>
 
           <div class="overflow-x-auto border border-slate-200">
-            <table class="w-full text-left border-collapse text-sm">
-              <thead class="bg-slate-100 border-b border-slate-200 text-xs uppercase text-slate-600 font-semibold">
+            <table class="w-full text-left border-collapse text-[11px] sm:text-sm">
+              <thead class="bg-slate-100 border-b border-slate-200 text-[10px] sm:text-xs uppercase text-slate-600 font-semibold">
                 <tr>
-                  <th class="py-3 px-4">Material</th>
-                  <th class="py-3 px-4 text-right">Density ρ (g/cm³)</th>
-                  <th class="py-3 px-4">Elemental Composition (wt%)</th>
-                  <th class="py-3 px-4 text-center">Dataset Status</th>
-                  <th class="py-3 px-4 text-right">Action</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4">Material</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4 text-right">Density ρ (g/cm³)</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4">Elemental Composition (wt%)</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4 text-center">Dataset Status</th>
+                  <th class="py-2 px-2.5 sm:py-3 sm:px-4 text-right">Action</th>
                 </tr>
               </thead>
               <tbody id="catalog-tissues-tbody"></tbody>
@@ -554,7 +700,7 @@
           </div>
 
           <!-- Reference a for Table 2 -->
-          <p class="mt-3 text-xs text-slate-600 leading-relaxed">
+          <p class="mt-2.5 sm:mt-3 text-[10px] sm:text-xs text-slate-600 leading-relaxed">
             <sup>a</sup> <strong>International Commission on Radiation Units and Measurements, 1989.</strong> Tissue Substitutes in Radiation Dosimetry and Measurement. Technical Report Report 44. International Commission on Radiation Units and Measurements, Bethesda, MD. doi:<a href="https://doi.org/10.1093/jicru/os23.1.Report44" target="_blank" rel="noopener noreferrer" class="text-sky-700 dark:text-sky-400 underline hover:text-amber-600">10.1093/jicru/os23.1.Report44</a>.
           </p>
         </div>
@@ -564,137 +710,137 @@
     <!-- ==================================================================
          TAB 3: REFERENCE COMPARISON (1 keV SIMULATED vs NIST-XCOM)
          ================================================================== -->
-    <section id="section-comparison" class="hidden space-y-4">
+    <section id="section-comparison" class="hidden space-y-3 sm:space-y-4">
       <!-- Table: Elemental Media at 1 keV -->
       <div class="bg-white border border-slate-200 shadow-sm">
         <button
           type="button"
           data-accordion-target="comparison-table1-body"
           aria-expanded="false"
-          class="w-full px-5 py-4 flex items-center justify-between gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition"
+          class="w-full px-3.5 py-3 sm:px-5 sm:py-4 flex items-center justify-between gap-3 sm:gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition"
         >
-          <div class="flex flex-wrap items-center gap-2.5">
-            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <span class="text-[11px] sm:text-sm font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
               Reference Comparison · Elemental Media (1 <span class="normal-case">keV</span>)
             </span>
-            <span class="px-2 py-0.5 text-[11px] font-mono-sci bg-amber-100 text-amber-900 border border-amber-200 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-700/50">
+            <span class="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-[11px] font-mono-sci bg-amber-100 text-amber-900 border border-amber-200 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-700/50">
               15 elements
             </span>
           </div>
-          <span data-accordion-chevron class="text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
+          <span data-accordion-chevron class="text-[10px] sm:text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
         </button>
 
-        <div id="comparison-table1-body" class="hidden px-6 pb-6 pt-4 border-t border-slate-200">
-          <p class="text-sm text-slate-600 mb-4">
+        <div id="comparison-table1-body" class="hidden px-3.5 pb-4 pt-3 sm:px-6 sm:pb-6 sm:pt-4 border-t border-slate-200">
+          <p class="text-[11px] sm:text-sm text-slate-600 mb-3 sm:mb-4">
             Comparison of simulated mass energy-absorption coefficients with NIST-XCOM reference values for selected materials at a photon energy of 1 keV.
           </p>
 
           <div class="overflow-x-auto border border-slate-200">
-            <table class="w-full table-fixed min-w-[520px] text-left border-collapse text-sm">
-            <thead class="bg-slate-100 border-b border-slate-200 text-xs text-slate-700 font-semibold">
+            <table class="w-full table-fixed min-w-[460px] sm:min-w-[520px] text-left border-collapse text-[11px] sm:text-sm">
+            <thead class="bg-slate-100 border-b border-slate-200 text-[10px] sm:text-xs text-slate-700 font-semibold">
               <tr>
-                <th class="w-[34%] py-3 px-4 uppercase">Materials</th>
-                <th class="w-[22%] py-3 px-4 text-center">
+                <th class="w-[34%] py-2 px-2.5 sm:py-3 sm:px-4 uppercase">Materials</th>
+                <th class="w-[22%] py-2 px-2.5 sm:py-3 sm:px-4 text-center">
                   <div class="uppercase">Simulated</div>
-                  <div class="font-mono-sci text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
+                  <div class="font-mono-sci text-[9px] sm:text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
                 </th>
-                <th class="w-[22%] py-3 px-4 text-center">
+                <th class="w-[22%] py-2 px-2.5 sm:py-3 sm:px-4 text-center">
                   <div class="uppercase">NIST-XCOM<sup>a</sup></div>
-                  <div class="font-mono-sci text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
+                  <div class="font-mono-sci text-[9px] sm:text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
                 </th>
-                <th class="w-[22%] py-3 px-4 text-center uppercase">Relative Difference (%)</th>
+                <th class="w-[22%] py-2 px-2.5 sm:py-3 sm:px-4 text-center uppercase">Relative Difference (%)</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200 font-mono-sci text-xs sm:text-sm">
+            <tbody class="divide-y divide-slate-200 font-mono-sci text-[11px] sm:text-sm">
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Iron</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">9052</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Iron</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">9052</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Cobalt</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">9750</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Cobalt</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">9750</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Nickel</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">9797</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Nickel</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">9797</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Copper</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">10490</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Copper</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">10490</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Zinc</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">1548</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Zinc</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">1548</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Palladium</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">6529</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Palladium</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">6529</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Silver</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">7029</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Silver</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">7029</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Iodine</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">9078</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Iodine</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">9078</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Gadolinium</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">2281</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Gadolinium</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">2281</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Hafnium</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3324</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Hafnium</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3324</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Tantalum</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3498</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Tantalum</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3498</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Tungsten</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3671</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Tungsten</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3671</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Platinum</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">4421</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Platinum</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">4421</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Gold</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">4639</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Gold</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">4639</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Bismuth</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">5427</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Bismuth</td>
+                <td data-comp-sim="Bi" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td data-comp-nist="Bi" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">5427</td>
+                <td data-comp-diff="Bi" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
             </tbody>
           </table>
@@ -708,112 +854,112 @@
           type="button"
           data-accordion-target="comparison-table2-body"
           aria-expanded="false"
-          class="w-full px-5 py-4 flex items-center justify-between gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition"
+          class="w-full px-3.5 py-3 sm:px-5 sm:py-4 flex items-center justify-between gap-3 sm:gap-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition"
         >
-          <div class="flex flex-wrap items-center gap-2.5">
-            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">
+          <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <span class="text-[11px] sm:text-sm font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">
               Reference Comparison · Tissues &amp; Compounds (1 <span class="normal-case">keV</span>)
             </span>
-            <span class="px-2 py-0.5 text-[11px] font-mono-sci bg-sky-100 text-sky-900 border border-sky-200 dark:bg-sky-950/50 dark:text-sky-200 dark:border-sky-700/50">
+            <span class="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-[11px] font-mono-sci bg-sky-100 text-sky-900 border border-sky-200 dark:bg-sky-950/50 dark:text-sky-200 dark:border-sky-700/50">
               12 media
             </span>
           </div>
-          <span data-accordion-chevron class="text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
+          <span data-accordion-chevron class="text-[10px] sm:text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
         </button>
 
-        <div id="comparison-table2-body" class="hidden px-6 pb-6 pt-4 border-t border-slate-200">
-          <p class="text-sm text-slate-600 mb-4">
+        <div id="comparison-table2-body" class="hidden px-3.5 pb-4 pt-3 sm:px-6 sm:pb-6 sm:pt-4 border-t border-slate-200">
+          <p class="text-[11px] sm:text-sm text-slate-600 mb-3 sm:mb-4">
             Comparison of simulated mass energy-absorption coefficients with NIST-XCOM reference values for water and selected biological tissues at a photon energy of 1 keV.
           </p>
 
           <div class="overflow-x-auto border border-slate-200">
-            <table class="w-full table-fixed min-w-[520px] text-left border-collapse text-sm">
-            <thead class="bg-slate-100 border-b border-slate-200 text-xs text-slate-700 font-semibold">
+            <table class="w-full table-fixed min-w-[460px] sm:min-w-[520px] text-left border-collapse text-[11px] sm:text-sm">
+            <thead class="bg-slate-100 border-b border-slate-200 text-[10px] sm:text-xs text-slate-700 font-semibold">
               <tr>
-                <th class="w-[34%] py-3 px-4 uppercase">Materials</th>
-                <th class="w-[22%] py-3 px-4 text-center">
+                <th class="w-[34%] py-2 px-2.5 sm:py-3 sm:px-4 uppercase">Materials</th>
+                <th class="w-[22%] py-2 px-2.5 sm:py-3 sm:px-4 text-center">
                   <div class="uppercase">Simulated</div>
-                  <div class="font-mono-sci text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
+                  <div class="font-mono-sci text-[9px] sm:text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
                 </th>
-                <th class="w-[22%] py-3 px-4 text-center">
+                <th class="w-[22%] py-2 px-2.5 sm:py-3 sm:px-4 text-center">
                   <div class="uppercase">NIST-XCOM<sup>a</sup></div>
-                  <div class="font-mono-sci text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
+                  <div class="font-mono-sci text-[9px] sm:text-[11px] font-normal text-slate-500 mt-0.5">μ<sub>en</sub>/ρ (cm²·g⁻¹)</div>
                 </th>
-                <th class="w-[22%] py-3 px-4 text-center uppercase">Relative Difference (%)</th>
+                <th class="w-[22%] py-2 px-2.5 sm:py-3 sm:px-4 text-center uppercase">Relative Difference (%)</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200 font-mono-sci text-xs sm:text-sm">
+            <tbody class="divide-y divide-slate-200 font-mono-sci text-[11px] sm:text-sm">
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Water</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">4065</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Water</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">4065</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Adipose Tissue</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">2623</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Adipose Tissue</td>
+                <td data-comp-sim="adipose_tissue" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td data-comp-nist="adipose_tissue" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">2623</td>
+                <td data-comp-diff="adipose_tissue" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Blood, Whole</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3795</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Blood, Whole</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3795</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Bone, Cortical</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3772</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Bone, Cortical</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3772</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Brain, Grey/White Matter</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3686</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Brain, Grey/White Matter</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3686</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Breast Tissue</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3255</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Breast Tissue</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3255</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Eye Lens</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3588</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Eye Lens</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3588</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Lung Tissue</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3791</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Lung Tissue</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3791</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Muscle, Skeletal</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3709</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Muscle, Skeletal</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3709</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Ovary</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3823</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Ovary</td>
+                <td data-comp-sim="ovary" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td data-comp-nist="ovary" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3823</td>
+                <td data-comp-diff="ovary" class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Testis</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3812</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Testis</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3812</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
               <tr class="hover:bg-slate-50 transition">
-                <td class="py-2.5 px-4 font-sans font-semibold text-slate-900">Soft Tissue (Four Comp.)</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
-                <td class="py-2.5 px-4 text-center text-slate-800">3818</td>
-                <td class="py-2.5 px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 font-sans font-semibold text-slate-900">Soft Tissue (Four Comp.)</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-800">3818</td>
+                <td class="py-2 px-2.5 sm:py-2.5 sm:px-4 text-center text-slate-500"></td>
               </tr>
             </tbody>
           </table>
@@ -822,11 +968,11 @@
       </div>
 
       <!-- Reference for NIST-XCOM (a) -->
-      <div class="bg-white border border-slate-200 shadow-sm p-6">
-        <h3 class="text-xs font-mono-sci font-bold uppercase tracking-wider text-slate-700 mb-3">
+      <div class="bg-white border border-slate-200 shadow-sm p-3.5 sm:p-6">
+        <h3 class="text-[11px] sm:text-xs font-mono-sci font-bold uppercase tracking-wider text-slate-700 mb-2 sm:mb-3">
           References
         </h3>
-        <div class="space-y-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+        <div class="space-y-2 sm:space-y-2.5 text-[11px] sm:text-sm text-slate-600 leading-relaxed">
           <p>
             <sup>a</sup> <strong>Hubbell, J.H., Seltzer, S.M., 2004.</strong> Tables of x-ray mass attenuation coefficients and mass energy-absorption coefficients. URL: <a href="http://physics.nist.gov/xaamdi" target="_blank" rel="noopener noreferrer" class="text-sky-700 dark:text-sky-400 underline hover:text-amber-600">http://physics.nist.gov/xaamdi</a>. version 1.4, National Institute of Standards and Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.
           </p>
@@ -837,26 +983,26 @@
     <!-- ==================================================================
          TAB 4: METHODOLOGY, OVERVIEW & CITATION
          ================================================================== -->
-    <section id="section-methodology" class="hidden space-y-6">
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
-        <div class="w-full space-y-6">
+    <section id="section-methodology" class="hidden space-y-4 sm:space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-8">
+        <div class="w-full space-y-4 sm:space-y-6">
           <div>
-            <span class="px-2.5 py-1 rounded-md text-xs font-mono-sci font-semibold bg-amber-100 text-amber-900">
+            <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[10px] sm:text-xs font-mono-sci font-semibold bg-amber-100 text-amber-900">
               Scientific Overview
             </span>
-            <h2 class="text-2xl font-bold text-slate-900 mt-2">
+            <h2 class="text-base sm:text-2xl font-bold text-slate-900 mt-1.5 sm:mt-2">
               Extending Mass Energy-Absorption Coefficients Down to 0.05 keV
             </h2>
 
             <!-- Under Development Notice Box (Light Red) -->
-            <div class="mt-3.5 p-4 bg-red-50/80 border border-red-200 text-red-900 dark:bg-red-950/30 dark:border-red-900/60 dark:text-red-200 text-xs sm:text-sm leading-relaxed">
+            <div class="mt-2.5 sm:mt-3.5 p-3 sm:p-4 bg-red-50/80 border border-red-200 text-red-900 dark:bg-red-950/30 dark:border-red-900/60 dark:text-red-200 text-[11px] sm:text-sm leading-relaxed">
               <strong class="font-semibold">Notice:</strong> This database is currently under development. Simulated mass attenuation coefficient data for selected materials in the sub-keV energy range will be made available following publication of the associated scientific research.
             </div>
 
-            <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-4">
+            <p class="text-slate-600 text-xs sm:text-base leading-relaxed mt-3 sm:mt-4">
               In microdosimetry, low-energy X-ray brachytherapy, radiation therapy, and <strong>nanoparticle-enhanced radiotherapy</strong>, a substantial fraction of energy deposition arises from ultrasoft photons and fluorescence cascades in the sub-kiloelectronvolt regime (<strong>0.05 keV to 1.0 keV</strong>), below the 1 keV lower limit of standard reference tabulations. This database, developed by <a href="https://linktr.ee/lucasfaraujo" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Lucas F. Araújo Profile">Lucas F. Araújo<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a>, <a href="http://lattes.cnpq.br/1950162259191311" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Celso G. Paulo Lattes CV">Celso G. Paulo<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a>, and <a href="https://tcff01.github.io/telmafonseca.github.io/v1_dimension/index.html" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="Telma C. F. Fonseca Website">Telma C. F. Fonseca<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a> — members of the <a href="https://mcmegufmg.github.io/website/" target="_blank" rel="noopener noreferrer" class="font-bold text-slate-900 hover:text-amber-600 transition" title="MCMEG Official Website">Monte Carlo Modelling Expert Group (MCMEG)<sup class="text-amber-600 dark:text-amber-400 font-bold ml-0.5">↗</sup></a> <strong>at UFMG</strong> — provides dedicated <span class="font-mono-sci">μ<sub>en</sub>/ρ</span> evaluations obtained through Monte Carlo code simulations across the <strong>0.05 keV to 1.0 keV</strong> energy range for:
             </p>
-            <ul class="list-disc list-inside text-sm sm:text-base text-slate-700 mt-3 space-y-1.5">
+            <ul class="list-disc list-inside text-xs sm:text-base text-slate-700 mt-2.5 sm:mt-3 space-y-1 sm:space-y-1.5">
               <li>
                 <strong>Elemental Media:</strong> Fe, Co, Ni, Cu, Zn, Pd, Ag, I, Gd, Hf, Ta, W, Pt, Au, and Bi (modeled as 100 wt% pure elements).
               </li>
@@ -867,43 +1013,43 @@
           </div>
 
           <!-- Dataset Sources Box (Low-Energy MCMEG & High-Energy NIST SRD 126) -->
-          <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 space-y-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+          <div class="bg-slate-50 rounded-xl p-3.5 sm:p-5 border border-slate-200 space-y-2.5 sm:space-y-3.5 text-[11px] sm:text-sm text-slate-600 leading-relaxed">
             <p>
               <strong class="text-slate-900">Low-Energy Dataset (0.05 keV to 1.0 keV):</strong> Values in the 0.05 keV to 1.0 keV energy range were generated and compiled by the <strong>Monte Carlo Modelling Expert Group (MCMEG)</strong> to provide extended low-energy mass energy-absorption coefficient (<span class="font-mono-sci">μ<sub>en</sub>/ρ</span>) data for research and educational applications.
             </p>
             <p>
               <strong class="text-slate-900">High-Energy Reference Dataset (1 keV to 20 MeV):</strong> Reference values for energies from 1 keV to 20 MeV are reproduced for comparison and continuity purposes from the <strong>National Institute of Standards and Technology (NIST) Standard Reference Database 126</strong>:
             </p>
-            <div class="pl-3.5 border-l-2 border-amber-500/70 text-xs sm:text-sm text-slate-600">
+            <div class="pl-3 sm:pl-3.5 border-l-2 border-amber-500/70 text-[11px] sm:text-sm text-slate-600">
               Hubbell, J.H. and Seltzer, S.M. (2004), <em>Tables of X-Ray Mass Attenuation Coefficients and Mass Energy-Absorption Coefficients</em> (version 1.4). [Online] Available: <a href="https://physics.nist.gov/xaamdi" target="_blank" rel="noopener noreferrer" class="text-sky-700 dark:text-sky-400 underline hover:text-amber-600">https://physics.nist.gov/xaamdi</a> [Accessed: November 2026]. National Institute of Standards and Technology, Gaithersburg, MD.
             </div>
           </div>
 
           <!-- Disclaimer Box (Dark Yellow / Amber Style matching Notice) -->
-          <div class="p-4 bg-amber-50/90 border border-amber-300 text-amber-950 dark:bg-amber-950/35 dark:border-amber-700/60 dark:text-amber-200 text-xs sm:text-sm leading-relaxed">
+          <div class="p-3 sm:p-4 bg-amber-50/90 border border-amber-300 text-amber-950 dark:bg-amber-950/35 dark:border-amber-700/60 dark:text-amber-200 text-[11px] sm:text-sm leading-relaxed">
             <strong class="font-semibold">Disclaimer:</strong> While every effort has been made to ensure the accuracy and consistency of the compiled datasets, this tool is provided strictly for academic, scientific, and educational use. Users are advised to verify critical dosimetric parameters against primary standard references before applying them to clinical or regulatory protocols. Copyright for the NIST Standard Reference Data remains with the U.S. Department of Commerce.
           </div>
 
           <!-- Citation Box -->
-          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 border border-slate-800">
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-3.5 sm:p-5 border border-slate-800">
             <div class="flex items-center justify-between gap-2 mb-2">
-              <h3 class="text-sm font-bold text-amber-400 font-mono-sci">
+              <h3 class="text-xs sm:text-sm font-bold text-amber-400 font-mono-sci">
                 How to Cite This Database (BibTeX)
               </h3>
               <button
                 type="button"
                 id="btn-copy-bibtex"
-                class="px-3 py-1 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs transition"
+                class="px-2.5 py-1 sm:px-3 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-[11px] sm:text-xs transition"
               >
                 Copy BibTeX
               </button>
             </div>
-            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+            <p class="text-[11px] sm:text-xs text-slate-300 mb-2.5 sm:mb-3 leading-relaxed">
               <strong>Authors:</strong> Lucas Fabrício de Araújo<sup>1</sup>, Celso Gonçalves de Paulo<sup>1</sup>, Telma Cristina Ferreira Fonseca<sup>1,2</sup><br />
               <span class="text-slate-400"><sup>1</sup>Departamento de Engenharia Nuclear – Universidade Federal de Minas Gerais, UFMG, Avenida Presidente Antônio Carlos, 6627 – Pampulha Belo Horizonte – MG, 31270-901, Brasil</span><br />
               <span class="text-slate-400"><sup>2</sup>Centro de Desenvolvimento da Tecnologia Nuclear, CDTN, Av. Antônio Carlos, 6627, Campus UFMG – Pampulha, 31270-901, Belo Horizonte, Minas Gerais, Brasil</span>
             </p>
-            <pre id="bibtex-code" class="text-xs font-mono-sci text-slate-300 overflow-x-auto leading-relaxed">@article{Araujo_MCMEG_XrayMassEnergyAbsCoef_2026,
+            <pre id="bibtex-code" class="text-[10px] sm:text-xs font-mono-sci text-slate-300 overflow-x-auto leading-relaxed">@article{Araujo_MCMEG_XrayMassEnergyAbsCoef_2026,
   author  = {Lucas Fabrício de Araújo and Celso Gonçalves de Paulo and Telma Cristina Ferreira Fonseca},
   title   = {Monte Carlo Evaluation of Low-Energy Mass Energy-Absorption Coefficients in Biological Tissues and Metallic Nanoparticle Materials},
   journal = {To be submitted},
@@ -919,19 +1065,19 @@
               type="button"
               data-accordion-target="methodology-version-history-body"
               aria-expanded="false"
-              class="w-full px-5 py-3.5 flex items-center justify-between gap-4 text-left hover:bg-slate-100/70 dark:hover:bg-slate-800/70 transition"
+              class="w-full px-3.5 py-2.5 sm:px-5 sm:py-3.5 flex items-center justify-between gap-3 sm:gap-4 text-left hover:bg-slate-100/70 dark:hover:bg-slate-800/70 transition"
             >
-              <div class="flex flex-wrap items-center gap-2.5">
-                <span class="text-xs sm:text-sm font-mono-sci font-bold uppercase tracking-wider text-slate-800">
+              <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                <span class="text-[11px] sm:text-sm font-mono-sci font-bold uppercase tracking-wider text-slate-800">
                   Version History
                 </span>
-                <span class="px-2 py-0.5 text-[11px] font-mono-sci bg-amber-100 text-amber-900 border border-amber-200 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-700/50">
+                <span class="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-[11px] font-mono-sci bg-amber-100 text-amber-900 border border-amber-200 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-700/50">
                   v1.0
                 </span>
               </div>
-              <span data-accordion-chevron class="text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
+              <span data-accordion-chevron class="text-[10px] sm:text-xs font-mono-sci text-slate-500 shrink-0">▼</span>
             </button>
-            <div id="methodology-version-history-body" class="hidden px-5 pb-4 pt-3 border-t border-slate-200 space-y-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <div id="methodology-version-history-body" class="hidden px-3.5 pb-3 pt-2.5 sm:px-5 sm:pb-4 sm:pt-3 border-t border-slate-200 space-y-2 sm:space-y-2.5 text-[11px] sm:text-sm text-slate-600 leading-relaxed">
               <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                 <span class="font-mono-sci font-bold text-slate-900 shrink-0">v1.0 (Nov 2026)</span>
                 <span>
@@ -948,15 +1094,15 @@
           </div>
 
           <!-- Contact & Issue Reporting Box -->
-          <div class="bg-slate-50 p-5 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+          <div class="bg-slate-50 p-3.5 sm:p-5 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <div class="text-[11px] sm:text-sm text-slate-600 leading-relaxed">
               <strong class="text-slate-900">Questions, Feedback, or Issue Reporting:</strong> If you encounter any technical issues, data discrepancies, or have questions regarding this database, please do not hesitate to get in touch with our team.
             </div>
             <a
               href="https://mcmegufmg.github.io/website/contact.html"
               target="_blank"
               rel="noopener noreferrer"
-              class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs sm:text-sm transition shadow-sm"
+              class="shrink-0 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-[11px] sm:text-sm transition shadow-sm"
             >
               <span>Contact MCMEG</span>
               <span class="font-bold">↗</span>
@@ -1010,8 +1156,117 @@
     </div>
   </footer>
 
+  <!-- ====================================================================
+       SUB-KEV REVIEWER ACCESS MODAL (Client-Side AES-256-GCM Decryption)
+       ==================================================================== -->
+  <div
+    id="modal-subkev-unlock"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-subkev-title"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm"
+  >
+    <div class="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
+      <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <span id="modal-subkev-icon" class="text-base">🔒</span>
+          <h2 id="modal-subkev-title" class="text-sm sm:text-base font-bold tracking-tight">
+            Sub-keV Dataset Access (0.05 – 1.0 keV)
+          </h2>
+        </div>
+        <button
+          type="button"
+          id="btn-close-subkev-modal"
+          class="text-slate-400 hover:text-white text-lg leading-none px-1.5 py-0.5"
+          aria-label="Close modal"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          Pre-publication MCMEG Monte Carlo datasets are protected via client-side <span class="font-mono-sci font-semibold">AES-256-GCM</span> encryption. Enter the access passkey once to unlock all available <span class="font-mono-sci">0.05 – 1.0 keV</span> datasets in this browser tab — no account or email required.
+        </p>
+
+        <!-- Locked View: Passkey Form -->
+        <form id="form-subkev-unlock" class="space-y-3">
+          <div>
+            <label for="input-subkev-key" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1.5">
+              Access Passkey
+            </label>
+            <div class="relative flex items-center">
+              <input
+                type="password"
+                id="input-subkev-key"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="Enter reviewer passkey..."
+                class="w-full px-3 py-2 pr-16 text-xs sm:text-sm font-mono-sci bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              />
+              <button
+                type="button"
+                id="btn-toggle-key-vis"
+                class="absolute right-2 px-2 py-1 text-[11px] font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+              >
+                Show
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="subkev-unlock-error"
+            class="hidden p-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-xs text-rose-700 dark:text-rose-300 font-medium"
+          ></div>
+
+          <div class="flex items-center justify-end gap-2 pt-1">
+            <button
+              type="button"
+              id="btn-cancel-subkev-modal"
+              class="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              id="btn-submit-subkev-unlock"
+              class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm transition inline-flex items-center gap-1.5"
+            >
+              <span>Unlock Datasets</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Unlocked View: Session Status & Lock Button -->
+        <div id="subkev-unlocked-panel" class="hidden space-y-3">
+          <div class="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs sm:text-sm text-emerald-800 dark:text-emerald-200">
+            <div class="font-bold flex items-center gap-1.5">
+              <span>🔓</span>
+              <span>Sub-keV datasets unlocked for this tab</span>
+            </div>
+            <p id="subkev-unlocked-info" class="text-xs mt-1 opacity-90"></p>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <span class="text-[11px] text-slate-500 dark:text-slate-400">
+              Automatically locks when you close this tab.
+            </span>
+            <button
+              type="button"
+              id="btn-lock-subkev"
+              class="px-3.5 py-2 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-700 transition"
+            >
+              🔒 Lock Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Database & Application Scripts -->
   <script src="js/data.js"></script>
+  <script src="js/subkev_encrypted.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

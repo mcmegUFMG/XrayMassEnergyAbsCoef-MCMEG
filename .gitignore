@@ -1,0 +1,8 @@
+# Unencrypted sub-keV simulation CSVs (kept local only until official publication)
+**/sub-keV_MCMEG/
+data/elemental/sub-keV_MCMEG/
+data/tissues/sub-keV_MCMEG/
+
+# Python cache
+__pycache__/
+*.pyc
