@@ -1032,30 +1032,44 @@
 
           <!-- Citation Box -->
           <div class="bg-slate-900 text-slate-100 rounded-xl p-3.5 sm:p-5 border border-slate-800">
-            <div class="flex items-center justify-between gap-2 mb-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
               <h3 class="text-xs sm:text-sm font-bold text-amber-400 font-mono-sci">
-                How to Cite This Database (BibTeX)
+                How to Cite This Database (Zenodo DOI &amp; BibTeX)
               </h3>
-              <button
-                type="button"
-                id="btn-copy-bibtex"
-                class="px-2.5 py-1 sm:px-3 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-[11px] sm:text-xs transition"
-              >
-                Copy BibTeX
-              </button>
+              <div class="flex items-center gap-1.5 sm:gap-2">
+                <button
+                  type="button"
+                  id="btn-copy-citation"
+                  class="px-2.5 py-1 sm:px-3 rounded bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 font-semibold text-[11px] sm:text-xs transition"
+                >
+                  Copy Citation
+                </button>
+                <button
+                  type="button"
+                  id="btn-copy-bibtex"
+                  class="px-2.5 py-1 sm:px-3 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-[11px] sm:text-xs transition"
+                >
+                  Copy BibTeX
+                </button>
+              </div>
             </div>
             <p class="text-[11px] sm:text-xs text-slate-300 mb-2.5 sm:mb-3 leading-relaxed">
               <strong>Authors:</strong> Lucas Fabrício de Araújo<sup>1</sup>, Celso Gonçalves de Paulo<sup>1</sup>, Telma Cristina Ferreira Fonseca<sup>1,2</sup><br />
               <span class="text-slate-400"><sup>1</sup>Departamento de Engenharia Nuclear – Universidade Federal de Minas Gerais, UFMG, Avenida Presidente Antônio Carlos, 6627 – Pampulha Belo Horizonte – MG, 31270-901, Brasil</span><br />
               <span class="text-slate-400"><sup>2</sup>Centro de Desenvolvimento da Tecnologia Nuclear, CDTN, Av. Antônio Carlos, 6627, Campus UFMG – Pampulha, 31270-901, Belo Horizonte, Minas Gerais, Brasil</span>
             </p>
-            <pre id="bibtex-code" class="text-[10px] sm:text-xs font-mono-sci text-slate-300 overflow-x-auto leading-relaxed">@article{Araujo_MCMEG_XrayMassEnergyAbsCoef_2026,
-  author  = {Lucas Fabrício de Araújo and Celso Gonçalves de Paulo and Telma Cristina Ferreira Fonseca},
-  title   = {Monte Carlo Evaluation of Low-Energy Mass Energy-Absorption Coefficients in Biological Tissues and Metallic Nanoparticle Materials},
-  journal = {To be submitted},
-  year    = {2026},
-  note    = {Database version 1.0},
-  url     = {https://mcmegufmg.github.io/XrayMassEnergyAbsCoef-MCMEG/}
+            <div class="mb-2.5 sm:mb-3 p-2.5 sm:p-3 rounded-lg bg-slate-950/70 border border-slate-800 text-[11px] sm:text-xs text-slate-200 leading-relaxed">
+              <span class="block text-[10px] font-mono-sci uppercase tracking-wider text-amber-400 mb-1">Recommended Citation (Zenodo)</span>
+              <span id="zenodo-citation-text">Araújo, L. F., Paulo, C. G., &amp; Fonseca, T. C. F. (2026). MCMEG Low-Energy X-Ray Mass Energy-Absorption Coefficients Database (0.05 - 1.0 keV) (Version 1.0) [Dataset]. Zenodo. <a href="https://doi.org/10.5281/zenodo.24547660" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline hover:text-amber-400 transition">https://doi.org/10.5281/zenodo.24547660</a></span>
+            </div>
+            <pre id="bibtex-code" class="text-[10px] sm:text-xs font-mono-sci text-slate-300 overflow-x-auto leading-relaxed">@dataset{Araujo_MCMEG_XrayMassEnergyAbsCoef_2026,
+  author    = {Araújo, Lucas Fabrício de and Paulo, Celso Gonçalves de and Fonseca, Telma Cristina Ferreira},
+  title     = {{MCMEG Low-Energy X-Ray Mass Energy-Absorption Coefficients Database (0.05 - 1.0 keV)}},
+  year      = {2026},
+  publisher = {Zenodo},
+  version   = {1.0},
+  doi       = {10.5281/zenodo.24547660},
+  url       = {https://doi.org/10.5281/zenodo.24547660}
 }</pre>
           </div>
 
@@ -1081,13 +1095,13 @@
               <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                 <span class="font-mono-sci font-bold text-slate-900 shrink-0">v1.0 (Nov 2026)</span>
                 <span>
-                  Initial database platform release featuring interactive log-log exploration, comparison/ratio analysis, 15 Elemental Media and 12 ICRU-44 Tissues &amp; Compounds (currently populated with NIST SRD 126 v1.4 baseline data, 1 keV – 20 MeV), and versioned ASCII/CSV provenance exports.
+                  Initial database platform release featuring interactive log-log exploration, comparison/ratio analysis, 15 Elemental Media and 12 ICRU-44 Tissues &amp; Compounds (with NIST SRD 126 v1.4 baseline data, 1 keV – 20 MeV), and versioned ASCII/CSV provenance exports. Archived on Zenodo (<a href="https://doi.org/10.5281/zenodo.24547660" target="_blank" rel="noopener noreferrer" class="text-sky-700 dark:text-sky-400 underline hover:text-amber-600">DOI: 10.5281/zenodo.24547660</a>).
                 </span>
               </div>
               <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                 <span class="font-mono-sci font-semibold text-amber-700 dark:text-amber-400 shrink-0">Planned Release</span>
                 <span>
-                  Integration of MCMEG Monte Carlo sub-keV datasets (0.05 keV – 1.0 keV) linked individually to the published article version and DOI.
+                  Full public release of MCMEG Monte Carlo sub-keV datasets (0.05 keV – 1.0 keV) linked to the Zenodo DOI (<span class="font-mono-sci">10.5281/zenodo.24547660</span>) and associated journal publication.
                 </span>
               </div>
             </div>

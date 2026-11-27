@@ -21,9 +21,10 @@ window.MCMEG_DATABASE = {
     nistCitation:
       "Hubbell, J.H., Seltzer, S.M., 2004. Tables of x-ray mass attenuation coefficients and mass energy-absorption coefficients. URL: http://physics.nist.gov/xaamdi (version 1.4), National Institute of Standards and Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.",
     mcmegArticleRef:
-      "Araújo, L.F., Paulo, C.G., Fonseca, T.C.F., 2026. Monte Carlo Evaluation of Low-Energy Mass Energy-Absorption Coefficients in Biological Tissues and Metallic Nanoparticle Materials (To be submitted).",
+      "Araújo, L. F., Paulo, C. G., & Fonseca, T. C. F. (2026). MCMEG Low-Energy X-Ray Mass Energy-Absorption Coefficients Database (0.05 - 1.0 keV) (Version 1.0) [Dataset]. Zenodo.",
     mcmegShortRef: "Araújo et al., 2026",
-    mcmegDoi: ""
+    mcmegDoi: "10.5281/zenodo.24547660",
+    mcmegDoiUrl: "https://doi.org/10.5281/zenodo.24547660"
   },
 
   elementalMedia: [

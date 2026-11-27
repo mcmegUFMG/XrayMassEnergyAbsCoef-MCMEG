@@ -583,16 +583,28 @@
     const articleFull = (mat && mat.articleRef) || meta.mcmegArticleRef || "";
     const articleShort = (mat && mat.articleShortRef) || meta.mcmegShortRef || "Araújo et al., 2026";
     const doi = (mat && mat.doi) || meta.mcmegDoi || "";
+    const doiUrl = (mat && mat.doiUrl) || (doi ? `https://doi.org/${doi}` : meta.mcmegDoiUrl || "");
     const mcCode = hasSubKeV ? (mat && mat.monteCarloCode) || "" : "";
 
     let sourceLabel = "NIST Reference (1 keV – 20 MeV)";
     let versionPillText = `Dataset v${dsVer} · NIST SRD 126 v1.4`;
+    let versionPillHtml = versionPillText;
     if (regime === "mcmeg_only") {
       sourceLabel = "MCMEG (0.05 – 1.0 keV)";
       versionPillText = `Dataset v${dsVer} · ${articleShort}${doi ? ` · DOI: ${doi}` : ""}`;
+      versionPillHtml = `Dataset v${dsVer} · ${articleShort}${
+        doi
+          ? ` · DOI: <a href="${doiUrl}" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-600 dark:hover:text-amber-400">${doi}</a>`
+          : ""
+      }`;
     } else if (regime === "combined") {
       sourceLabel = "MCMEG (0.05–1 keV) + NIST Reference (>1 keV–20 MeV)";
       versionPillText = `Dataset v${dsVer} · ${articleShort}${doi ? ` · DOI: ${doi}` : ""}`;
+      versionPillHtml = `Dataset v${dsVer} · ${articleShort}${
+        doi
+          ? ` · DOI: <a href="${doiUrl}" target="_blank" rel="noopener noreferrer" class="underline hover:text-amber-600 dark:hover:text-amber-400">${doi}</a>`
+          : ""
+      }`;
     }
 
     const nistLines = [
@@ -603,8 +615,10 @@
       `#                    Technology (NIST), Gaithersburg, MD. Accessed: 2026-07-02.`
     ];
 
+    const dbDoiUrl = meta.mcmegDoiUrl || (meta.mcmegDoi ? `https://doi.org/${meta.mcmegDoi}` : "");
     const headerLines = [
-      `# Database Version : v${dbVer} (${dbDate})`
+      `# Database Version : v${dbVer} (${dbDate})`,
+      ...(dbDoiUrl && regime === "nist_only" ? [`# Database DOI     : ${dbDoiUrl}`] : [])
     ];
 
     if (regime === "nist_only") {
@@ -617,16 +631,16 @@
       );
       headerLines.push(`# Source           : MCMEG Low-Energy Simulation (0.05 keV – 1.0 keV)`);
       if (mcCode) headerLines.push(`# Monte Carlo Code : ${mcCode}`);
-      if (articleFull) headerLines.push(...wrapHeaderField("# Reference Article: ", articleFull));
-      if (doi) headerLines.push(`# Article DOI      : ${doi}`);
+      if (articleFull) headerLines.push(...wrapHeaderField("# Dataset Citation : ", articleFull));
+      if (doiUrl) headerLines.push(`# Dataset DOI      : ${doiUrl}`);
     } else {
       headerLines.push(
         `# Dataset Version  : v${dsVer} (${articleShort}${doi ? ` / DOI: ${doi}` : ""})`
       );
       headerLines.push(`# Sources          : MCMEG (0.05–1.0 keV) + NIST Reference (>1 keV–20 MeV)`);
       if (mcCode) headerLines.push(`# Monte Carlo Code : ${mcCode}`);
-      if (articleFull) headerLines.push(...wrapHeaderField("# Reference Article: ", articleFull));
-      if (doi) headerLines.push(`# Article DOI      : ${doi}`);
+      if (articleFull) headerLines.push(...wrapHeaderField("# Dataset Citation : ", articleFull));
+      if (doiUrl) headerLines.push(`# Dataset DOI      : ${doiUrl}`);
       headerLines.push(...nistLines);
     }
 
@@ -640,9 +654,11 @@
       mcCode,
       sourceLabel,
       versionPillText,
+      versionPillHtml,
       articleFull,
       articleShort,
       doi,
+      doiUrl,
       headerLines
     };
   }
@@ -677,8 +693,8 @@
           seenArticles.add(key);
           lines.push(
             ...wrapHeaderField(
-              "# Reference Article: ",
-              `${p.articleFull}${p.doi ? ` (DOI: ${p.doi})` : ""}`
+              "# Dataset Citation : ",
+              `${p.articleFull}${p.doiUrl ? ` ${p.doiUrl}` : p.doi ? ` (DOI: ${p.doi})` : ""}`
             )
           );
         }
@@ -1370,7 +1386,7 @@
                : ""
            }
            <span class="${badgePad} font-medium bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
-             ${prov.versionPillText}
+             ${prov.versionPillHtml || prov.versionPillText}
            </span>`
         : `<span class="${badgePad} font-medium bg-amber-50 text-amber-800 border border-amber-200">
              MCMEG 0.05–1 keV Dataset in Preparation
@@ -2488,6 +2504,22 @@
         }
         a.click();
         URL.revokeObjectURL(url);
+      });
+    }
+
+    const btnCopyCitation = document.getElementById("btn-copy-citation");
+    if (btnCopyCitation) {
+      btnCopyCitation.addEventListener("click", async () => {
+        const citEl = document.getElementById("zenodo-citation-text");
+        if (!citEl) return;
+        try {
+          await navigator.clipboard.writeText(citEl.textContent.trim());
+          const orig = btnCopyCitation.textContent;
+          btnCopyCitation.textContent = "✓ Citation Copied!";
+          setTimeout(() => {
+            btnCopyCitation.textContent = orig;
+          }, 1800);
+        } catch (_) {}
       });
     }
 
